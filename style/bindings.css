@@ -1,0 +1,12 @@
+cdocumenteditor ccommentspanel{
+	-moz-binding: url(binding:modules.comment.cCommentsEditor#cCommentsPanel);
+}
+ccommentspanel section.comment{
+	-moz-binding: url(binding:modules.comment.cCommentsEditor#cCommentInfos);
+}
+wdialog[template="ValidateComment"]{
+	-moz-binding: url(binding:modules.comment.cValidateCommentDialog#cValidateCommentDialog);
+}
+wdialog[template="ValidateComment"] rows.cCommentData{
+	-moz-binding: url(binding:modules.comment.cValidateCommentDialog#cCommentData);
+}

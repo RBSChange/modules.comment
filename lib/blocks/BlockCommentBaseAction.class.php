@@ -1,0 +1,273 @@
+<?php
+/**
+ * comment_BlockCommentsAction
+ * @package modules.comment.lib.blocks
+ */
+abstract class comment_BlockCommentsBaseAction extends website_BlockAction
+{
+	/**
+	 * @see website_BlockAction::execute()
+	 *
+	 * @param f_mvc_Request $request
+	 * @param f_mvc_Response $response
+	 * @return String
+	 */
+	function execute($request, $response)
+	{
+		if ($this->isInBackoffice())
+		{
+			$request->setAttribute('blockLabel', f_Locale::translate('&modules.'.$this->getModuleName().'.bo.blocks.'.ucfirst($this->getName()).';'));
+			try
+			{
+				return $this->getTemplate(website_BlockView::BACKOFFICE);
+			}
+			catch (TemplateNotFoundException $e)
+			{
+				return website_BlockView::NONE;
+			}
+		}
+		
+		$target = $this->getTarget($request);
+		if ($target === null || !$target->isPublished())
+		{
+			return website_BlockView::NONE;
+		}
+		$request->setAttribute('target', $target);
+		$allComments = $this->getCommentsListByTarget($target);
+		$request->setAttribute('totalCount', count($allComments));
+		
+		$itemPerPage = $this->getNbItemPerPage($request, $response);
+		$pageNumber = $this->getPageNumber($request, $itemPerPage, $allComments);
+		$offset = $itemPerPage * ($pageNumber - 1);
+		$request->setAttribute('offset', $offset);
+		
+		$comments = new paginator_Paginator($this->getModuleName(), $pageNumber, $allComments, $itemPerPage);
+		$request->setAttribute('comments', $comments);
+		
+		$commentId = $request->getParameter('commentId');
+		$request->setAttribute('currentCommentId', $commentId);		
+
+		// Add the RSS feed.
+		$feedTitle = f_Locale::translate('&modules.comment.frontoffice.Rss-feed-title;', array('target' => $target->getLabel()));
+		$page = $this->getPage();
+		$page->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
+		// Deal with filters 
+		$globalRequest = f_mvc_HTTPRequest::getInstance();
+		$ratingFilterValue = $globalRequest->getParameter('filter', null);
+		if ($ratingFilterValue !== null)
+		{
+			$request->setAttribute('ratingFilterValue', comment_RatingService::getInstance()->normalizeRating($ratingFilterValue));
+		}
+		return $this->getCommentView(website_BlockView::SUCCESS);
+	}
+	
+	function validateSaveInput($request, $bean)
+	{
+		// TODO: move it to a better place.
+		$request->setAttribute('target', $this->getTarget($request));
+		
+		// Validation.
+		$validationRules = BeanUtils::getBeanValidationRules('comment_persistentdocument_comment', null, array('label', 'targetdocumentmodel'));
+		if ($this->isRatingRequired())
+		{
+			$validationRules[] = "rating{min:0;max:5}";
+		}
+		
+		$isOk = $this->processValidationRules($validationRules, $request, $bean);
+		
+		// Captcha is tested only for not logged-in users. 
+		if (users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser() === null)
+		{
+			$code = Controller::getInstance()->getContext()->getRequest()->getModuleParameter('form', 'CHANGE_CAPTCHA');
+			if (!FormHelper::checkCaptcha($code))
+			{
+				$this->addError(f_Locale::translate('&modules.comment.frontoffice.Error-captcha;'));
+				$isOk = false;
+			}
+		}
+		return $isOk;
+	}
+	
+	function getSaveInputViewName()
+	{
+		return $this->getCommentView(website_BlockView::SUCCESS);
+	}
+	
+	function executePreview($request, $response, comment_persistentdocument_comment $comment)
+	{
+		$request->setAttribute('previewComment', $comment);	
+		$request->setAttribute('comment', $comment);	
+		return $this->execute($request, $response);
+	}
+	
+	/**
+	 * @see website_BlockAction::execute()
+	 *
+	 * @param f_mvc_Request $request
+	 * @param f_mvc_Response $response
+	 * @return String
+	 */
+	function executeSave($request, $response, comment_persistentdocument_comment $comment)
+	{
+		$comment->save();
+		$request->setAttribute('comment', $comment);
+		
+		// Ask validation.
+		if ($comment->getPersistentModel()->hasWorkflow())
+		{
+			$comment->getDocumentService()->createWorkflowInstance($comment->getId(), array());
+			$request->setAttribute('published', false);
+		}
+		else
+		{
+			$comment->activate();
+			$request->setAttribute('published', true);
+		}
+		
+		return $this->getCommentView('Save');
+	}
+	
+	/**
+	 * @param f_mvc_Request $request
+	 * @param f_mvc_Response $response
+	 * @return String
+	 */
+	function executeRateUseful($request, $response)
+	{
+		if ($request->hasNonEmptyParameter('commentId'))
+		{
+			$comment = DocumentHelper::getDocumentInstance(intval($request->getParameter('commentId')));
+			if ($comment instanceof comment_persistentdocument_comment && !$comment->isEvaluatedByCurrentUser())
+			{
+				$comment->setUsefulcount(intval($comment->getUsefulcount()) + 1);
+				$comment->getDocumentService()->updateApprovedComment($comment);
+				$comment->markAsEvaluatedForCurrentUser();
+			}
+		}
+		return $this->execute($request, $response);
+	}
+	
+	/**
+	 * @param f_mvc_Request $request
+	 * @param f_mvc_Response $response
+	 * @return String
+	 */
+	function executeRateUseless($request, $response)
+	{
+		if ($request->hasNonEmptyParameter('commentId'))
+		{
+			$comment = DocumentHelper::getDocumentInstance(intval($request->getParameter('commentId')));
+			if ($comment instanceof comment_persistentdocument_comment && !$comment->isEvaluatedByCurrentUser())
+			{
+				$comment->setUselesscount(intval($comment->getUselesscount()) + 1);
+				$comment->getDocumentService()->updateApprovedComment($comment);
+				$comment->markAsEvaluatedForCurrentUser();
+			}
+		}
+		return $this->execute($request, $response);
+	}
+	
+	/**
+	 * This method may be redefined in the final block if the target
+	 * has to be found differently.
+	 * 
+	 * @param f_mvc_Request $request
+	 */
+	protected function getTarget($request)
+	{
+		return $this->getDocumentParameter();
+	}
+	
+	/**
+	 * Return true to force the input of a rating inside the commentary
+	 * 
+	 * @return Boolean
+	 */
+	protected function isRatingRequired()
+	{
+		return false;
+	}
+	
+	/**
+	 * @param f_mvc_Request $request
+	 */
+	private function getPageNumber($request, $itemPerPage, $allComments)
+	{
+		// If there is a page set, return it.
+		$pageNumber = $request->getParameter(paginator_Paginator::REQUEST_PARAMETER_NAME);
+		if ($pageNumber)
+		{
+			return $pageNumber;
+		}
+		
+		// Else look for a comment id.
+		$commentId = intval($request->getParameter('commentId'));
+		if ($commentId)
+		{
+			foreach ($allComments as $index => $comment)
+			{
+				if ($commentId == $comment->getId())
+				{
+					return 1 + floor($index / $itemPerPage);
+				}
+			}
+		}
+		
+		// Else return the first page.
+		return 1;
+	}
+	
+	/**
+	 * @param f_mvc_Request $request
+	 * @param f_mvc_Response $response
+	 * @return Integer
+	 */
+	private function getNbItemPerPage($request, $response)
+	{
+		$configuration = $this->getConfiguration();
+		if (f_util_ClassUtils::methodExists($configuration, 'getNbitemperpage'))
+		{
+			return $this->getConfiguration()->getNbitemperpage();;
+		}
+		return 10;
+	}
+	
+	private function getCommentsListByTarget($target)
+	{
+		$globalRequest = f_mvc_HTTPRequest::getInstance();
+		$ratingFilterValue = $globalRequest->getParameter('filter');
+		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+		switch ($globalRequest->getParameter('sort', 'date'))
+		{
+			case 'relevancy':
+				$allComments = comment_CommentService::getInstance()->getPublishedByTargetIdOrderByRelevancy($target->getId(), $ratingFilterValue, $website->getId());
+				break;
+			case 'rating':
+				$allComments = comment_CommentService::getInstance()->getPublishedByTargetIdOrderByRating($target->getId(), $ratingFilterValue, $website->getId());
+				break;
+			case 'date':
+			default:
+				$allComments = comment_CommentService::getInstance()->getPublishedByTargetId($target->getId(), $ratingFilterValue, $website->getId());
+				break;
+		}
+		return $allComments;
+	}
+
+	/**
+	 * @param $shortViewName
+	 * @throws TemplateNotFoundException if template could not be found in current module and comment module
+	 * @return TemplateObject
+	 */
+	private function getCommentView($shortViewName)
+	{
+		try
+		{
+			return $this->getTemplate($shortViewName);
+		}
+		catch (TemplateNotFoundException $e)
+		{
+			$templateName = 'Comment-Block-CommentBase-'.$shortViewName;
+			return $this->getTemplateByFullName('modules_comment', $templateName);
+		}
+	}
+}

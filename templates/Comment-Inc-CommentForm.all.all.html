@@ -1,0 +1,39 @@
+<h3 change:h="" change:translate="&modules.comment.frontoffice.Leave-a-comment;" />
+<div class="comment-preview"  tal:condition="previewComment">
+	<h4 change:h="" change:translate="&modules.comment.frontoffice.Preview-comment;" />
+	
+	<p class="comment-info">
+		<div change:starrating="" value="${previewComment/getRating}" displayOnly="true" small="true" />
+		<tal:block change:translate="&modules.comment.frontoffice.Posted-by-author; author previewComment/getAuthorNameAsHtml" /> - <tal:block change:datetime="previewComment/getCreationdate" />
+	</p>
+	<img tal:condition="showGravatars" class="avatar" src="${previewComment/getGravatarUrl}" alt="" />
+	<p>${previewComment/getContentsAsHtml}</p>
+</div>
+<form change:form="beanClass comment_persistentdocument_comment; beanName comment" action="#comment-form" id="comment-form">
+	<div change:errors=""></div>
+	<tal:block change:field="name beanId" hidden="true" />
+	<ol>
+		<tal:block tal:condition="currentUser">
+			<li><input change:field="name authorName ; value currentUser/getFullName" readonly="readonly" /></li>
+			<li><input change:field="name email ; value currentUser/getEmail" readonly="readonly" /></li>
+		</tal:block>
+		<tal:block tal:condition="not: currentUser">
+			<li><input change:field="name authorName" /></li>
+			<li><input change:field="name email" /></li>
+		</tal:block>
+		<li><input change:field="name authorwebsiteurl" /></li>
+		<li tal:condition="enableRating"><label change:fieldlabel="name rating" required="${ratingRequired}"/>
+			<div change:starrating="" name="rating" />
+		</li>
+		<li><label change:fieldlabel="name contents" />
+			<input change:richtextinput="name contents; editor bbcode" labeled="false" /></li>
+		<li tal:condition="not: currentUser">
+			<img change:captcha="" style="vertical-align: bottom;"/> <input change:captcha="" />
+		</li>
+		<li class="button">
+			<input type="hidden" change:hiddeninput="name targetId" value="${target/getId}" />
+			<input change:submit="" name="save" label="&modules.comment.frontoffice.Save;" class="button submit" />
+			<input change:submit="" name="preview" label="&modules.comment.frontoffice.Preview;" class="button submit" />
+		</li>
+	</ol>
+</form>

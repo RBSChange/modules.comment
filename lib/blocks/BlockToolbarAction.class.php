@@ -1,0 +1,28 @@
+<?php
+/**
+ * comment_BlockToolbarAction
+ * @package modules.comment.lib.blocks
+ */
+class comment_BlockToolbarAction extends website_BlockAction
+{
+	/**
+	 * @see website_BlockAction::execute()
+	 *
+	 * @param f_mvc_Request $request
+	 * @param f_mvc_Response $response
+	 * @return String
+	 */
+	function execute($request, $response)
+	{
+		$request->setAttribute('target', $this->getDocumentParameter());
+		// Deal with filters 
+		$globalRequest = f_mvc_HTTPRequest::getInstance();
+		$ratingFilterValue = $globalRequest->getParameter('filter', null);
+		if ($ratingFilterValue !== null)
+		{
+			$request->setAttribute('ratingFilterValue', comment_RatingService::getInstance()->normalizeRating($ratingFilterValue));
+		}
+		$request->setAttribute('currentSortOption', $globalRequest->getParameter('sort'));
+		return website_BlockView::SUCCESS;
+	}
+}

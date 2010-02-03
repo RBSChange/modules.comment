@@ -1,0 +1,10 @@
+<div id="comments-${target/getId}">
+	<tal:block tal:condition="totalCount">
+		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentList' ; type 'html' ; comments comments ; target target ; offset offset ; totalCount totalCount ; currentCommentId currentCommentId ; showGravatars configuration/getShowgravatars ; enableRating configuration/getEnableRating ; displaySortOptions configuration/getDisplaySortOptions ; enableEvaluation configuration/getEnableEvaluation ; showRatingDistribution configuration/getShowRatingDistribution ; filter filter ; sort sort" />
+	</tal:block>
+	
+	<tal:block change:loadhandler="comment_InitFormInfoLoadHandler" />
+	<tal:block change:loadhandler="form_FormLoadHandler" />
+		
+	<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentForm' ; type 'html' ; target target ; currentUser currentUser ; previewComment previewComment ; enableRating configuration/getEnableRating" />
+</div>

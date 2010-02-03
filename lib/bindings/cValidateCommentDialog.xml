@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bindings xmlns="http://www.mozilla.org/xbl" 
+	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+	xmlns:xbl="http://www.mozilla.org/xbl">
+		
+	<binding id="cValidateCommentDialog" extends="modules.task.cTaskDialog#cTaskDialog">
+		<implementation>		
+			<field name="title">"&amp;modules.comment.bo.workflow.validateComment.User-task-title;"</field>
+			<field name="description">"&amp;modules.comment.bo.workflow.validateComment.User-task-help;"</field>
+			<field name="loadDataModule">"comment"</field>
+			<field name="loadDataAction">"LoadValidateCommentData"</field>
+			<field name="documentSectionClass">"cCommentData"</field>
+				
+			<method name="setDocumentData">
+				<parameter name="data" />
+				<parameter name="section" />
+				<body><![CDATA[
+					var doc = new DOMParser().parseFromString('<div xmlns="http://www.w3.org/1999/xhtml">' + data['contents'] + '</div>', 'text/xml');
+					if (section.firstChild)
+					{					
+						section.replaceChild(doc.documentElement, section.firstChild);
+					}
+					else
+					{
+						section.appendChild(doc.documentElement);
+					}
+					for (var name in data)
+					{
+						section.setAttribute(name, data[name]);
+						if (data[name] && data[name] != '')
+						{
+							section.removeAttribute(name+'Hidden');
+						}
+						else
+						{
+							section.setAttribute(name+'Hidden', true);
+						}
+					}
+				]]></body>
+			</method>
+		</implementation>		
+	</binding>
+	
+	<binding id="cCommentData">
+		<implementation>		
+			<method name="viewAuthorWebsite">
+				<body><![CDATA[
+					window.open(this.getAttribute('authorWebsite'), null, "menubar=yes, location=yes, toolbar=yes, resizable=yes, scrollbars=yes, status=yes");
+				]]></body>
+			</method>
+			
+			<method name="viewTarget">
+				<body><![CDATA[
+					window.open(this.getAttribute('targetUrl'), null, "menubar=yes, location=yes, toolbar=yes, resizable=yes, scrollbars=yes, status=yes");
+				]]></body>
+			</method>
+		</implementation>
+	
+		<content>
+			<xul:row xbl:inherits="differs=targetLabelDiffers">
+				<xul:label value="&amp;modules.comment.document.comment.Target;"/>
+				<xul:hbox align="center" flex="1">
+					<xul:label xbl:inherits="value=targetLabel" />
+					<xul:toolbarbutton oncommand="viewTarget()" tooltiptext="&amp;modules.comment.document.comment.View-target;" image="{HttpHost}/icons/small/shadow/view.png" />
+				</xul:hbox>
+			</xul:row>
+			<xul:row xbl:inherits="differs=authorLabelDiffers">
+				<xul:label value="&amp;modules.comment.document.comment.AuthorName;"/>
+				<xul:label xbl:inherits="value=authorLabel" />
+			</xul:row>
+			<xul:row xbl:inherits="differs=authorEmailDiffers">
+				<xul:label value="&amp;modules.comment.document.comment.Email;"/>
+				<xul:label xbl:inherits="value=authorEmail" />
+			</xul:row>
+			<xul:row xbl:inherits="differs=authorWebsiteDiffers">
+				<xul:label value="&amp;modules.comment.document.comment.Authorwebsiteurl;"/>
+				<xul:hbox align="center">
+					<xul:label xbl:inherits="value=authorWebsite" />
+					<xul:toolbarbutton xbl:inherits="hidden=authorWebsiteHidden" oncommand="viewAuthorWebsite()" tooltiptext="&amp;modules.comment.document.comment.View-website;" image="{HttpHost}/icons/small/shadow/view.png" />
+				</xul:hbox>
+			</xul:row>
+			<xul:row xbl:inherits="differs=contentsDiffers">
+				<xul:label value="&amp;modules.comment.document.comment.Contents;"/>
+				<div xmlns="http://www.w3.org/1999/xhtml" style="margin: 5px"><xbl:children /></div>
+			</xul:row>
+		</content>
+	</binding>
+</bindings>

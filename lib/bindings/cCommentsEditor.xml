@@ -1,0 +1,402 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl" xmlns:xbl="http://www.mozilla.org/xbl" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Comments generic panel -->
+
+	<binding id="cCommentsPanel" extends="layout.cDocumentEditor#cDocumentEditorPanel">
+		<resources>
+			<stylesheet src="modules.comment.cCommentsPanel" />
+		</resources>
+		<content>
+			<xul:vbox flex="1">
+				<xul:cmessageinfo anonid="message" />
+				<xul:toolbox anonid="pagination-toolbox" orient="horizontal" class="change-toolbox">
+					<xul:toolbar anonid="navigationtb" orient="horizontal" flex="1" class="change-toolbar">
+						<xul:spacer flex="1" />
+						<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBegin()" image="{HttpHost}/icons/small/control-begin.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-begin;" />
+						<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(true)" image="{HttpHost}/icons/small/control-double-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back-quick;" />
+						<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack()" image="{HttpHost}/icons/small/control-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back;" />
+						<xul:hbox align="center">
+							<xul:label anonid="navigationpagelabel" value="&amp;modules.uixul.bo.general.Documents;" />
+							<xul:label anonid="navigationindex" value="0" />
+							<xul:label anonid="navigationpageseparator" value="&amp;modules.uixul.bo.general.out-of;" />
+							<xul:label anonid="navigationtotal" value="0" />
+						</xul:hbox>
+						<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext()" image="{HttpHost}/icons/small/control-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next;" />
+						<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(true)" image="{HttpHost}/icons/small/control-double-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next-quick;" />
+						<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateEnd()" image="{HttpHost}/icons/small/control-end.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-end;" />
+						<xul:spacer flex="1" />
+					</xul:toolbar>
+				</xul:toolbox>
+				<xul:scrollbox anonid="scrollctrl" flex="1" class="editordatacontainer" orient="vertical">
+					<xul:vbox anonid="comments" />
+					<xul:spacer flex="1" />
+				</xul:scrollbox>
+			</xul:vbox>
+		</content>
+		<implementation>
+			<property name="panelWidth" readonly="true">
+				<getter><![CDATA[
+					return this.boxObject.width;
+				]]></getter>
+			</property>
+
+			<method name="getInitializeParameters">
+				<body><![CDATA[
+					return {
+						modulename: "comment",
+						action: "LoadCommentsForDocument", 
+						cmpref: this.documentEditor.documentid, 
+						lang: Context.W_LANG,
+						startIndex: this.mStartIndex,
+						pageSize: this.mPageSize
+					};
+				]]></body>
+			</method>
+
+			<method name="fireInitializeComplete">
+				<parameter name="result" />
+				<body><![CDATA[
+					if (result.status != "OK")
+					{
+						this.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{									
+						var comments = result.contents.comments;
+						if (comments.length == 0)
+						{
+							this.documentEditor.disableTab('comments');
+						}
+						else
+						{
+							this.documentEditor.enableTab('comments');
+							var comment;
+							var section;
+							var commentsNode = document.getAnonymousElementByAttribute(this, "anonid", 'comments');
+							var textStyle = 'style="width:'+(this.panelWidth - 300)+'px"';
+							for (var i = 0; i < comments.length; i++)
+							{
+								comment = comments[i];
+								var doc = new DOMParser().parseFromString('<div xmlns="http://www.w3.org/1999/xhtml" ' + textStyle + '>' + comment['contents'] + '</div>', 'text/xml');
+								
+								section = commentsNode.childNodes[i];
+								if (section == null)
+								{
+									section = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'section');
+									section.className = 'comment';
+									section.panel = this;
+									commentsNode.appendChild(section);
+									section.appendChild(doc.documentElement);
+								}
+								else
+								{
+									section.removeAttribute('collapsed');
+									section.replaceChild(doc.documentElement, section.firstChild);
+								}
+								
+								for (var name in comment)
+								{
+									section.setAttribute(name, comment[name]);
+									if (comment[name] && comment[name] != '')
+									{
+										section.removeAttribute(name+'hidden');
+									}
+									else
+									{
+										section.setAttribute(name+'hidden', true);
+									}
+								}
+								section.tasks = comment['tasks'];
+								
+								section.setAttribute('canDeactivate', true);
+								section.setAttribute('canReactivate', true);
+								if (comment['canValidate'])
+								{
+									section.removeAttribute('canDelete');
+									switch (comment['status'])
+									{
+										case 'PUBLICATED' :
+											section.removeAttribute('canDeactivate');
+											break;
+											
+										case 'DEACTIVATED' :
+											section.removeAttribute('canReactivate');
+											break;
+									}
+								}
+								else
+								{
+									section.setAttribute('canDelete', true);
+								}
+								wCore.executeOnMethodExists(section, 'initializeTasks', function(sec) {sec.initializeTasks()});
+							}
+							while (section = commentsNode.childNodes[i])
+							{
+								section.setAttribute('collapsed', 'true');
+								i++;
+							}
+							this.updateNavigation(result.contents);
+						}
+					}
+					this.mInitialized = true;
+					this.gotoTop();
+				]]></body>
+			</method>
+
+			<method name="refresh">
+				<body><![CDATA[
+					this.documentEditor.executeServerAction('comments', 'Initialize');
+				]]></body>
+			</method>
+
+			<field name="mPageSize">5</field>
+			<field name="mDocumentTotal">0</field>
+			<field name="mStartIndex">0</field>
+			<field name="mEndIndex">0</field>
+
+			<method name="updateNavigation">
+				<parameter name="contents" />
+				<body><![CDATA[
+					this.mDocumentTotal = parseInt(contents.total);
+					this.mStartIndex = parseInt(contents.startIndex);
+					
+					var viewDoc = contents.comments.length;
+					wCore.debug('viewDoc = '+viewDoc);
+					this.mEndIndex = this.mStartIndex + viewDoc;
+	
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationtotal").value = this.mDocumentTotal;
+					var disableBack = (this.mStartIndex == 0);
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationbegin").disabled = disableBack;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationback2").disabled = disableBack;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationback").disabled = disableBack;
+					var disableNext = (this.mEndIndex >= this.mDocumentTotal);
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext").disabled = disableNext;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext2").disabled = disableNext;
+					document.getAnonymousElementByAttribute(this, "anonid", "navigationend").disabled = disableNext;
+					
+					var navigationindex = document.getAnonymousElementByAttribute(this, "anonid", "navigationindex");
+					navigationindex.value = (this.mStartIndex + 1) + ' - ' + (this.mStartIndex + viewDoc);
+				]]></body>
+			</method>
+
+			<method name="navigateBegin">
+				<body><![CDATA[
+					this.mStartIndex = 0;
+					this.refresh();
+				]]></body>
+			</method>
+
+			<method name="navigateBack">
+				<parameter name="quick" />
+				<body><![CDATA[
+					this.mStartIndex -= this.mPageSize;
+					if (quick && (this.mStartIndex - (5 * this.mPageSize) >= 0))
+					{
+						this.mStartIndex -= (5 * this.mPageSize);
+					}
+					this.mStartIndex -= this.mPageSize;
+					this.refresh();
+				]]></body>
+			</method>
+
+			<method name="navigateNext">
+				<parameter name="quick" />
+				<body><![CDATA[
+					this.mStartIndex += this.mPageSize;
+					if (quick && (this.mStartIndex + (5 * this.mPageSize) < this.mDocumentTotal))
+					{
+						this.mStartIndex += (5 * this.mPageSize);
+					}
+					this.refresh();
+				]]></body>
+			</method>
+
+			<method name="navigateEnd">
+				<body><![CDATA[
+					this.mStartIndex = this.mDocumentTotal - (this.mDocumentTotal % this.mPageSize);
+					if (this.mStartIndex == this.mDocumentTotal)
+					{
+						this.mStartIndex -= this.mPageSize;
+					}
+					this.refresh();
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+
+	<binding id="cCommentInfos">
+		<resources>
+			<stylesheet src="modules.uixul.cFieldsGroup" />
+		</resources>
+		<implementation>
+			<method name="viewAuthorWebsite">
+				<body><![CDATA[
+					window.open(this.getAttribute('authorwebsiteurl'), null, "menubar=yes, location=yes, toolbar=yes, resizable=yes, scrollbars=yes, status=yes");
+				]]></body>
+			</method>
+		</implementation>
+		<content>
+			<xul:groupbox flex="1">
+				<xul:caption>
+					<xul:label xbl:inherits="value=creationdate" />
+					-
+					<xul:label xbl:inherits="value=authorName" />
+					<xul:toolbarbutton xbl:inherits="disabled=canDelete" anonid="delete" image="{HttpHost}/icons/small/delete.png" tooltiptext="&amp;modules.uixul.bo.actions.Delete;" />
+				</xul:caption>
+				<xul:hbox>
+					<xul:grid width="250">
+						<xul:columns>
+							<xul:column />
+							<xul:column flex="1" />
+							<xul:column />
+						</xul:columns>
+						<xul:rows>
+							<xul:row>
+								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Date;" />
+								<xul:label xbl:inherits="value=creationdate" />
+							</xul:row>
+							<xul:row align="center">
+								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Status;" />
+								<xul:label xbl:inherits="value=statusLabel" />
+								<xul:hbox>
+									<xul:toolbarbutton xbl:inherits="hidden=canDeactivate" anonid="deactivate" image="{HttpHost}/icons/small/deactivated.png" tooltiptext="&amp;modules.uixul.bo.actions.Deactivate;" />
+									<xul:toolbarbutton xbl:inherits="hidden=canReactivate" anonid="reactivate" image="{HttpHost}/icons/small/reactivate.png" tooltiptext="&amp;modules.uixul.bo.actions.ReActivate;" />
+									<xul:hbox anonid="tasks" />
+								</xul:hbox>
+							</xul:row>
+							<xul:row>
+								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Author-name;" />
+								<xul:label xbl:inherits="value=authorName,tooltiptext=authorName" crop="end" />
+							</xul:row>
+							<xul:row>
+								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Author-email;" />
+								<xul:label xbl:inherits="value=email,tooltiptext=email" crop="end" />
+							</xul:row>
+							<xul:row xbl:inherits="hidden=authorwebsiteurlhidden" align="center">
+								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Author-website;" />
+								<xul:label xbl:inherits="value=authorwebsiteurl,tooltiptext=authorwebsiteurl" crop="end" />
+								<xul:toolbarbutton tooltiptext="&amp;modules.comment.document.comment.View-website;" image="{HttpHost}/icons/small/preview.png" oncommand="viewAuthorWebsite()" />
+							</xul:row>
+							<xul:row>
+								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Rating;" />
+								<xul:label xbl:inherits="value=rating" />
+							</xul:row>
+							<xul:row>
+								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Relevancy;" />
+								<xul:label xbl:inherits="value=relevancy" />
+							</xul:row>
+						</xul:rows>
+					</xul:grid>
+					<xul:hbox flex="1" anonid="text">
+						<xbl:children />
+					</xul:hbox>
+				</xul:hbox>
+			</xul:groupbox>
+		</content>
+		<implementation>
+			<constructor><![CDATA[
+					var _this = this;
+					
+					var node = document.getAnonymousElementByAttribute(this, 'anonid', 'delete');
+					node.addEventListener('command', function () { _this.delete(); }, true);
+					
+					var node = document.getAnonymousElementByAttribute(this, 'anonid', 'deactivate');
+					node.addEventListener('command', function () { _this.deactivate(); }, true);
+					
+					var node = document.getAnonymousElementByAttribute(this, 'anonid', 'reactivate');
+					node.addEventListener('command', function () { _this.reactivate(); }, true);
+			]]></constructor>
+
+			<field name="panel">null</field>
+			<field name="tasks">null</field>
+
+			<method name="initializeTasks">
+				<body><![CDATA[
+					var _this = this;
+					var node = document.getAnonymousElementByAttribute(this, 'anonid', 'tasks');					
+					var tasks = this.tasks;
+					var button;
+					for (i = 0; i < tasks.length; i++)
+					{
+						button = node.childNodes[i];
+						if (button == null)
+						{
+							button = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'toolbarbutton');
+							button.setAttribute('image', "{HttpHost}/icons/small/task.png");
+							button.addEventListener('command', function (event) { _this.runtask(event); }, true);
+							node.appendChild(button);							
+						}
+						else
+						{
+							button.removeAttribute('collapsed');
+						}
+						
+						var task = tasks[i];
+						button.setAttribute('taskId', task[0]);
+						button.setAttribute('tooltiptext', task[1]);
+						button.setAttribute('taskDialog', task[2]);
+					}
+					while (button = node.childNodes[i])
+					{
+						button.setAttribute('collapsed', 'true');
+						i++;
+					}
+				]]></body>
+			</method>
+
+			<method name="runtask">
+				<parameter name="event" />
+				<body><![CDATA[
+					var taskId = event.currentTarget.getAttribute('taskId');
+					var taskDialog = event.currentTarget.getAttribute('taskDialog');
+					this.getController().openModalDialog(this.panel, taskDialog, {taskId: taskId});
+				]]></body>
+			</method>
+
+			<method name="delete">
+				<body><![CDATA[
+					if (confirm("&amp;modules.comment.bo.doceditor.actions.Confirm-delete-comment;"))
+					{
+						this.executeAction("DeleteJSON", "&amp;modules.comment.bo.doceditor.actions.Success-deleting-comment;");
+					}
+				]]></body>
+			</method>
+
+			<method name="deactivate">
+				<body><![CDATA[
+					this.executeAction("DeactivatedJSON", "&amp;modules.comment.bo.doceditor.actions.Success-deactivating-comment;");
+				]]></body>
+			</method>
+
+			<method name="reactivate">
+				<body><![CDATA[
+					this.executeAction("ReActivateJSON", "&amp;modules.comment.bo.doceditor.actions.Success-reactivating-comment;");
+				]]></body>
+			</method>
+
+			<method name="executeAction">
+				<parameter name="action" />
+				<parameter name="successMessage" />
+				<body><![CDATA[
+					var result = wCore.executeJSON("comment", action, {cmpref: this.getAttribute('commentId'), lang: Context.W_LANG}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.panel.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.panel.showTextMessage(successMessage);
+						this.panel.refresh();
+					}
+				]]></body>
+			</method>
+
+			<method name="getController">
+				<body><![CDATA[
+					return document.getElementsByTagName('wcontroller')[0];
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+</bindings>

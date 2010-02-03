@@ -1,0 +1,6 @@
+<h3 change:h="" change:translate="&modules.comment.frontoffice.Leave-a-comment;" />
+
+<p tal:condition="published" change:translate="&modules.comment.frontoffice.Comment-saved-and-published;" />
+<p tal:condition="not:published" change:translate="&modules.comment.frontoffice.Comment-saved-and-waiting-validation;" />
+
+<a change:link="document comment/getTarget" change:translate="&modules.comment.frontoffice.Back-to-document;" />

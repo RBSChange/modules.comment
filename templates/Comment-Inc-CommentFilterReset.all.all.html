@@ -1,0 +1,8 @@
+<p tal:condition="php: ratingFilterValue !== null" class="rating-filter-msg">
+	<strong>
+		<tal:block tal:condition="php: ratingFilterValue > 1" change:translate="&modules.comment.frontoffice.Showing-rating-review-plural; value ratingFilterValue" />
+		<tal:block tal:condition="php: ratingFilterValue == 1" change:translate="&modules.comment.frontoffice.Showing-rating-review-single;" />
+		<tal:block tal:condition="php: ratingFilterValue == 0" change:translate="&modules.comment.frontoffice.Showing-rating-review-void;" />
+	</strong>
+	<a change:link="document target; anchor anchor"><tal:block change:translate="&modules.comment.frontoffice.Rating-see-all-comments;" /></a>
+</p>
