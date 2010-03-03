@@ -33,7 +33,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	private function getFullTextForIndexation()
 	{
 		$fullText = $this->getAuthorName();
-		$fullText .= ' ' . $this->getContentsAsHtml();
+		$fullText .= ' ' . website_BBCodeService::getInstance()->toText($this->getContents());
 		return f_util_StringUtils::htmlToText($fullText);
 	}
 	

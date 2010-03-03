@@ -374,7 +374,13 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		);
 		$document->setLabel(f_Locale::translate('&modules.comment.document.comment.Label-pattern;', $replacements));
 		$document->setTargetdocumentmodel($target->getPersistentModel()->getOriginalModelName());
-		$target = $document->getTarget(); 
+		$target = $document->getTarget();
+		
+		// Fix bbcode content.
+		if ($document->isPropertyModified('contents'))
+		{
+			$document->setContents(website_BBCodeService::getInstance()->fixContent($document->getContents()));
+		}
 	}
 	
 	/**
