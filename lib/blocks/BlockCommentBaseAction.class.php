@@ -74,7 +74,6 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		
 		$isOk = $this->processValidationRules($validationRules, $request, $bean);
-		
 		// Captcha is tested only for not logged-in users. 
 		if (users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser() === null)
 		{
@@ -113,17 +112,8 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$request->setAttribute('comment', $comment);
 		
 		// Ask validation.
-		if ($comment->getPersistentModel()->hasWorkflow())
-		{
-			$comment->getDocumentService()->createWorkflowInstance($comment->getId(), array());
-			$request->setAttribute('published', false);
-		}
-		else
-		{
-			$comment->activate();
-			$request->setAttribute('published', true);
-		}
-		
+		comment_CommentHelper::validateComment($comment);
+		$request->setAttribute('published', $comment->isPublished());
 		return $this->getCommentView('Save');
 	}
 	
