@@ -181,7 +181,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	/**
 	 * @param f_mvc_Request $request
 	 */
-	private function getPageNumber($request, $itemPerPage, $allComments)
+	protected function getPageNumber($request, $itemPerPage, $allComments)
 	{
 		// If there is a page set, return it.
 		$pageNumber = $request->getParameter(paginator_Paginator::REQUEST_PARAMETER_NAME);
@@ -212,7 +212,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 * @param f_mvc_Response $response
 	 * @return Integer
 	 */
-	private function getNbItemPerPage($request, $response)
+	protected function getNbItemPerPage($request, $response)
 	{
 		$configuration = $this->getConfiguration();
 		if (f_util_ClassUtils::methodExists($configuration, 'getNbitemperpage'))
@@ -222,7 +222,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		return 10;
 	}
 	
-	private function getCommentsListByTarget($target)
+	protected function getCommentsListByTarget($target)
 	{
 		$globalRequest = f_mvc_HTTPRequest::getInstance();
 		$ratingFilterValue = $globalRequest->getParameter('filter');
@@ -248,7 +248,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 * @throws TemplateNotFoundException if template could not be found in current module and comment module
 	 * @return TemplateObject
 	 */
-	private function getCommentView($shortViewName)
+	protected function getCommentView($shortViewName)
 	{
 		try
 		{
