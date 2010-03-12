@@ -9,7 +9,7 @@ class commands_comment_ImplementOnDocument extends commands_AbstractChangeComman
 	 */
 	function getUsage()
 	{
-		return "<moduleName> <documentName> [destModuleName]";
+		return "<moduleName> <documentName>";
 	}
 
 	/**
@@ -26,7 +26,7 @@ class commands_comment_ImplementOnDocument extends commands_AbstractChangeComman
 	 */
 	protected function validateArgs($params, $options)
 	{
-		return count($params) >= 2;
+		return count($params) == 2;
 	}
 	
 	/**
@@ -45,6 +45,16 @@ class commands_comment_ImplementOnDocument extends commands_AbstractChangeComman
 				$components[] = basename($module);
 			}
 			return $components;
+		}
+		elseif ($completeParamCount == 1)
+		{
+			$module = $params[0];
+			$docs = array();
+			foreach (glob("modules/$module/persistentdocument/*.xml") as $docFile)
+			{
+				$docs[] = basename($docFile, ".xml");
+			}
+			return $docs;
 		}
 	}
 	

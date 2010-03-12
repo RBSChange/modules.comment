@@ -2,7 +2,7 @@
 class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 {
 	const BLOCK_PREFIX = 'CommentsOn';
-	
+
 	/**
 	 * @param String $documentModule
 	 * @param String $documentName
@@ -14,7 +14,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		$this->_generateBlocksxml($documentModule, $blockName, 'comments');
 		block_BlockService::getInstance()->compileBlocksForPackage('modules_'.$this->name);
 	}
-	
+
 	/**
 	 * @return String[] [$folder, $tplName]
 	 */
@@ -22,7 +22,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 	{
 		return array('blocks', 'CommentBlockAction.class.php.tpl');
 	}
-	
+
 	/**
 	 * @param String $documentModule
 	 * @param String $blockName
@@ -45,7 +45,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		ClassResolver::getInstance()->appendFile($blockactionFile);
 		return $blockactionFile;
 	}
-	
+
 	/**
 	 * @param String $documentModule
 	 * @param String $blockName
@@ -87,7 +87,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 			echo "Add $directory directory.\n";
 			f_util_FileUtils::mkdir($directory);
 		}
-		
+
 		$localeFile = f_util_FileUtils::buildWebeditPath('modules', $this->name, 'locale', 'bo', 'blocks', strtolower($blockName).'.xml');
 		if (file_exists($localeFile))
 		{
@@ -100,74 +100,56 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 			f_util_FileUtils::write($localeFile, $result);
 		}
 	}
-	
+
 	/**
 	 * @param String $documentModule
 	 * @param String $documentName
-	 * @return String
+	 * @return String message to transmit to the user
 	 */
 	public function addEditorTab($documentModule, $documentName)
 	{
-		$directory = f_util_FileUtils::buildWebeditPath('modules', $documentModule, 'forms', 'editor', $documentName);
-		if (!file_exists($directory))
+		$moduleFolder = f_util_FileUtils::buildWebeditPath('modules', $documentModule);
+		if (is_link($moduleFolder))
 		{
-			return "$directory does not exists, so the document has no editor and the comment tab can't be added.\n";		
-		}
-		
-		if ($documentModule == $this->name)
-		{
-			$mode = 'module';
-			$moduleFile = $file = f_util_FileUtils::buildWebeditPath('modules', $documentModule, 'forms', 'editor', $documentName, 'editor.xml');
-		}
-		else 
-		{	
-			$mode = 'webapp';
-			$moduleFile = f_util_FileUtils::buildWebeditPath('modules', $documentModule, 'forms', 'editor', $documentName, 'editor.xml');
-			$file = f_util_FileUtils::buildWebappPath('modules', $documentModule, 'forms', 'editor', $documentName, 'editor.xml');
-		}
-		
-		if (!file_exists($moduleFile) && !file_exists($file))
-		{
-			if ($mode === 'webapp')
-			{
-				$directory = f_util_FileUtils::buildWebappPath('modules', $documentModule, 'forms', 'editor', $documentName);
-				if (!file_exists($directory))
-				{
-					f_util_FileUtils::mkdir($directory);		
-				}
-			}
-			$tplFolder = 'modules';
-			$tplName = 'editor.xml.tpl';
-			$result = $this->_getTpl($documentModule, $tplFolder, $tplName, null);
-			echo "Generating $file\n";
-			f_util_FileUtils::write($file, $result);
-			return null;
+			// Module is not embeded with project => dest is webapp
+			$actionFile = f_util_FileUtils::buildWebappPath('modules', $documentModule, 'config', 'actions.xml');
 		}
 		else
 		{
-			if ($mode === 'module' || file_exists($file))
-			{
-				return "$file already exists. To add the comment tab, manually edit this file to add the following code in the constructor:\n
-					// Check comment module existence.
-					var controller = document.getElementById('wcontroller');
-					if (controller.checkModuleVersion('comment', '3.0.0'))
-					{
-						this.addTab('comments', '&modules.comment.bo.doceditor.tab.Comments;', 'comments');
-					}\n";
-			}
-			else
-			{
-				return "$moduleFile already exists. To add the comment tab, manually copy this file to $file and edit this file to add the following code in the constructor:\n
-					// Check comment module existence.
-					var controller = document.getElementById('wcontroller');
-					if (controller.checkModuleVersion('comment', '3.0.0'))
-					{
-						this.addTab('comments', '&modules.comment.bo.doceditor.tab.Comments;', 'comments');
-					}\n";
-			}
+			// Module is embeded with project => dest is module itself
+			$actionFile = f_util_FileUtils::buildWebeditPath('modules', $documentModule, 'config', 'actions.xml');
 		}
+
+		if (!file_exists($actionFile))
+		{
+			$actionsDom = f_util_DOMUtils::fromString('<?xml version="1.0" encoding="UTF-8"?><actions></actions>');
+		}
+		else
+		{
+			$actionsDom = f_util_DOMUtils::fromPath($actionFile);
+		}
+
+		$handlerName = 'comment-'.$documentName;
+		if (!$actionsDom->exists("handler[@name = '$handlerName']"))
+		{
+			$newDom = f_util_DOMUtils::fromString('<?xml version="1.0" encoding="UTF-8"?><handler name="'.$handlerName.'" event="registerDocumentEditor"><![CDATA[
+	// Action added by comment.implement-on-document
+	var editor = event.originalTarget;
+	if (editor.documentname === \''.$documentName.'\')
+	{
+		editor.addTab(\'comments\', \'&modules.comment.bo.doceditor.tab.Comments;\', \'comments\');
+	}]]></handler>');
+
+			$newHandler = $actionsDom->importNode($newDom->documentElement, true);
+
+			$actionsDom->documentElement->appendChild($newHandler);
+
+			f_util_DOMUtils::save($actionsDom, $actionFile);
+			return $actionFile." altered with new handler";
+		}
+		return "Handler already exists in $actionFile";
 	}
-	
+
 	protected function _getTpl($documentModule, $folder, $tpl, $blockName, $icon = null, $additionalParams = null)
 	{
 		$templateDir = f_util_FileUtils::buildWebeditPath('modules', 'comment', 'templates', 'builder', $folder);
