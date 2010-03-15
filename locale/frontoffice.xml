@@ -45,7 +45,7 @@
     <locale lang="de">RSS Feed der Kommentare</locale>
   </entity>
   <entity id="was-this-comment-useful">
-    <locale lang="fr">ce commentaire vous a-t-il été utile?</locale>
+    <locale lang="fr">ce commentaire vous a-t-il été utile ?</locale>
     <locale lang="en">did you find this comment useful?</locale>
   </entity>
   <entity id="comment-useless-button">

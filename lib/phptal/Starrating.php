@@ -53,7 +53,7 @@ class PHPTAL_Php_Attribute_CHANGE_starrating extends ChangeTalAttribute
 		$currentRating = intval(round(floatval($params['value'])*20));
 		$currentRating = $currentRating - $currentRating%10;
 		
-		echo '<li class="current-rating rating-'.$currentRating .' star">'. f_Locale::translate('&modules.comment.frontoffice.current-star-rating;', array("rating" => $currentRating)) .'</li>';
+		echo '<li class="current-rating rating-'.$currentRating .' star">'. f_Locale::translate('&modules.comment.frontoffice.current-star-rating;', array("rating" => round(floatval($params['value'])))) .'</li>';
 		if ($params['displayOnly'] === false)
 		{
 			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . f_Locale::translate('&modules.comment.frontoffice.star-rating-1;') .'" class="one-star'. ($currentValue == 1 ? ' clicked' : '') .'">1</a></li>';
