@@ -126,16 +126,25 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		return $this->getCreationdate();
 	}
 	
+	/**
+	 * @return Integer
+	 */
 	public function getEvaluationcount()
 	{
 		return intval($this->getUsefulcount()) + intval($this->getUselesscount());
 	}
 	
+	/**
+	 * @return String
+	 */	
 	public function getRatingImageUrl()
 	{
 		return comment_RatingService::getInstance()->getRatingImageUrlByRating($this->getRating());
 	}
 	
+	/**
+	 * @return String
+	 */
 	public function getRatingImageAlt()
 	{
 		return comment_RatingService::getInstance()->getRatingImageAltByRating($this->getRating());

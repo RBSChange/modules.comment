@@ -187,7 +187,10 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$pageNumber = $request->getParameter(paginator_Paginator::REQUEST_PARAMETER_NAME);
 		if ($pageNumber)
 		{
-			return $pageNumber;
+			if (floor(count($allComments) / $itemPerPage) + 1 >= $pageNumber)
+			{
+				return $pageNumber;
+			}
 		}
 		
 		// Else look for a comment id.
