@@ -6,8 +6,6 @@
 abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 {
 	/**
-	 * @see website_BlockAction::execute()
-	 *
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
 	 * @return String
@@ -28,7 +26,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		
 		$target = $this->getTarget($request);
-		if ($target === null || !$target->isPublished())
+		if ($this->hideComments($target))
 		{
 			return website_BlockView::NONE;
 		}
@@ -61,7 +59,21 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		return $this->getCommentView(website_BlockView::SUCCESS);
 	}
 	
-	function validateSaveInput($request, $bean)
+	/**
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return Boolean
+	 */
+	protected function hideComments($target)
+	{
+		return ($target === null || !$target->isPublished());
+	}
+	
+	/**
+	 * @param f_mvc_Request $request
+	 * @param comment_persistentdocument_comment $bean
+	 * @return Boolean
+	 */
+	public function validateSaveInput($request, $bean)
 	{
 		// TODO: move it to a better place.
 		$request->setAttribute('target', $this->getTarget($request));
@@ -87,11 +99,20 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		return $isOk;
 	}
 	
+	/**
+	 * @return String
+	 */
 	function getSaveInputViewName()
 	{
 		return $this->getCommentView(website_BlockView::SUCCESS);
 	}
 	
+	/**
+	 * @param f_mvc_Request $request
+	 * @param f_mvc_Response $response
+	 * @param comment_persistentdocument_comment $comment
+	 * @return String
+	 */
 	function executePreview($request, $response, comment_persistentdocument_comment $comment)
 	{
 		$request->setAttribute('previewComment', $comment);	
@@ -100,10 +121,9 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	}
 	
 	/**
-	 * @see website_BlockAction::execute()
-	 *
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
+	 * @param comment_persistentdocument_comment $comment
 	 * @return String
 	 */
 	function executeSave($request, $response, comment_persistentdocument_comment $comment)
@@ -160,7 +180,6 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	/**
 	 * This method may be redefined in the final block if the target
 	 * has to be found differently.
-	 * 
 	 * @param f_mvc_Request $request
 	 */
 	protected function getTarget($request)
@@ -170,7 +189,6 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	
 	/**
 	 * Return true to force the input of a rating inside the commentary
-	 * 
 	 * @return Boolean
 	 */
 	protected function isRatingRequired()
@@ -225,6 +243,10 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		return 10;
 	}
 	
+	/**
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return comment_persistentdocument_comment[]
+	 */
 	protected function getCommentsListByTarget($target)
 	{
 		$globalRequest = f_mvc_HTTPRequest::getInstance();
