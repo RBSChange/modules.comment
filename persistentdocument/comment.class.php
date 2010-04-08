@@ -201,4 +201,30 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		}
 		return $fullAuthorLabel;
 	}
+	
+	/**
+	 * @return String
+	 */
+	public final function getValidatePermissionName()
+	{
+		return $this->getDocumentService()->getValidatePermissionNameByTarget($this->getTarget());
+	}
+	
+	/**
+	 * @return tast_persistentdocument_usertask
+	 */
+	public function getValidationTask()
+	{
+		if ($this->getPublicationstatus() != 'WORKFLOW')
+		{
+			return null;
+		}
+			
+		$user = users_UserService::getInstance()->getCurrentUser();
+		if ($user !== null)
+		{
+			return TaskHelper::getTaskForUserIdByDocumentId($user, $this->getId(), 'COMMENT_VALIDATION');
+		}
+		return null;
+	}
 }

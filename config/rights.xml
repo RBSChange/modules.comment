@@ -3,7 +3,6 @@
 	<actions>
 		<document name="rootfolder" />
 	</actions>
-
 	<roles>	
 		<role name="Admin">
 			<permission name="*" />
@@ -11,8 +10,7 @@
 			<permission name="SavePermissions.*" />
 			<permission name="GetPreferencesDocument" />
 			<permission name="EditLocale" />
-		</role>
-		
+		</role>		
 		<role name="Writer" extend="Guest">
 			<permission name="Order" />
 			<permission name="Move.*" />
@@ -23,24 +21,20 @@
 			<permission name="Insert.*" />
 			<permission name="Update.*" />
 			<permission name="LoadTags" />
-		</role>
-		
+		</role>		
 		<role name="Translator" extend="Guest">
 			<permission name="LoadForTranslation.*" />
 			<permission name="UpdateTranslation.*" />
-		</role>
-		
+		</role>		
 		<role name="Validator" extend="Guest">
 			<permission name="Activate.*" />
 			<permission name="Cancel.*" />
 			<permission name="Deactivated.*" />
 			<permission name="ReActivate.*" />
-		</role>
-		
+		</role>		
 		<role name="Guest" extend="User">
 			<permission name="Enabled" />
-		</role>
-		
+		</role>		
 		<role name="User">
 			<permission name="List.*" />
 		</role>

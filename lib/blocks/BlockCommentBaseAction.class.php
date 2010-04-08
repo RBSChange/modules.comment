@@ -10,7 +10,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 * @param f_mvc_Response $response
 	 * @return String
 	 */
-	function execute($request, $response)
+	public function execute($request, $response)
 	{
 		if ($this->isInBackoffice())
 		{
@@ -102,7 +102,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	/**
 	 * @return String
 	 */
-	function getSaveInputViewName()
+	public function getSaveInputViewName()
 	{
 		return $this->getCommentView(website_BlockView::SUCCESS);
 	}
@@ -113,7 +113,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 * @param comment_persistentdocument_comment $comment
 	 * @return String
 	 */
-	function executePreview($request, $response, comment_persistentdocument_comment $comment)
+	public function executePreview($request, $response, comment_persistentdocument_comment $comment)
 	{
 		$request->setAttribute('previewComment', $comment);	
 		$request->setAttribute('comment', $comment);	
@@ -126,7 +126,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 * @param comment_persistentdocument_comment $comment
 	 * @return String
 	 */
-	function executeSave($request, $response, comment_persistentdocument_comment $comment)
+	public function executeSave($request, $response, comment_persistentdocument_comment $comment)
 	{
 		$comment->save();
 		$request->setAttribute('comment', $comment);
@@ -142,7 +142,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 * @param f_mvc_Response $response
 	 * @return String
 	 */
-	function executeRateUseful($request, $response)
+	public function executeRateUseful($request, $response)
 	{
 		if ($request->hasNonEmptyParameter('commentId'))
 		{
@@ -162,7 +162,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 * @param f_mvc_Response $response
 	 * @return String
 	 */
-	function executeRateUseless($request, $response)
+	public function executeRateUseless($request, $response)
 	{
 		if ($request->hasNonEmptyParameter('commentId'))
 		{

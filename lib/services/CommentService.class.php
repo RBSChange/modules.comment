@@ -53,6 +53,85 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	/**
+	 * Please always call this method if you want to validate a new comment
+	 * @param comment_persistentdocument_comment $comment
+	 */
+	public function frontendValidation($comment)
+	{
+		if (!$comment->getPersistentModel()->hasWorkflow())
+		{
+			$comment->activate();
+			return;
+		}
+			
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
+		if ($user !== null)
+		{
+			$target = $comment->getTarget();
+			if ($this->hasPermission($user, $this->getValidatePermissionNameByTarget($target), $target))
+			{
+				$comment->activate();
+				return;
+			}
+			if ($user->getId() == $comment->getAuthorid())
+			{
+				if ($this->hasPermission($user, $this->getTrustedPermissionNameByTarget($target), $target))
+				{
+					$comment->activate();
+					return;
+				}
+			}
+		}
+		$comment->getDocumentService()->createWorkflowInstance($comment->getId(), array());
+	}
+	
+	/**
+	 * @param users_persistentdocument_user $user
+	 * @param String $permission
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return boolean
+	 */
+	private function hasPermission($user, $permission, $target)
+	{
+		$ps = f_permission_PermissionService::getInstance();
+		$rs = $ps->getRoleServiceByModuleName($target->getDocumentModel()->getModuleName());
+		return ($rs->isFrontEndPermission($permission) && $ps->hasPermission($user, $permission, $target->getId()));	
+	}
+	
+	/**
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return String
+	 */
+	public function getValidatePermissionNameByTarget($target)
+	{
+		$package = 'modules_' . $target->getPersistentModel()->getOriginalModuleName();
+		return $package . '.Validate.comment';
+	}
+	
+	/**
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return String
+	 */
+	public function getTrustedPermissionNameByTarget($target)
+	{
+		$package = 'modules_' . $target->getPersistentModel()->getOriginalModuleName();
+		return $package . '.Trusted.comment';
+	}
+	
+	/**
+	 * @param comment_persistentdocument_comment $comment
+	 * @return Integer[]
+	 */
+	public function getValidators($comment)
+	{
+		$ps = f_permission_PermissionService::getInstance();
+		$permission = $this->getValidatePermissionNameByTarget($comment->getTarget());
+		$package = f_util_ArrayUtils::firstElement(explode('.', $permission));
+		$definitionPoint = $ps->getDefinitionPointForPackage($comment->getTargetId(), $package);
+		return $ps->getAccessorIdsForPermissionAndDocumentId($permission, $definitionPoint);
+	}
+	
+	/**
 	 * @param Integer $targetId
 	 * @param Integer $offset
 	 * @param Integer $limit
@@ -98,6 +177,46 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	/**
+	 * @param f_persistentdocument_criteria_Query $query
+	 * @param Integer $targetId
+	 * @param Integer $ratingValue
+	 * @param Integer $websiteId
+	 */
+	private function addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId)
+	{
+		$query->add(Restrictions::eq('targetId', $targetId));
+				
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
+		if ($user !== null)
+		{
+			$ps = f_permission_PermissionService::getInstance();
+			$target = DocumentHelper::getDocumentInstance($targetId);
+			if ($ps->hasPermission($user, $this->getValidatePermissionNameByTarget($target), $targetId))
+			{
+				$query->add(Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE')));
+			}
+			else 
+			{
+				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::eq('authorid', $user->getId())));
+			}
+		}
+		else
+		{
+			$query->add(Restrictions::published());
+		}
+		
+		if ($websiteId !== null && $this->filterByWebsite())
+		{
+			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
+		}
+		
+		if ($ratingValue !== null)
+		{
+			$query->add(Restrictions::eq('rating', comment_RatingService::normalizeRating($ratingValue)));
+		}
+	}
+	
+	/**
 	 * @param Integer $targetId
 	 * @param Integer $ratingValue
 	 * @param Integer $websiteId
@@ -106,16 +225,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	public function getPublishedByTargetId($targetId, $ratingValue = null, $websiteId = null)
 	{
 		$query = $this->createQuery();
-		$query->add(Restrictions::published());
-		$query->add(Restrictions::eq('targetId', $targetId));
-		if ($websiteId !== null && $this->filterByWebsite())
-		{
-			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
-		}
-		if ($ratingValue !== null)
-		{
-			$query->add(Restrictions::eq('rating', comment_RatingService::normalizeRating($ratingValue)));
-		}
+		$this->addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
 		$query->addOrder(Order::asc('document_creationdate'));
 		return $query->find();
 	}
@@ -129,16 +239,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	public function getPublishedByTargetIdOrderByRating($targetId, $ratingValue = null, $websiteId = null)
 	{
 		$query = $this->createQuery();
-		$query->add(Restrictions::published());
-		$query->add(Restrictions::eq('targetId', $targetId));
-		if ($websiteId !== null && $this->filterByWebsite())
-		{
-			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
-		}
-		if ($ratingValue !== null)
-		{
-			$query->add(Restrictions::eq('rating', comment_RatingService::normalizeRating($ratingValue)));
-		}
+		$this->addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
 		$query->addOrder(Order::desc('rating'));
 		return $query->find();
 	}
@@ -152,16 +253,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	public function getPublishedByTargetIdOrderByRelevancy($targetId, $ratingValue = null, $websiteId = null)
 	{
 		$query = $this->createQuery();
-		$query->add(Restrictions::published());
-		$query->add(Restrictions::eq('targetId', $targetId));
-		if ($websiteId !== null && $this->filterByWebsite())
-		{
-			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
-		}
-		if ($ratingValue !== null)
-		{
-			$query->add(Restrictions::eq('rating', comment_RatingService::normalizeRating($ratingValue)));
-		}
+		$this->addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
 		$query->addOrder(Order::desc('relevancy'));
 		return $query->find();
 	}
@@ -173,12 +265,8 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getPublishedCountByTargetId($targetId, $websiteId = null)
 	{
-		$query = $this->createQuery()->add(Restrictions::published());
-		$query->add(Restrictions::eq('targetId', $targetId));
-		if ($websiteId !== null && $this->filterByWebsite())
-		{
-			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
-		}
+		$query = $this->createQuery();
+		$this->addVisibilityRestrictions($query, $targetId, null, $websiteId);
 		$query->setProjection(Projections::rowCount('count'));
 		$row = $query->findUnique();
 		return $row['count'];
@@ -349,6 +437,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	protected function preInsert($document, $parentNodeId)
 	{
+		$document->setMeta('author_IP', comment_ModuleService::getInstance()->getIp());
 		$document->setInsertInTree(false);
 		parent::preInsert($document, $parentNodeId);
 	}
@@ -374,7 +463,6 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		);
 		$document->setLabel(f_Locale::translate('&modules.comment.document.comment.Label-pattern;', $replacements));
 		$document->setTargetdocumentmodel($target->getPersistentModel()->getOriginalModelName());
-		$target = $document->getTarget();
 		
 		// Fix bbcode content.
 		if ($document->isPropertyModified('contents'))
@@ -392,7 +480,28 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		$target = $document->getTarget(); 
 		$target->setMeta(comment_persistentdocument_comment::COMMENTED_META, "true");
-		$this->pp->updateDocument($target);
+		$target->saveMeta();
+	}
+	
+	/**
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return f_persistentdocument_criteria_Query
+	 */
+	protected function addPublishedCommentRestriction($query, $target)
+	{
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
+		if ($user === null)
+		{
+			$query->add(Restrictions::published());
+		}
+		else if (!f_permission_PermissionService::getInstance()->hasFrontEndPermission($user, 'modules_' . $target->getPersistentModel()->getModuleName() . '.Validate.comment', $target->getId()))
+		{
+			$query->add(Restrictions::orExp(
+				Restrictions::published(),
+				Restrictions::eq('authorId', $user->getId())
+			));
+		}
+		return $query;
 	}
 	
 	/**
