@@ -94,8 +94,9 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	private function hasPermission($user, $permission, $target)
 	{
 		$ps = f_permission_PermissionService::getInstance();
-		$rs = $ps->getRoleServiceByModuleName($target->getDocumentModel()->getModuleName());
-		return ($rs->isFrontEndPermission($permission) && $ps->hasPermission($user, $permission, $target->getId()));	
+		$rs = $ps->getRoleServiceByModuleName($this->getModuleNameByTarget($target));
+		$result = ($rs->isFrontEndPermission($permission) && $ps->hasPermission($user, $permission, $target->getId()));
+		return $result;
 	}
 	
 	/**
@@ -104,8 +105,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getValidatePermissionNameByTarget($target)
 	{
-		$package = 'modules_' . $target->getPersistentModel()->getOriginalModuleName();
-		return $package . '.Validate.comment';
+		return 'modules_' . $this->getModuleNameByTarget($target) . '.Validate.comment';
 	}
 	
 	/**
@@ -114,8 +114,27 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getTrustedPermissionNameByTarget($target)
 	{
-		$package = 'modules_' . $target->getPersistentModel()->getOriginalModuleName();
-		return $package . '.Trusted.comment';
+		return 'modules_' . $this->getModuleNameByTarget($target) . '.Trusted.comment';
+	}
+	
+	/**
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return string
+	 */
+	protected function getModuleNameByTarget($target)
+	{
+		$model = $target->getPersistentModel();
+		$rootModelName = f_util_ArrayUtils::firstElement($model->getAncestorModelNames());
+		if ($rootModelName !== null)
+		{
+			$rootModel = f_persistentdocument_PersistentDocumentModel::getInstanceFromDocumentModelName($rootModelName);
+			$moduleName = $rootModel->getModuleName();
+		}
+		else 
+		{
+			$moduleName = $model->getModuleName();
+		}
+		return $moduleName;
 	}
 	
 	/**
@@ -403,12 +422,37 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	/**
-	 * Compute the rating average for the commented document
+	 * Compute the rating average for the commented document.
 	 * @param Integer $targetId
 	 * @param Integer $websiteId
-	 * @return Float
+	 * @return float
 	 */
 	public function getRatingAverageByTargetId($targetId, $websiteId = null)
+	{
+		$query = $this->getRatingBaseQuery($targetId, $websiteId);
+		$query->setProjection(Projections::avg('rating', 'avg'));
+		return floatval(f_util_ArrayUtils::firstElement($query->findColumn('avg')));
+	}
+	
+	/**
+	 * Get the number of comment with a rating on a target document.
+	 * @param Integer $targetId
+	 * @param Integer $websiteId
+	 * @return integer
+	 */
+	public function getRatingCountByTargetId($targetId, $websiteId = null)
+	{
+		$query = $this->getRatingBaseQuery($targetId, $websiteId);
+		$query->setProjection(Projections::rowCount('count'));
+		return intval(f_util_ArrayUtils::firstElement($query->findColumn('count')));
+	}
+	
+	/**
+	 * @param Integer $targetId
+	 * @param Integer $websiteId
+	 * @return f_persistentdocument_criteria_Query
+	 */
+	private function getRatingBaseQuery($targetId, $websiteId)
 	{
 		$query = $this->createQuery()->add(Restrictions::published());
 		$query->add(Restrictions::eq('targetId', $targetId));
@@ -416,9 +460,8 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
 		}
-		$query->setProjection(Projections::avg('rating', 'avg'));
-		$result = $query->find();
-		return floatval($result[0]['avg']);
+		$query->add(Restrictions::gt('rating', 0));
+		return $query; 
 	}
 
 	/**
