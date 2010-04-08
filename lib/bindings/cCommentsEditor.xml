@@ -13,18 +13,18 @@
 				<xul:toolbox anonid="pagination-toolbox" orient="horizontal" class="change-toolbox">
 					<xul:toolbar anonid="navigationtb" orient="horizontal" flex="1" class="change-toolbar">
 						<xul:spacer flex="1" />
-						<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBegin()" image="{HttpHost}/icons/small/control-begin.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-begin;" />
-						<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(true)" image="{HttpHost}/icons/small/control-double-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back-quick;" />
-						<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack()" image="{HttpHost}/icons/small/control-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back;" />
+						<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBegin()" image="{IconsBase}/small/control-begin.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-begin;" />
+						<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(true)" image="{IconsBase}/small/control-double-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back-quick;" />
+						<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack()" image="{IconsBase}/small/control-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back;" />
 						<xul:hbox align="center">
 							<xul:label anonid="navigationpagelabel" value="&amp;modules.uixul.bo.general.Documents;" />
 							<xul:label anonid="navigationindex" value="0" />
 							<xul:label anonid="navigationpageseparator" value="&amp;modules.uixul.bo.general.out-of;" />
 							<xul:label anonid="navigationtotal" value="0" />
 						</xul:hbox>
-						<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext()" image="{HttpHost}/icons/small/control-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next;" />
-						<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(true)" image="{HttpHost}/icons/small/control-double-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next-quick;" />
-						<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateEnd()" image="{HttpHost}/icons/small/control-end.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-end;" />
+						<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext()" image="{IconsBase}/small/control-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next;" />
+						<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(true)" image="{IconsBase}/small/control-double-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next-quick;" />
+						<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateEnd()" image="{IconsBase}/small/control-end.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-end;" />
 						<xul:spacer flex="1" />
 					</xul:toolbar>
 				</xul:toolbox>
@@ -242,7 +242,7 @@
 					<xul:label xbl:inherits="value=creationdate" />
 					-
 					<xul:label xbl:inherits="value=authorName" />
-					<xul:toolbarbutton xbl:inherits="disabled=canDelete" anonid="delete" image="{HttpHost}/icons/small/delete.png" tooltiptext="&amp;modules.uixul.bo.actions.Delete;" />
+					<xul:toolbarbutton xbl:inherits="disabled=canDelete" anonid="delete" image="{IconsBase}/small/delete.png" tooltiptext="&amp;modules.uixul.bo.actions.Delete;" />
 				</xul:caption>
 				<xul:hbox>
 					<xul:grid width="250">
@@ -260,8 +260,8 @@
 								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Status;" />
 								<xul:label xbl:inherits="value=statusLabel" />
 								<xul:hbox>
-									<xul:toolbarbutton xbl:inherits="hidden=canDeactivate" anonid="deactivate" image="{HttpHost}/icons/small/deactivated.png" tooltiptext="&amp;modules.uixul.bo.actions.Deactivate;" />
-									<xul:toolbarbutton xbl:inherits="hidden=canReactivate" anonid="reactivate" image="{HttpHost}/icons/small/reactivate.png" tooltiptext="&amp;modules.uixul.bo.actions.ReActivate;" />
+									<xul:toolbarbutton xbl:inherits="hidden=canDeactivate" anonid="deactivate" image="{IconsBase}/small/deactivated.png" tooltiptext="&amp;modules.uixul.bo.actions.Deactivate;" />
+									<xul:toolbarbutton xbl:inherits="hidden=canReactivate" anonid="reactivate" image="{IconsBase}/small/reactivate.png" tooltiptext="&amp;modules.uixul.bo.actions.ReActivate;" />
 									<xul:hbox anonid="tasks" />
 								</xul:hbox>
 							</xul:row>
@@ -276,7 +276,7 @@
 							<xul:row xbl:inherits="hidden=authorwebsiteurlhidden" align="center">
 								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Author-website;" />
 								<xul:label xbl:inherits="value=authorwebsiteurl,tooltiptext=authorwebsiteurl" crop="end" />
-								<xul:toolbarbutton tooltiptext="&amp;modules.comment.document.comment.View-website;" image="{HttpHost}/icons/small/preview.png" oncommand="viewAuthorWebsite()" />
+								<xul:toolbarbutton tooltiptext="&amp;modules.comment.document.comment.View-website;" image="{IconsBase}/small/preview.png" oncommand="viewAuthorWebsite()" />
 							</xul:row>
 							<xul:row>
 								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Rating;" />
@@ -323,7 +323,7 @@
 						if (button == null)
 						{
 							button = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'toolbarbutton');
-							button.setAttribute('image', "{HttpHost}/icons/small/task.png");
+							button.setAttribute('image', "{IconsBase}/small/task.png");
 							button.addEventListener('command', function (event) { _this.runtask(event); }, true);
 							node.appendChild(button);							
 						}

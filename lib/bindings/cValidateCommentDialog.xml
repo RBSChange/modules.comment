@@ -62,7 +62,7 @@
 				<xul:label value="&amp;modules.comment.document.comment.Target;"/>
 				<xul:hbox align="center" flex="1">
 					<xul:label xbl:inherits="value=targetLabel" />
-					<xul:toolbarbutton oncommand="viewTarget()" tooltiptext="&amp;modules.comment.document.comment.View-target;" image="{HttpHost}/icons/small/shadow/view.png" />
+					<xul:toolbarbutton oncommand="viewTarget()" tooltiptext="&amp;modules.comment.document.comment.View-target;" image="{IconsBase}/small/shadow/view.png" />
 				</xul:hbox>
 			</xul:row>
 			<xul:row xbl:inherits="differs=authorLabelDiffers">
@@ -77,7 +77,7 @@
 				<xul:label value="&amp;modules.comment.document.comment.Authorwebsiteurl;"/>
 				<xul:hbox align="center">
 					<xul:label xbl:inherits="value=authorWebsite" />
-					<xul:toolbarbutton xbl:inherits="hidden=authorWebsiteHidden" oncommand="viewAuthorWebsite()" tooltiptext="&amp;modules.comment.document.comment.View-website;" image="{HttpHost}/icons/small/shadow/view.png" />
+					<xul:toolbarbutton xbl:inherits="hidden=authorWebsiteHidden" oncommand="viewAuthorWebsite()" tooltiptext="&amp;modules.comment.document.comment.View-website;" image="{IconsBase}/small/shadow/view.png" />
 				</xul:hbox>
 			</xul:row>
 			<xul:row xbl:inherits="differs=contentsDiffers">

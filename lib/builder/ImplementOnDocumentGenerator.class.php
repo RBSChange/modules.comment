@@ -112,7 +112,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		if (is_link($moduleFolder))
 		{
 			// Module is not embeded with project => dest is webapp
-			$actionFile = f_util_FileUtils::buildWebappPath('modules', $documentModule, 'config', 'actions.xml');
+			$actionFile = f_util_FileUtils::buildOverridePath('modules', $documentModule, 'config', 'actions.xml');
 		}
 		else
 		{
