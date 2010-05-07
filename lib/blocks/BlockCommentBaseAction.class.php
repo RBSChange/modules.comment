@@ -115,6 +115,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	public function executePreview($request, $response, comment_persistentdocument_comment $comment)
 	{
+		$comment->setContents(website_BBCodeService::getInstance()->fixContent($comment->getContents()));
 		$request->setAttribute('previewComment', $comment);	
 		$request->setAttribute('comment', $comment);	
 		return $this->execute($request, $response);
