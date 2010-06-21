@@ -1,14 +1,14 @@
-<a name="comment-list" />
-<div change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}"/>
+<a name="comment-list"></a>
+<tal:block change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}"/>
 
-<div tal:condition="showRatingDistribution" change:block="" inheritedParams="cmpref,filter,sort" module="comment" name="ratingdistribution"/>
+<tal:block tal:condition="showRatingDistribution" change:block="" inheritedParams="cmpref,filter,sort" module="comment" name="ratingdistribution"/>
 
 <ul tal:condition="comments" class="comment-list" id="comment-list">
 	<tal:block tal:repeat="comment comments">
 		<li id="${comment/getAnchor}" class="${php: repeat.comment.odd ? 'odd' : 'even'}${php: (comment.getId() == currentCommentId) ? ' current' : ''}">
 			<p class="comment-info">
 				<a change:link="document comment ; anchor comment/getAnchor" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
-				<div change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
+				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
 				<tal:block tal:condition="comment/getAuthorwebsiteurl" change:translate="&modules.comment.frontoffice.Posted-by;" /> <a tal:condition="comment/getAuthorwebsiteurl"  class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a>
 				<tal:block tal:condition="not: comment/getAuthorwebsiteurl"><tal:block change:translate="&modules.comment.frontoffice.Posted-by;" /> ${comment/getAuthorNameAsHtml}</tal:block> - <tal:block change:datetime="comment/getCreationdate" />
 			</p>
@@ -25,11 +25,11 @@
 				<li>
 					<form class="comment-evaluation" tal:condition="not: comment/isEvaluatedByCurrentUser" change:form="" id="evaluate_${comment/getId}">
 						<input change:hiddeninput="name commentId; value comment/getId" />
-						<span change:translate="&modules.comment.frontoffice.Was-this-comment-useful;" />
-							<input change:submit="name rateUseful" label="&modules.comment.frontoffice.Comment-useful-button;" class="button" />
+						<span change:translate="&modules.comment.frontoffice.Was-this-comment-useful;"></span>
+						<input change:submit="name rateUseful" label="&modules.comment.frontoffice.Comment-useful-button;" class="button" />
 						<input change:submit="name rateUseless" label="&modules.comment.frontoffice.Comment-useless-button;" class="button" />
 					</form>
-					<p tal:condition="comment/isEvaluatedByCurrentUser" change:translate="&modules.comment.frontoffice.Comment-already-evaluated;" />
+					<p tal:condition="comment/isEvaluatedByCurrentUser" change:translate="&modules.comment.frontoffice.Comment-already-evaluated;"></p>
 				</li>
 			</ul>
 		</li>

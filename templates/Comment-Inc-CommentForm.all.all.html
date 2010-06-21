@@ -1,9 +1,9 @@
-<h3 change:h="" change:translate="&modules.comment.frontoffice.Leave-a-comment;" />
+<h3 change:h="" change:translate="&modules.comment.frontoffice.Leave-a-comment;"></h3>
 <div class="comment-preview"  tal:condition="previewComment">
-	<h4 change:h="" change:translate="&modules.comment.frontoffice.Preview-comment;" />
+	<h4 change:h="" change:translate="&modules.comment.frontoffice.Preview-comment;"></h4>
 	
 	<p class="comment-info">
-		<div change:starrating="" value="${previewComment/getRating}" displayOnly="true" small="true" />
+		<tal:block change:starrating="" value="${previewComment/getRating}" displayOnly="true" small="true" />
 		<tal:block change:translate="&modules.comment.frontoffice.Posted-by-author; author previewComment/getAuthorNameAsHtml" /> - <tal:block change:datetime="previewComment/getCreationdate" />
 	</p>
 	<img tal:condition="showGravatars" class="avatar" src="${previewComment/getGravatarUrl}" alt="" />
@@ -22,11 +22,14 @@
 			<li><input change:field="name email" /></li>
 		</tal:block>
 		<li><input change:field="name authorwebsiteurl" /></li>
-		<li tal:condition="enableRating"><label change:fieldlabel="name rating" required="${ratingRequired}"/>
-			<div change:starrating="" name="rating" />
+		<li tal:condition="enableRating">
+			<label change:fieldlabel="name rating" required="${ratingRequired}"></label>
+			<tal:block change:starrating="" name="rating" />
 		</li>
-		<li><label change:fieldlabel="name contents" />
-			<input change:richtextinput="name contents; editor bbcode" labeled="false" /></li>
+		<li>
+			<label change:fieldlabel="name contents"></label>
+			<input change:richtextinput="name contents; editor bbcode" labeled="false" />
+		</li>
 		<li tal:condition="not: currentUser">
 			<img change:captcha="" style="vertical-align: bottom;"/> <input change:captcha="" />
 		</li>

@@ -1,21 +1,21 @@
-<h3 tal:condition="php: totalCount LE 1" change:h="" change:translate="&modules.comment.frontoffice.Comment; count totalCount" id="comment-toolbar-title" />
-<h3 tal:condition="php: totalCount GT 1" change:h="" change:translate="&modules.comment.frontoffice.Comments; count totalCount" />
+<h3 tal:condition="php: totalCount LE 1" change:h="" change:translate="&modules.comment.frontoffice.Comment; count totalCount" id="comment-toolbar-title"></h3>
+<h3 tal:condition="php: totalCount GT 1" change:h="" change:translate="&modules.comment.frontoffice.Comments; count totalCount"></h3>
 
- <p class="sort-options" id="sort-options" tal:condition="displaySortOptions">(
+<p class="sort-options" id="sort-options" tal:condition="displaySortOptions">(
 	<tal:block tal:condition="hasFilter">
-		<a tal:condition="php: currentSortOption !== 'date' && currentSortOption !== null" change:link="document target; sort 'date'; anchor 'sort-options'; filter ratingFilterValue"><tal:block change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></tal:block></a>
+		<a tal:condition="php: currentSortOption !== 'date' && currentSortOption !== null" change:link="document target; sort 'date'; anchor 'sort-options'; filter ratingFilterValue" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></a>
 		<span tal:condition="php: currentSortOption == 'date' || currentSortOption == null" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor 'sort-options'; filter ratingFilterValue"><tal:block change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></tal:block></a>
+		<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor 'sort-options'; filter ratingFilterValue" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></a>
 		<span tal:condition="php: currentSortOption == 'relevancy'" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor 'sort-options'; filter ratingFilterValue"><tal:block change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></tal:block></a>
+		<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor 'sort-options'; filter ratingFilterValue" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></a>
 		<span tal:condition="php: currentSortOption == 'rating'" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></span>			
 	</tal:block>
 	<tal:block tal:condition="not: hasFilter">
-		<a tal:condition="php: currentSortOption !== 'date'" change:link="document target; sort 'date'; anchor 'sort-options'"><tal:block change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></tal:block></a>
+		<a tal:condition="php: currentSortOption !== 'date'" change:link="document target; sort 'date'; anchor 'sort-options'" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></a>
 		<span tal:condition="php: currentSortOption == 'date'" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor 'sort-options'"><tal:block change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></tal:block></a>
+		<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor 'sort-options'" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></a>
 		<span tal:condition="php: currentSortOption == 'relevancy'" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor 'sort-options'"><tal:block change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></tal:block></a>
+		<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor 'sort-options'" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></a>
 		<span tal:condition="php: currentSortOption == 'rating'" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></span>	
 	</tal:block>
 )</p>
@@ -23,8 +23,8 @@
 
 <ul class="mini-navigation">
 	<li tal:define="targetId target/getId">
-		<img change:image="front/rss.gif" alt="" /> <a class="link" change:link="module comment; action ViewFeed; targetId targetId" i18n:translate="&modules.comment.frontoffice.Rss-link;" />
+		<img change:image="front/rss.gif" alt="" /> <a class="link" change:link="module comment; action ViewFeed; targetId targetId" i18n:translate="&modules.comment.frontoffice.Rss-link;"></a>
 	</li>
 </ul>
 
-<div class="cleaner"/>
+<div class="cleaner"></div>
