@@ -18,8 +18,15 @@ class comment_ViewFeedAction extends f_action_BaseAction
 		}
 		
 		$target = DocumentHelper::getDocumentInstance($targetId);
-		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
-		$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
+		if ($target instanceof website_persistentdocument_website)
+		{
+			$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByWebsiteId($targetId);
+		}
+		else 
+		{
+			$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+			$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
+		}
 		
 		// Set the link, title and description of the feed
 		$this->setHeaders($feedWriter, $request, $target);

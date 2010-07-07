@@ -350,12 +350,13 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
 		}
-		//TODO: limit?
+		//TODO: parameter?
 		/*$limit = ModuleService::getInstance()->getPreferenceValue('blog', 'rssMaxItemCount');
 		if ($limit > 0)
 		{
 			$query->setMaxResults($limit);
 		}*/
+		$query->setMaxResults(100);
 		$query->addOrder(Order::desc('document_creationdate'));
 		
 		$writer = new rss_FeedWriter();
@@ -366,15 +367,29 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		return $writer;
 	}
 	
-
 	/**
-	 * @param Integer $targetId
+	 * @param Integer $websiteId
 	 * @return rss_FeedWriter
-	 * @deprecated use getRSSFeedWriterByTargetId
 	 */
-	public function getRSSFeedWirterByTargetId($targetId)
+	public function getRSSFeedWriterByWebsiteId($websiteId)
 	{
-		return $this->getRSSFeedWriterByTargetId($targetId);
+		$query = $this->createQuery()->add(Restrictions::published());
+		$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
+		//TODO: parameter?
+		/*$limit = ModuleService::getInstance()->getPreferenceValue('blog', 'rssMaxItemCount');
+		if ($limit > 0)
+		{
+			$query->setMaxResults($limit);
+		}*/
+		$query->setMaxResults(100);
+		$query->addOrder(Order::desc('document_creationdate'));
+		
+		$writer = new rss_FeedWriter();
+		foreach ($query->find() as $post)
+		{
+			$writer->addItem($post);
+		}
+		return $writer;
 	}
 	
 	/**
@@ -519,7 +534,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 * @param Integer $parentNodeId Parent node ID where to save the document.
 	 * @return void
 	 */
-	protected function postSave($document, $parentNodeId = null)
+	protected function postSave($document, $parentNodeId)
 	{
 		$target = $document->getTarget(); 
 		$target->setMeta(comment_persistentdocument_comment::COMMENTED_META, "true");
@@ -546,12 +561,22 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		}
 		return $query;
 	}
-	
+
 	/**
 	 * @return Boolean
 	 */
 	private function filterByWebsite()
 	{
 		return (Framework::getConfigurationValue('modules/comment/filterByWebsite', 'true') == 'true');
+	}
+	
+	// Deprecated.
+	
+	/**
+	 * @deprecated use getRSSFeedWriterByTargetId
+	 */
+	public function getRSSFeedWirterByTargetId($targetId)
+	{
+		return $this->getRSSFeedWriterByTargetId($targetId);
 	}
 }
