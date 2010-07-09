@@ -195,7 +195,6 @@
 					{
 						this.mStartIndex -= (5 * this.mPageSize);
 					}
-					this.mStartIndex -= this.mPageSize;
 					this.refresh();
 				]]></body>
 			</method>
