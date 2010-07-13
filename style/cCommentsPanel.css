@@ -2,6 +2,11 @@ ccommentspanel section.comment [anonid="text"]{
 	padding-left: 10px!important;
 	border-left: 1px solid #aaa!important;
 }
+ccommentspanel section.comment groupbox{
+	border: 1px solid #bbb !important;
+	-moz-border-radius: 5px !important;
+	background-color: #f9f9f9 !important;
+}
 ccommentspanel section[status="PUBLICATED"].comment groupbox,ccommentspanel section[status="PUBLICATED"].comment caption{
 	border-color: #aca!important;
 }
