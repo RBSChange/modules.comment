@@ -60,87 +60,88 @@
 					if (result.status != "OK")
 					{
 						this.showErrorMessage(result.contents.errorMessage);
+						this.collapseContentZone(true);
+						this.mInitialized = true;
+						return;
 					}
-					else
-					{									
-						var comments = result.contents.comments;
-						if (comments.length == 0)
+													
+					this.collapseContentZone(false);
+					this.mInitialized = true;
+					
+					var comments = result.contents.comments;
+					var commentsNode = document.getAnonymousElementByAttribute(this, "anonid", 'comments');
+					var textStyle = 'style="width:'+(this.panelWidth - 300)+'px"';
+					for (var i = 0; i < comments.length; i++)
+					{
+						var comment = comments[i];
+						var doc = new DOMParser().parseFromString('<div xmlns="http://www.w3.org/1999/xhtml" ' + textStyle + '>' + comment['contents'] + '</div>', 'text/xml');
+						
+						var section = commentsNode.childNodes[i];
+						if (section == null)
 						{
-							this.documentEditor.disableTab('comments');
+							section = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'section');
+							section.className = 'comment';
+							section.panel = this;
+							commentsNode.appendChild(section);
+							section.appendChild(doc.documentElement);
 						}
 						else
 						{
-							this.documentEditor.enableTab('comments');
-							var comment;
-							var section;
-							var commentsNode = document.getAnonymousElementByAttribute(this, "anonid", 'comments');
-							var textStyle = 'style="width:'+(this.panelWidth - 300)+'px"';
-							for (var i = 0; i < comments.length; i++)
-							{
-								comment = comments[i];
-								var doc = new DOMParser().parseFromString('<div xmlns="http://www.w3.org/1999/xhtml" ' + textStyle + '>' + comment['contents'] + '</div>', 'text/xml');
-								
-								section = commentsNode.childNodes[i];
-								if (section == null)
-								{
-									section = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'section');
-									section.className = 'comment';
-									section.panel = this;
-									commentsNode.appendChild(section);
-									section.appendChild(doc.documentElement);
-								}
-								else
-								{
-									section.removeAttribute('collapsed');
-									section.replaceChild(doc.documentElement, section.firstChild);
-								}
-								
-								for (var name in comment)
-								{
-									section.setAttribute(name, comment[name]);
-									if (comment[name] && comment[name] != '')
-									{
-										section.removeAttribute(name+'hidden');
-									}
-									else
-									{
-										section.setAttribute(name+'hidden', true);
-									}
-								}
-								section.tasks = comment['tasks'];
-								
-								section.setAttribute('canDeactivate', true);
-								section.setAttribute('canReactivate', true);
-								if (comment['canValidate'])
-								{
-									section.removeAttribute('canDelete');
-									switch (comment['status'])
-									{
-										case 'PUBLICATED' :
-											section.removeAttribute('canDeactivate');
-											break;
-											
-										case 'DEACTIVATED' :
-											section.removeAttribute('canReactivate');
-											break;
-									}
-								}
-								else
-								{
-									section.setAttribute('canDelete', true);
-								}
-								wCore.executeOnMethodExists(section, 'initializeTasks', function(sec) {sec.initializeTasks()});
-							}
-							while (section = commentsNode.childNodes[i])
-							{
-								section.setAttribute('collapsed', 'true');
-								i++;
-							}
-							this.updateNavigation(result.contents);
+							section.removeAttribute('collapsed');
+							section.replaceChild(doc.documentElement, section.firstChild);
 						}
+						
+						for (var name in comment)
+						{
+							section.setAttribute(name, comment[name]);
+							if (comment[name] && comment[name] != '')
+							{
+								section.removeAttribute(name+'hidden');
+							}
+							else
+							{
+								section.setAttribute(name+'hidden', true);
+							}
+						}
+						section.tasks = comment['tasks'];
+						
+						section.setAttribute('canDeactivate', true);
+						section.setAttribute('canReactivate', true);
+						if (comment['canValidate'])
+						{
+							section.removeAttribute('canDelete');
+							switch (comment['status'])
+							{
+								case 'PUBLICATED' :
+									section.removeAttribute('canDeactivate');
+									break;
+									
+								case 'DEACTIVATED' :
+									section.removeAttribute('canReactivate');
+									break;
+							}
+						}
+						else
+						{
+							section.setAttribute('canDelete', true);
+						}
+						wCore.executeOnMethodExists(section, 'initializeTasks', function(sec) {sec.initializeTasks()});
 					}
-					this.mInitialized = true;
+					while (section = commentsNode.childNodes[i])
+					{
+						section.setAttribute('collapsed', 'true');
+						i++;
+					}
+					this.updateNavigation(result.contents);
 					this.gotoTop();
+				]]></body>
+			</method>
+
+			<method name="clear">
+				<body><![CDATA[	
+					this.collapseContentZone(true);
+					this.showTextMessage('');
+					this.mInitialized = false;				
 				]]></body>
 			</method>
 

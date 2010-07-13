@@ -15,17 +15,19 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
 		$result = array();
 		$document = $this->getDocumentInstanceFromRequest($request);
-		$offset = $request->getParameter('startIndex');
-		$offset = ($offset < 0) ? 0 : $offset;
-		$limit = $request->getParameter('pageSize');
-		$limit = ($limit < 0) ? 0 : $limit;
-		$result['startIndex'] = $offset;
-		$result['pageSize'] = $limit;
 		$result['total'] = $cs->getCountByTargetId($document->getId(), $website->getId());
 		
 		$commentsInfo = array();
 		if ($result['total'] > 0)
 		{
+			$offset = $request->getParameter('startIndex');
+			$offset = ($offset < $result['total'] && $offset > 0) ? $offset : 0;
+			$limit = $request->getParameter('pageSize');
+			$limit = ($limit < 0) ? 0 : $limit;
+		
+			$result['startIndex'] = $offset;
+			$result['pageSize'] = $limit;
+		
 			$comments = $cs->getByTargetId($document->getId(), $offset, $limit, $website->getId());
 			if (count($comments) > 0)
 			{
@@ -62,7 +64,11 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 					$commentsInfo[] = $commentInfo;
 				}
 			}
-		}		
+		}
+		else
+		{
+			return $this->sendJSONError(f_Locale::translateUI('&modules.comment.bo.general.No-comment;'), false);
+		}
 		$result['comments'] = $commentsInfo;
 		
 		return $this->sendJSON($result);
