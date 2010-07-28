@@ -10,24 +10,11 @@
 		<content>
 			<xul:vbox flex="1">
 				<xul:cmessageinfo anonid="message" />
-				<xul:toolbox anonid="pagination-toolbox" orient="horizontal" class="change-toolbox">
-					<xul:toolbar anonid="navigationtb" orient="horizontal" flex="1" class="change-toolbar">
-						<xul:spacer flex="1" />
-						<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBegin()" image="{IconsBase}/small/control-begin.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-begin;" />
-						<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(true)" image="{IconsBase}/small/control-double-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back-quick;" />
-						<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack()" image="{IconsBase}/small/control-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back;" />
-						<xul:hbox align="center">
-							<xul:label anonid="navigationpagelabel" value="&amp;modules.uixul.bo.general.Documents;" />
-							<xul:label anonid="navigationindex" value="0" />
-							<xul:label anonid="navigationpageseparator" value="&amp;modules.uixul.bo.general.out-of;" />
-							<xul:label anonid="navigationtotal" value="0" />
-						</xul:hbox>
-						<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext()" image="{IconsBase}/small/control-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next;" />
-						<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(true)" image="{IconsBase}/small/control-double-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next-quick;" />
-						<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateEnd()" image="{IconsBase}/small/control-end.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-end;" />
-						<xul:spacer flex="1" />
-					</xul:toolbar>
-				</xul:toolbox>
+				<xul:hbox class="change-toolbox" anonid="paginator-container">
+					<xul:spacer flex="1" />
+					<xul:cpaginator anonid="paginator" hideseparator="true" />
+					<xul:spacer flex="1" />
+				</xul:hbox>
 				<xul:scrollbox anonid="scrollctrl" flex="1" class="editordatacontainer" orient="vertical">
 					<xul:vbox anonid="comments" />
 					<xul:spacer flex="1" />
@@ -44,8 +31,8 @@
 			<method name="getInitializeParameters">
 				<body><![CDATA[
 					return {
-						modulename: "comment",
-						action: "LoadCommentsForDocument", 
+						modulename: 'comment',
+						action: 'LoadCommentsForDocument', 
 						cmpref: this.documentEditor.documentid, 
 						lang: Context.W_LANG,
 						startIndex: this.mStartIndex,
@@ -63,12 +50,12 @@
 						this.collapseContentZone(true);
 						this.mInitialized = true;
 						return;
-					}
-													
+					}						
 					this.collapseContentZone(false);
 					this.mInitialized = true;
 					
-					var comments = result.contents.comments;
+					var contents = result.contents;					
+					var comments = contents.comments;
 					var commentsNode = document.getAnonymousElementByAttribute(this, "anonid", 'comments');
 					var textStyle = 'style="width:'+(this.panelWidth - 300)+'px"';
 					for (var i = 0; i < comments.length; i++)
@@ -125,14 +112,19 @@
 						{
 							section.setAttribute('canDelete', true);
 						}
-						wCore.executeOnMethodExists(section, 'initializeTasks', function(sec) {sec.initializeTasks()});
+						wCore.executeOnMethodExists(section, 'initializeTasks', function(sec) { sec.initializeTasks(); });
 					}
 					while (section = commentsNode.childNodes[i])
 					{
 						section.setAttribute('collapsed', 'true');
 						i++;
 					}
-					this.updateNavigation(result.contents);
+					
+					this.mStartIndex = contents.startIndex;
+					this.mDocumentTotal = contents.total;
+					this.mRowCount = contents.comments.length;
+					this.getElementByAnonId('paginator').updateNavigation(this);
+
 					this.gotoTop();
 				]]></body>
 			</method>
@@ -152,74 +144,16 @@
 			</method>
 
 			<field name="mPageSize">5</field>
-			<field name="mDocumentTotal">0</field>
 			<field name="mStartIndex">0</field>
-			<field name="mEndIndex">0</field>
-
-			<method name="updateNavigation">
-				<parameter name="contents" />
+			<field name="mDocumentTotal">0</field>
+			<field name="mRowCount">0</field>
+			
+			<method name="navigate">
+				<parameter name="startIndex" />
 				<body><![CDATA[
-					this.mDocumentTotal = parseInt(contents.total);
-					this.mStartIndex = parseInt(contents.startIndex);
-					
-					var viewDoc = contents.comments.length;
-					wCore.debug('viewDoc = '+viewDoc);
-					this.mEndIndex = this.mStartIndex + viewDoc;
-	
-					document.getAnonymousElementByAttribute(this, "anonid", "navigationtotal").value = this.mDocumentTotal;
-					var disableBack = (this.mStartIndex == 0);
-					document.getAnonymousElementByAttribute(this, "anonid", "navigationbegin").disabled = disableBack;
-					document.getAnonymousElementByAttribute(this, "anonid", "navigationback2").disabled = disableBack;
-					document.getAnonymousElementByAttribute(this, "anonid", "navigationback").disabled = disableBack;
-					var disableNext = (this.mEndIndex >= this.mDocumentTotal);
-					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext").disabled = disableNext;
-					document.getAnonymousElementByAttribute(this, "anonid", "navigationnext2").disabled = disableNext;
-					document.getAnonymousElementByAttribute(this, "anonid", "navigationend").disabled = disableNext;
-					
-					var navigationindex = document.getAnonymousElementByAttribute(this, "anonid", "navigationindex");
-					navigationindex.value = (this.mStartIndex + 1) + ' - ' + (this.mStartIndex + viewDoc);
-				]]></body>
-			</method>
-
-			<method name="navigateBegin">
-				<body><![CDATA[
-					this.mStartIndex = 0;
-					this.refresh();
-				]]></body>
-			</method>
-
-			<method name="navigateBack">
-				<parameter name="quick" />
-				<body><![CDATA[
-					this.mStartIndex -= this.mPageSize;
-					if (quick && (this.mStartIndex - (5 * this.mPageSize) >= 0))
-					{
-						this.mStartIndex -= (5 * this.mPageSize);
-					}
-					this.refresh();
-				]]></body>
-			</method>
-
-			<method name="navigateNext">
-				<parameter name="quick" />
-				<body><![CDATA[
-					this.mStartIndex += this.mPageSize;
-					if (quick && (this.mStartIndex + (5 * this.mPageSize) < this.mDocumentTotal))
-					{
-						this.mStartIndex += (5 * this.mPageSize);
-					}
-					this.refresh();
-				]]></body>
-			</method>
-
-			<method name="navigateEnd">
-				<body><![CDATA[
-					this.mStartIndex = this.mDocumentTotal - (this.mDocumentTotal % this.mPageSize);
-					if (this.mStartIndex == this.mDocumentTotal)
-					{
-						this.mStartIndex -= this.mPageSize;
-					}
-					this.refresh();
+					this.mStartIndex = startIndex;
+					var me = this;
+					wCore.executeJSON('comment', 'LoadCommentsForDocument', this.getInitializeParameters(), function (result) { me.fireInitializeComplete(result); }, true);
 				]]></body>
 			</method>
 		</implementation>

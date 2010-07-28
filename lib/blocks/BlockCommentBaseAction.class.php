@@ -21,6 +21,10 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			}
 			catch (TemplateNotFoundException $e)
 			{
+				if (Framework::isDebugEnabled())
+				{
+					Framework::debug(__METHOD__ . ' ' . $e->getMessage()); 
+				}
 				return website_BlockView::NONE;
 			}
 		}
@@ -282,8 +286,12 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		catch (TemplateNotFoundException $e)
 		{
-			$templateName = 'Comment-Block-CommentBase-'.$shortViewName;
-			return $this->getTemplateByFullName('modules_comment', $templateName);
+			if (Framework::isDebugEnabled())
+			{
+				Framework::debug(__METHOD__ . ' ' . $e->getMessage()); 
+			}
 		}
+		$templateName = 'Comment-Block-CommentBase-'.$shortViewName;
+		return $this->getTemplateByFullName('modules_comment', $templateName);
 	}
 }

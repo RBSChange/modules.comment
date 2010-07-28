@@ -56,6 +56,7 @@ class commands_comment_ImplementOnDocument extends commands_AbstractChangeComman
 			}
 			return $docs;
 		}
+		return null;
 	}
 	
 	/**

@@ -16,6 +16,6 @@ ccommentspanel section[status="PUBLICATED"].comment groupbox{
 ccommentspanel section[status="PUBLICATED"].comment [anonid="text"]{
 	border-left-color: #aca!important;
 }
-ccommentspanel .change-toolbox{
-	border-top: 1px solid #DDD!important;
+ccommentspanel hbox[anonid="paginator-container"]{
+	border-top: 1px solid #DDD;
 }

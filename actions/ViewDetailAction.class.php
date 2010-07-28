@@ -58,7 +58,6 @@ class comment_ViewDetailAction extends generic_ViewDetailAction
 	 */
 	private function getDetailPage($document)
 	{
-		$page = null;
 		try
 		{
 			$page = TagService::getInstance()->getDocumentBySiblingTag(
@@ -68,10 +67,9 @@ class comment_ViewDetailAction extends generic_ViewDetailAction
 		}
 		catch (TagException $e)
 		{
-			//No taged Page found
+			$page = null;
 			Framework::exception($e);
 		}
-
 		return $page;
 	}
 

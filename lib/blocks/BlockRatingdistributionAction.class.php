@@ -51,8 +51,12 @@ class comment_BlockRatingdistributionAction extends website_BlockAction
 		}
 		catch (TemplateNotFoundException $e)
 		{
-			$templateName = 'Comment-Block-Ratingdistribution-'.$shortViewName;
-			return $this->getTemplateByFullName('modules_comment', $templateName);
+			if (Framework::isDebugEnabled())
+			{
+				Framework::debug(__METHOD__ . ' ' . $e->getMessage()); 
+			}
 		}
+		$templateName = 'Comment-Block-Ratingdistribution-'.$shortViewName;
+		return $this->getTemplateByFullName('modules_comment', $templateName);
 	}
 }
