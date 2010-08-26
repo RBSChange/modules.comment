@@ -399,19 +399,23 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function updateApprovedComment($comment)
 	{
-		if ($comment->getPersistentModel()->hasWorkflow())
+		$modifiedProperties = $comment->getOldValues();
+		$modifiedPropertyNames = $comment->getModifiedPropertyNames();
+		try 
 		{
 			$this->tm->beginTransaction();
 			$relevancy = comment_RatingService::getInstance()->getRelevancyForComment($comment);
 			$comment->setRelevancy($relevancy);
 			$this->pp->updateDocument($comment);
-			// TODO: dispatch event
 			$this->tm->commit();
 		}
-		else
+		catch (Exception $e)
 		{
-			$comment->save();
-		}
+			$this->tm->rollBack($e);
+			throw $e;
+		}		
+		$params = array('document' => $comment, 'modifiedPropertyNames' => $modifiedPropertyNames, 'oldPropertyValues' => $modifiedProperties);
+		f_event_EventManager::dispatchEvent('persistentDocumentUpdated', $this,	$params);
 	}
 	
 	/**
