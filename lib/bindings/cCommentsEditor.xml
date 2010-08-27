@@ -201,11 +201,11 @@
 							</xul:row>
 							<xul:row>
 								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Author-name;" />
-								<xul:label xbl:inherits="value=authorName,tooltiptext=authorName" crop="end" />
+								<xul:label xbl:inherits="xbl:text=authorName,tooltiptext=authorName" crop="end" class="allow-text-selection" />
 							</xul:row>
 							<xul:row>
 								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Author-email;" />
-								<xul:label xbl:inherits="value=email,tooltiptext=email" crop="end" />
+								<xul:label xbl:inherits="xbl:text=email,tooltiptext=email" crop="end" class="allow-text-selection" />
 							</xul:row>
 							<xul:row xbl:inherits="hidden=authorwebsiteurlhidden" align="center">
 								<xul:label value="&amp;modules.comment.bo.doceditor.panel.comments.Author-website;" />
@@ -222,7 +222,7 @@
 							</xul:row>
 						</xul:rows>
 					</xul:grid>
-					<xul:hbox flex="1" anonid="text">
+					<xul:hbox flex="1" anonid="text" class="allow-text-selection">
 						<xbl:children />
 					</xul:hbox>
 				</xul:hbox>
