@@ -94,7 +94,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		if (users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser() === null)
 		{
 			$code = Controller::getInstance()->getContext()->getRequest()->getModuleParameter('form', 'CHANGE_CAPTCHA');
-			if (!FormHelper::checkCaptcha($code))
+			if (!FormHelper::checkCaptchaForKey($code, 'comment'))
 			{
 				$this->addError(f_Locale::translate('&modules.comment.frontoffice.Error-captcha;'));
 				$isOk = false;
