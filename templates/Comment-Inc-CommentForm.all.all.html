@@ -31,7 +31,8 @@
 			<input change:richtextinput="name contents; editor bbcode" labeled="false" />
 		</li>
 		<li tal:condition="not: currentUser">
-			<img change:captcha="" style="vertical-align: bottom;"/> <input change:captcha="" />
+			<img change:captcha="key 'comment'" style="vertical-align: bottom;" />
+			<input change:captcha="key 'comment'" />
 		</li>
 		<li class="button">
 			<input type="hidden" change:hiddeninput="name targetId" value="${target/getId}" />
