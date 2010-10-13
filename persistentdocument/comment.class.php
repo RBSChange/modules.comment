@@ -227,4 +227,13 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		}
 		return null;
 	}
+	
+	/**
+	 * @param integer $maxLength
+	 * @return string
+	 */
+	public function getSummary($maxLength = 80)
+	{
+		return f_util_StringUtils::shortenString(f_util_StringUtils::htmlToText($this->getContentsAsHtml()), $maxLength);
+	}
 }
