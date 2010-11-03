@@ -115,7 +115,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	 */
 	public function getRSSGuid()
 	{
-		return LinkHelper::getUrl($this);
+		return LinkHelper::getDocumentUrl($this);
 	}
 	
 	/**

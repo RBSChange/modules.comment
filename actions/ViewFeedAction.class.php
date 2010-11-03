@@ -56,7 +56,7 @@ class comment_ViewFeedAction extends f_action_BaseAction
 		}
 		$feedWriter->setDescription($description);
 		
-		$feedURL = LinkHelper::getUrl($parent);
+		$feedURL = LinkHelper::getDocumentUrl($parent);
 
 		$feedWriter->setLink($feedURL);
 	}
