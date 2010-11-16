@@ -207,7 +207,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	protected function getPageNumber($request, $itemPerPage, $allComments)
 	{
 		// If there is a page set, return it.
-		$pageNumber = $request->getParameter(paginator_Paginator::REQUEST_PARAMETER_NAME);
+		$pageNumber = $request->getParameter(paginator_Paginator::PAGEINDEX_PARAMETER_NAME);
 		if ($pageNumber)
 		{
 			if (floor(count($allComments) / $itemPerPage) + 1 >= $pageNumber)
