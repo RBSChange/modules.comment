@@ -79,26 +79,16 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 			echo "Generating $blocksFile, creating $blockType block entry.\n";
 			f_util_FileUtils::write($blocksFile, $result);
 		}
-
+		
 		// Block's locales.
-		$directory = f_util_FileUtils::buildWebeditPath('modules', $this->name, 'locale', 'bo', 'blocks');
-		if (!file_exists($directory))
-		{
-			echo "Add $directory directory.\n";
-			f_util_FileUtils::mkdir($directory);
-		}
-
-		$localeFile = f_util_FileUtils::buildWebeditPath('modules', $this->name, 'locale', 'bo', 'blocks', strtolower($blockName).'.xml');
-		if (file_exists($localeFile))
-		{
-			echo "$localeFile already exists.\n";
-		}
-		else
-		{
-			$result = $this->_getTpl($documentModule, 'modules', 'blocksLocale.tpl', $blockName);
-			echo "Generating $localeFile.\n";
-			f_util_FileUtils::write($localeFile, $result);
-		}
+		$baseKey = 'm.' . $this->name . '.bo.blocks.' . strtolower($blockName);
+		$localeId = strtolower($blockName);	
+		echo "Add $localeId locale in $baseKey package.\n";
+		$ls = LocaleService::getInstance();
+		$keysInfos = array();
+		$keysInfos[$ls->getLCID('fr')] = array($localeId => $blockName);
+		$keysInfos[$ls->getLCID('en')] = array($localeId => $blockName);
+		$ls->updatePackage($baseKey, $keysInfos, false, true);
 	}
 
 	/**

@@ -84,7 +84,7 @@ class commands_comment_ImplementOnDocument extends commands_AbstractChangeComman
 		
 		// Recompile locales for module.
 		$this->message("Recompile locales for module $destModuleName.");
-		LocaleService::getInstance()->regenerateLocalesForModule('modules_'.$destModuleName);
+		LocaleService::getInstance()->regenerateLocalesForModule($destModuleName);
 		$this->getParent()->executeCommand('clear-webapp-cache');
 		$this->getParent()->executeCommand('clear-template-cache');
 		
