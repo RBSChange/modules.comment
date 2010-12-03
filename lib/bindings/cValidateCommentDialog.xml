@@ -80,6 +80,10 @@
 					<xul:toolbarbutton xbl:inherits="hidden=authorWebsiteHidden" oncommand="viewAuthorWebsite()" tooltiptext="&amp;modules.comment.document.comment.View-website;" image="{IconsBase}/small/shadow/view.png" />
 				</xul:hbox>
 			</xul:row>
+			<xul:row xbl:inherits="differs=ratingDiffers">
+				<xul:label value="&amp;modules.comment.document.comment.Rating;"/>
+				<xul:label xbl:inherits="value=rating" />
+			</xul:row>
 			<xul:row xbl:inherits="differs=contentsDiffers">
 				<xul:label value="&amp;modules.comment.document.comment.Contents;"/>
 				<div xmlns="http://www.w3.org/1999/xhtml" style="margin: 5px"><xbl:children /></div>
