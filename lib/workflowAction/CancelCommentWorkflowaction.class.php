@@ -13,8 +13,8 @@ class comment_CancelCommentWorkflowaction extends workflow_CancelContentWorkflow
 	{		
 		// Send the notification.
 		$notificationService = notification_NotificationService::getInstance();
-		$notification = $notificationService->getNotificationByCodeName('modules_comment/commentRejected');
-		if ($notification->isPublished())
+		$notification = $notificationService->getByCodeName('modules_comment/commentRejected');
+		if ($notification !== null && $notification->isPublished())
 		{
 			$document = $this->getDocument();
 			

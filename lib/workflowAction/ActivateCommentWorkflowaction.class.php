@@ -13,8 +13,8 @@ class comment_ActivateCommentWorkflowaction extends workflow_ActivateContentWork
 	{		
 		// Send the notification.
 		$notificationService = notification_NotificationService::getInstance();
-		$notification = $notificationService->getNotificationByCodeName('modules_comment/commentAccepted');
-		if ($notification->isPublished())
+		$notification = $notificationService->getByCodeName('modules_comment/commentAccepted');
+		if ($notification !== null && $notification->isPublished())
 		{
 			$document = $this->getDocument();
 			
