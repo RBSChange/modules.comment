@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.bo.doceditor.status" lcid="fr_FR">
+  <key id="publicated">publié</key>
+  <key id="workflow">attente de validation</key>
+  <key id="deactivated">désactivé</key>
+  <key id="draft">refusé</key>
+</i18n>

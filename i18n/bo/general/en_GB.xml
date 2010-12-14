@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.bo.general" lcid="en_GB">
+  <key id="module-name">comments</key>
+  <key id="tree-root-name">comments</key>
+  <key id="system-folder-name">comments</key>
+</i18n>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.bo.doceditor.actions" lcid="en_GB">
+  <key id="confirm-delete-comment">are you sure you want to delete this comment?</key>
+  <key id="success-deleting-comment">the comment is successfuly deleted.</key>
+  <key id="success-deactivating-comment">the comment is successfuly deactivated.</key>
+  <key id="success-reactivating-comment">the comment is successfuly reactivated.</key>
+</i18n>

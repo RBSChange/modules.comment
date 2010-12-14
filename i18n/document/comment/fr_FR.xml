@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.document.comment" lcid="fr_FR">
+  <key id="edition-form-title">propriétés d'un commentaire</key>
+  <key id="document-name">commentaire</key>
+  <key id="label">libellé</key>
+  <key id="label-help">libellé</key>
+  <key id="authorid">id de l'auteur</key>
+  <key id="authorid-help">identifiant de l'auteur ayant soumis ce commentaire.</key>
+  <key id="email">adresse e-mail</key>
+  <key id="email-help">adresse e-mail</key>
+  <key id="contents">commentaire</key>
+  <key id="contents-help">contenu de votre commentaire</key>
+  <key id="targetid">id de la cible</key>
+  <key id="targetid-help">identifiant du document auquel est associé ce commentaire.</key>
+  <key id="target">cible</key>
+  <key id="view-target">voir la cible</key>
+  <key id="targetdocumentmodel">type de la cible</key>
+  <key id="targetdocumentmodel-help">type (nom du modèle de document Change) de la cible du commentaire.</key>
+  <key id="authorname">nom ou pseudonyme</key>
+  <key id="authorname-help">nom ou pseudonyme</key>
+  <key id="rating">note</key>
+  <key id="rating-help">note donnée par l'auteur</key>
+  <key id="authorwebsiteurl">site web de l'auteur</key>
+  <key id="authorwebsiteurl-help">URL du site web de l'auteur</key>
+  <key id="view-website">voir le site</key>
+  <key id="label-pattern">commentaire sur ″{target}″ par {author}</key>
+</i18n>

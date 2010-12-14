@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.bo.general" lcid="fr_FR">
+  <key id="module-name">commentaires</key>
+  <key id="tree-root-name">commentaires</key>
+  <key id="system-folder-name">commentaires</key>
+  <key id="no-comment">il n'y a aucun commentaire sur ce document.</key>
+</i18n>

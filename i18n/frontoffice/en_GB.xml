@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.frontoffice" lcid="en_GB">
+  <key id="leave-a-comment">leave a comment</key>
+  <key id="comment">{count} comment</key>
+  <key id="comments">{count} comments</key>
+  <key id="label-pattern-for-indexation">comment on ″{target}″</key>
+  <key id="error-captcha">bad security code.</key>
+  <key id="rss-feed-title">comments on ″{target}″</key>
+  <key id="rss-link">comments RSS feed″</key>
+  <key id="was-this-comment-useful">did you find this comment useful?</key>
+  <key id="comment-useless-button">no</key>
+  <key id="comment-useful-button">yes</key>
+  <key id="comment-useful-stat">{usefulcount} vistors out of {evaluationcount} find this comment useful.</key>
+  <key id="comment-useful-stat-single">{usefulcount} visitor out of {evaluationcount} finds this comment useful.</key>
+  <key id="comment-be-first">be the first to evaluate this comment.</key>
+  <key id="comment-already-evaluated">you have already evaluated this comment.</key>
+  <key id="rating-distribution">ratings distribution</key>
+  <key id="rating-comment-count">{count} comment(s)</key>
+  <key id="rating">ratings</key>
+  <key id="comment-count">comments</key>
+  <key id="comments-sort-by-date">sort by date</key>
+  <key id="comments-sort-by-relevancy">sort by relevancy</key>
+  <key id="comments-sort-by-rating">sort by rating</key>
+  <key id="rating-see-all-comments">all comments.</key>
+  <key id="showing-rating-review-plural">you are viewing {value} stars comments.</key>
+  <key id="showing-rating-review-single">you are viewing 1 star comments.</key>
+  <key id="showing-rating-review-void">you are viewing comments with no stars.</key>
+  <key id="current-star-rating">{rating} star(s)</key>
+  <key id="star-rating-1">1 star</key>
+  <key id="star-rating-2">2 stars</key>
+  <key id="star-rating-3">3 stars</key>
+  <key id="star-rating-4">4 stars</key>
+  <key id="star-rating-5">5 stars</key>
+  <key id="rating-avg">average</key>
+  <key id="posted-by-author">written by {author}</key>
+  <key id="posted-by">written by</key>
+  <key id="preview-comment">preview</key>
+  <key id="preview">preview</key>
+  <key id="save">save</key>
+</i18n>

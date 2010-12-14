@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.document.comment" lcid="de_DE">
+  <key id="edition-form-title">Eigenschaften Kommentar</key>
+  <key id="document-name">Kommentar</key>
+  <key id="label">Name</key>
+  <key id="label-help">Name</key>
+  <key id="email">Mailadresse</key>
+  <key id="email-help">Mailadresse</key>
+  <key id="contents">Kommentar</key>
+  <key id="contents-help">Inhalt Ihres Kommentars</key>
+  <key id="targetid">ZielID</key>
+  <key id="targetid-help">Identifizierung des dem Kommentar assoziierten Dokuments.</key>
+  <key id="authorname">Name oder Pseudonym</key>
+  <key id="authorname-help">Name oder Pseudonym</key>
+  <key id="label-pattern">Kommentar zu ″{target}″ von {author}</key>
+</i18n>
