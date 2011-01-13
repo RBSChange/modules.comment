@@ -137,8 +137,9 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$request->setAttribute('comment', $comment);
 		
 		// Ask validation.
-		comment_CommentHelper::validateComment($comment);
+		$comment->getDocumentService()->frontendValidation($comment);
 		$request->setAttribute('published', $comment->isPublished());
+		
 		return $this->getCommentView('Save');
 	}
 	
