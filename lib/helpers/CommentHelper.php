@@ -1,12 +1,11 @@
 <?php
 /**
- * @deprecated
+ * @deprecated (will be removed in 4.0)
  */
 class comment_CommentHelper 
 {
 	/**
-	 * @param comment_persistentdocument_comment $comment
-	 * @deprecated use comment_CommentService::frontendValidation()
+	 * @deprecated (will be removed in 4.0) use comment_CommentService::frontendValidation()
 	 */
 	static function validateComment($comment)
 	{

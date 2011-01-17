@@ -94,8 +94,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	private function hasPermission($user, $permission, $target)
 	{
 		$ps = f_permission_PermissionService::getInstance();
-		$rs = $ps->getRoleServiceByModuleName($this->getModuleNameByTarget($target));
-		$result = ($rs->isFrontEndPermission($permission) && $ps->hasPermission($user, $permission, $target->getId()));
+		$result = $ps->hasExplicitPermission($user, $permission, $target->getId());
 		return $result;
 	}
 	
@@ -577,7 +576,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	// Deprecated.
 	
 	/**
-	 * @deprecated use getRSSFeedWriterByTargetId
+	 * @deprecated (will be removed in 4.0) use getRSSFeedWriterByTargetId
 	 */
 	public function getRSSFeedWirterByTargetId($targetId)
 	{
