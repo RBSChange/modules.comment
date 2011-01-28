@@ -28,12 +28,24 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 				return website_BlockView::NONE;
 			}
 		}
-		
+				
 		$target = $this->getTarget($request);
 		if ($this->hideComments($target))
 		{
 			return website_BlockView::NONE;
 		}
+		
+		$this->loadSuccessView($request);
+		return $this->getCommentView(website_BlockView::SUCCESS);
+	}
+	
+	/**
+	 * This method loads data for success view.
+	 * @param unknown_type $request
+	 */
+	protected function loadSuccessView($request)
+	{
+		$target = $this->getTarget($request);
 		$request->setAttribute('target', $target);
 		$allComments = $this->getCommentsListByTarget($target);
 		$request->setAttribute('totalCount', count($allComments));
@@ -53,6 +65,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$feedTitle = f_Locale::translate('&modules.comment.frontoffice.Rss-feed-title;', array('target' => $target->getLabel()));
 		$page = $this->getPage();
 		$page->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
+		
 		// Deal with filters 
 		$globalRequest = f_mvc_HTTPRequest::getInstance();
 		$ratingFilterValue = $globalRequest->getParameter('filter', null);
@@ -60,7 +73,14 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		{
 			$request->setAttribute('ratingFilterValue', comment_RatingService::getInstance()->normalizeRating($ratingFilterValue));
 		}
-		return $this->getCommentView(website_BlockView::SUCCESS);
+	}
+	
+	/**
+	 * @return void
+	 */
+	public function onValidateInputFailed($request)
+	{
+		$this->loadSuccessView($request);
 	}
 	
 	/**
@@ -79,17 +99,14 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	public function validateSaveInput($request, $bean)
 	{
-		// TODO: move it to a better place.
-		$request->setAttribute('target', $this->getTarget($request));
-		
 		// Validation.
 		$validationRules = BeanUtils::getBeanValidationRules('comment_persistentdocument_comment', null, array('label', 'targetdocumentmodel'));
 		if ($this->isRatingRequired())
 		{
 			$validationRules[] = "rating{min:0;max:5}";
-		}
-		
+		}		
 		$isOk = $this->processValidationRules($validationRules, $request, $bean);
+		
 		// Captcha is tested only for not logged-in users. 
 		if (users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser() === null)
 		{
