@@ -31,17 +31,6 @@ class comment_ViewDetailAction extends generic_ViewDetailAction
 			$params['commentId'] = $document->getId();
 			$request->setParameter($module.'Param', $params);
 		}
-		else if ($document !== null)
-		{
-			// Find detail page for the document to display.
-			$page = $this->getDetailPage($document);
-			if ($page !== null)
-			{
-				$request->setParameter(K::PAGE_REF_ACCESSOR, $page->getId());
-				$module = 'website';
-				$action = 'Display';
-			}
-		}
 		else 
 		{
 			$module = AG_ERROR_404_MODULE;
@@ -50,40 +39,5 @@ class comment_ViewDetailAction extends generic_ViewDetailAction
 
 		$context->getController()->forward($module, $action);
 		return View::NONE;
-	}
-
-	/**
-	 * @param f_persistentdocument_PersistentDocument $document
-	 * @return website_persistentdocument_page
-	 */
-	private function getDetailPage($document)
-	{
-		try
-		{
-			$page = TagService::getInstance()->getDocumentBySiblingTag(
-				$this->getFunctionalTag($document),
-				$document
-			);
-		}
-		catch (TagException $e)
-		{
-			$page = null;
-			Framework::exception($e);
-		}
-		return $page;
-	}
-
-	/**
-	 * @param f_persistentdocument_PersistentDocument $document
-	 * @return String
-	 */
-	private function getFunctionalTag($document)
-	{
-		$model = $document->getPersistentModel();
-		if (!is_null($sourceModel = $model->getSourceInjectionModel()))
-		{
-			$model = $sourceModel;
-		}
-		return 'functional_' . $model->getModuleName() . '_' . $model->getDocumentName() .'-detail';
 	}
 }

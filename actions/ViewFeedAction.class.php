@@ -17,21 +17,24 @@ class comment_ViewFeedAction extends f_action_BaseAction
 			$targetId = $request->getParameter('targetId');
 		}
 		
-		$target = DocumentHelper::getDocumentInstance($targetId);
-		if ($target instanceof website_persistentdocument_website)
+		if ($targetId !== null)
 		{
-			$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByWebsiteId($targetId);
+			$target = DocumentHelper::getDocumentInstance($targetId);
+			if ($target instanceof website_persistentdocument_website)
+			{
+				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByWebsiteId($targetId);
+			}
+			else 
+			{
+				$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
+			}
+			
+			// Set the link, title and description of the feed
+			$this->setHeaders($feedWriter, $request, $target);
+			$this->setContentType('text/xml');
+			echo $feedWriter->toString();
 		}
-		else 
-		{
-			$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
-			$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
-		}
-		
-		// Set the link, title and description of the feed
-		$this->setHeaders($feedWriter, $request, $target);
-		$this->setContentType('text/xml');
-		echo $feedWriter->toString();
 	}
 	
 	/**

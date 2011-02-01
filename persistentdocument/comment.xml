@@ -18,6 +18,7 @@
 		<add name="authorwebsiteurl" type="String" >
 			<constraints>url:true</constraints>
 		</add>
+		<add name="private" type="Boolean" default-value="false" />
 	</properties>
 	
 	<statuses default="DRAFT" />

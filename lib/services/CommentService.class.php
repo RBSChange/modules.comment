@@ -86,6 +86,23 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	/**
+	 * @var comment_persistentdocument_comment $document
+	 * @return website_persistentdocument_page
+	 */
+	public function getDisplayPage($document)
+	{
+		try
+		{
+			$target = $document->getTarget();
+			return $target->getDocumentService()->getDisplayPage($target);
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+	}
+	
+	/**
 	 * @param users_persistentdocument_user $user
 	 * @param String $permission
 	 * @param f_persistentdocument_PersistentDocument $target
@@ -174,6 +191,16 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			$query->setMaxResults($limit);
 		}
 		return $query->find();
+	}
+	
+	/**
+	 * @param Integer $targetId
+	 * @param Integer $websiteId
+	 * @return comment_persistentdocument_comment
+	 */
+	public function getLastByTargetId($targetId, $websiteId = null)
+	{
+		return f_util_ArrayUtils::firstElement($this->getByTargetId($targetId, 0, 1, $websiteId));
 	}
 	
 	/**
@@ -349,12 +376,15 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
 		}
-		//TODO: parameter?
-		/*$limit = ModuleService::getInstance()->getPreferenceValue('blog', 'rssMaxItemCount');
-		if ($limit > 0)
+		$user = users_FrontenduserService::getInstance()->getCurrentFrontEndUser();
+		
+		$target = DocumentHelper::getDocumentInstance($targetId);
+		$targetService = $target->getDocumentService();
+		if (!f_util_ClassUtils::methodExists($targetService, "canViewCommentsRSS") ||
+			!$targetService->canViewCommentsRSS($target, $user))
 		{
-			$query->setMaxResults($limit);
-		}*/
+			$query->add(Restrictions::eq("private", false));
+		}
 		$query->setMaxResults(100);
 		$query->addOrder(Order::desc('document_creationdate'));
 		
@@ -372,14 +402,9 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getRSSFeedWriterByWebsiteId($websiteId)
 	{
-		$query = $this->createQuery()->add(Restrictions::published());
-		$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
-		//TODO: parameter?
-		/*$limit = ModuleService::getInstance()->getPreferenceValue('blog', 'rssMaxItemCount');
-		if ($limit > 0)
-		{
-			$query->setMaxResults($limit);
-		}*/
+		$query = $this->createQuery()->add(Restrictions::published())
+			->add(Restrictions::eq("private", false))
+			->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
 		$query->setMaxResults(100);
 		$query->addOrder(Order::desc('document_creationdate'));
 		
