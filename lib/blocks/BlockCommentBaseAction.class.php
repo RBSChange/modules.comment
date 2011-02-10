@@ -50,7 +50,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$allComments = $this->getCommentsListByTarget($target);
 		$request->setAttribute('totalCount', count($allComments));
 		
-		$itemPerPage = $this->getNbItemPerPage($request, $response);
+		$itemPerPage = $this->getNbItemPerPage($request, null);
 		$pageNumber = $this->getPageNumber($request, $itemPerPage, $allComments);
 		$offset = $itemPerPage * ($pageNumber - 1);
 		$request->setAttribute('offset', $offset);
