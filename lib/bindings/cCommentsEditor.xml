@@ -251,7 +251,7 @@
 					var node = document.getAnonymousElementByAttribute(this, 'anonid', 'tasks');					
 					var tasks = this.tasks;
 					var button;
-					for (i = 0; i < tasks.length; i++)
+					for (var i = 0; i < tasks.length; i++)
 					{
 						button = node.childNodes[i];
 						if (button == null)
