@@ -14,7 +14,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		if ($this->isInBackoffice())
 		{
-			$request->setAttribute('blockLabel', f_Locale::translate('&modules.'.$this->getModuleName().'.bo.blocks.'.ucfirst($this->getName()).';'));
+			$request->setAttribute('blockLabel', LocaleService::getInstance()->transFO('m.'.$this->getModuleName().'.bo.blocks.'.$this->getName(), array('ucf')));
 			return $this->getTemplate(website_BlockView::BACKOFFICE);
 		}
 				
@@ -51,7 +51,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$request->setAttribute('currentCommentId', $commentId);		
 
 		// Add the RSS feed.
-		$feedTitle = f_Locale::translate('&modules.comment.frontoffice.Rss-feed-title;', array('target' => $target->getLabel()));
+		$feedTitle = LocaleService::getInstance()->transFO('m.comment.frontoffice.rss-feed-title', array('ucf'), array('target' => $target->getLabel()));
 		$page = $this->getPage();
 		$page->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
 		
@@ -102,7 +102,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			$code = Controller::getInstance()->getContext()->getRequest()->getModuleParameter('form', 'CHANGE_CAPTCHA');
 			if (!FormHelper::checkCaptchaForKey($code, 'comment'))
 			{
-				$this->addError(f_Locale::translate('&modules.comment.frontoffice.Error-captcha;'));
+				$this->addError(LocaleService::getInstance()->transFO('m.comment.frontoffice.error-captcha', array('ucf')));
 				$isOk = false;
 			}
 		}
