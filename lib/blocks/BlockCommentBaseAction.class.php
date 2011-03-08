@@ -15,18 +15,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		if ($this->isInBackoffice())
 		{
 			$request->setAttribute('blockLabel', f_Locale::translate('&modules.'.$this->getModuleName().'.bo.blocks.'.ucfirst($this->getName()).';'));
-			try
-			{
-				return $this->getTemplate(website_BlockView::BACKOFFICE);
-			}
-			catch (TemplateNotFoundException $e)
-			{
-				if (Framework::isDebugEnabled())
-				{
-					Framework::debug(__METHOD__ . ' ' . $e->getMessage()); 
-				}
-				return website_BlockView::NONE;
-			}
+			return $this->getTemplate(website_BlockView::BACKOFFICE);
 		}
 				
 		$target = $this->getTarget($request);
@@ -303,16 +292,10 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	protected function getCommentView($shortViewName)
 	{
-		try
+		$template = $this->getTemplate($shortViewName);
+		if ($template !== null)
 		{
-			return $this->getTemplate($shortViewName);
-		}
-		catch (TemplateNotFoundException $e)
-		{
-			if (Framework::isDebugEnabled())
-			{
-				Framework::debug(__METHOD__ . ' ' . $e->getMessage()); 
-			}
+			return $template;
 		}
 		$templateName = 'Comment-Block-CommentBase-'.$shortViewName;
 		return $this->getTemplateByFullName('modules_comment', $templateName);
