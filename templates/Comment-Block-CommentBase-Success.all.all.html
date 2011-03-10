@@ -3,8 +3,14 @@
 		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentList' ; type 'html' ; comments comments ; target target ; offset offset ; totalCount totalCount ; currentCommentId currentCommentId ; showGravatars configuration/getShowgravatars ; enableRating configuration/getEnableRating ; displaySortOptions configuration/getDisplaySortOptions ; enableEvaluation configuration/getEnableEvaluation ; showRatingDistribution configuration/getShowRatingDistribution ; filter filter ; sort sort" />
 	</tal:block>
 	
-	<tal:block change:loadhandler="comment_InitFormInfoLoadHandler" />
-	<tal:block change:loadhandler="form_FormLoadHandler" />
-		
-	<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentForm' ; type 'html' ; target target ; currentUser currentUser ; previewComment previewComment ; enableRating configuration/getEnableRating ; showGravatars configuration/getShowgravatars" />
+	<tal:block tal:condition="connectToPost">
+		<h3 change:h="">${trans: m.comment.frontoffice.leave-a-comment,ucf}</h3>
+		<p>${trans: m.comment.frontoffice.error-not-logged-in,ucf}</p>
+	</tal:block>
+	
+	<tal:block tal:condition="not: connectToPost">
+		<tal:block change:loadhandler="comment_InitFormInfoLoadHandler" />
+		<tal:block change:loadhandler="form_FormLoadHandler" />
+		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentForm' ; type 'html' ; target target ; currentUser currentUser ; previewComment previewComment ; enableRating configuration/getEnableRating ; showGravatars configuration/getShowgravatars" />
+	</tal:block>
 </div>

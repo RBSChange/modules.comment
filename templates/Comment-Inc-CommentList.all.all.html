@@ -1,16 +1,17 @@
 <a name="comment-list"></a>
-<tal:block change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}"/>
+<tal:block change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}" />
 
-<tal:block tal:condition="showRatingDistribution" change:block="" inheritedParams="cmpref,filter,sort" module="comment" name="ratingdistribution"/>
+<tal:block tal:condition="showRatingDistribution" change:block="" inheritedParams="cmpref,filter,sort" module="comment" name="ratingdistribution" />
 
 <ul tal:condition="comments" class="comment-list" id="comment-list">
 	<tal:block tal:repeat="comment comments">
 		<li id="${comment/getAnchor}" class="${php: repeat.comment.odd ? 'odd' : 'even'}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
 			<p class="comment-info">
-				<a change:link="document comment ; anchor comment/getAnchor" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
+				<a change:currentPageLink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
 				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
-				${trans: m.comment.frontoffice.posted-by,ucf} <a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a>
-				 - <tal:block change:datetime="comment/getCreationdate" />
+				${trans: m.comment.frontoffice.posted-by,ucf}
+				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a>
+				- <tal:block change:datetime="comment/getCreationdate" />
 			</p>
 			<img tal:condition="showGravatars" class="avatar" src="${comment/getGravatarUrl}" alt="" />
 			<div class="comment-contents">${comment/getContentsAsHtml}</div>
@@ -23,7 +24,7 @@
 					<p>${trans: m.comment.frontoffice.comment-be-first,ucf}</p>
 				</li>
 				<li>
-					<form class="comment-evaluation" tal:condition="not: comment/isEvaluatedByCurrentUser" change:form="" id="evaluate_${comment/getId}">
+					<form class="comment-evaluation" tal:condition="not: comment/isEvaluatedByCurrentUser" change:form="" id="evaluate_${comment/getId}" action="#${comment/getAnchor}">
 						<input change:hiddeninput="name commentId; value comment/getId" />
 						<span>${trans: m.comment.frontoffice.was-this-comment-useful,ucf}</span>
 						<input change:submit="name rateUseful" label="&modules.comment.frontoffice.Comment-useful-button;" class="button" />

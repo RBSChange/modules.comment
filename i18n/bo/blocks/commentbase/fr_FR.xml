@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.comment.bo.blocks.comment" lcid="fr_FR">
+	<key id="nbitemperpage">commentaires par page</key>
+	<key id="nbitemperpage-help">Nombre de commentaires à afficher par page.</key>
+	<key id="allownotregistered">activer les commentaires anonymes</key>
+	<key id="allownotregistered-help">Autoriser ou non les utilisateurs non-enregistrés à poster des commentaires.</key>
+	<key id="enablerating">activer la notation</key>
+	<key id="enablerating-help">Activer ou non la notation.</key>
+	<key id="showratingdistribution">afficher la répartition des notes</key>
+	<key id="showratingdistribution-help">Afficher la répartition des notes atribuées.</key>
+	<key id="displaysortoptions">activer le tri</key>
+	<key id="displaysortoptions-help">Activer le tri des commentaires.</key>
+	<key id="enableevaluation">activer l'évaluation</key>
+	<key id="enableevaluation-help">Activer l'évaluation des commentaires.</key>
+	<key id="showgravatars">afficher l'avatar</key>
+	<key id="showgravatars-help">Afficher l'avatar via le site www.gravatar.com (en fonction de l'adresse e-mail).</key>
+</i18n>

@@ -88,7 +88,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		$keysInfos = array();
 		$keysInfos[$ls->getLCID('fr')] = array($localeId => $blockName);
 		$keysInfos[$ls->getLCID('en')] = array($localeId => $blockName);
-		$ls->updatePackage($baseKey, $keysInfos, false, true);
+		$ls->updatePackage($baseKey, $keysInfos, false, true, 'm.comment.bo.blocks.commentbase');
 	}
 
 	/**

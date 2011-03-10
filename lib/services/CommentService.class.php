@@ -5,6 +5,8 @@
  */
 class comment_CommentService extends f_persistentdocument_DocumentService
 {
+	const SESSION_NAMESPACE = 'm_comment';
+	
 	/**
 	 * @var comment_CommentService
 	 */
@@ -247,7 +249,15 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		}
 		else
 		{
-			$query->add(Restrictions::published());
+			$postedIds = $this->getPostedFromSession();
+			if (f_util_ArrayUtils::isNotEmpty($postedIds))
+			{
+				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::in('id', $postedIds)));
+			}
+			else 
+			{
+				$query->add(Restrictions::published());
+			}
 		}
 		
 		if ($websiteId !== null && $this->filterByWebsite())
@@ -596,6 +606,43 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	private function filterByWebsite()
 	{
 		return (Framework::getConfigurationValue('modules/comment/filterByWebsite', 'true') == 'true');
+	}
+	
+	/**
+	 * Returns the URL of the document if has no URL Rewriting rule.
+	 *
+	 * @param comment_persistentdocument_comment $document
+	 * @param string $lang
+	 * @param array $parameters
+	 * @return string
+	 */
+	public function generateUrl($document, $lang, $parameters)
+	{
+		$parameters['commentId'] = $document->getId();
+		return LinkHelper::getDocumentUrl($document->getTarget(), $lang, $parameters) . '#' . $document->getAnchor();
+	}
+	
+	/**
+	 * @param integer $commentId
+	 */
+	public function addPostedToSession($commentId)
+	{
+		$session = Controller::getInstance()->getContext()->getUser();
+		$ids = $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
+		if (!in_array($commentId, $ids))
+		{
+			$ids[] = $commentId;
+			$session->setAttribute('postedComments', $ids, self::SESSION_NAMESPACE);
+		}
+	}
+	
+	/**
+	 * @return integer[]
+	 */
+	public function getPostedFromSession()
+	{
+		$session = Controller::getInstance()->getContext()->getUser();
+		return $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
 	}
 	
 	// Deprecated.

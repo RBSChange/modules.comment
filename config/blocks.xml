@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blocks>
-	<block hidden="true" type="modules_comment_toolbar" display="" icon="" label="&amp;modules.comment.bo.blocks.Toolbar;"/>
-	<block hidden="true" type="modules_comment_ratingdistribution" display="" icon="" label="&amp;modules.comment.bo.blocks.Ratingdistribution;"/>
+	<block hidden="true" type="modules_comment_toolbar" icon="" />
+	<block hidden="true" type="modules_comment_ratingdistribution" icon="" />
 </blocks>

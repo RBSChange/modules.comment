@@ -191,13 +191,16 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	 */
 	public function getFullAuthorLabel()
 	{
+		$ls = LocaleService::getInstance();
 		if ($this->getAuthorid() !== null)
 		{
-			$fullAuthorLabel = f_Locale::translate("&modules.comment.bo.workflow.validateComment.FullAuthorAuthentifiedLabel;", array("label" => $this->getAuthorName(), "authorId" => $this->getAuthorid()));
+			$substitutions =  array('label' => $this->getAuthorName(), 'authorId' => $this->getAuthorid());
+			$fullAuthorLabel = $ls->transFO('m.comment.bo.workflow.validatecomment.fullauthorauthentifiedlabel', array('ucf'), $substitutions);
 		}
 		else
 		{
-			$fullAuthorLabel = f_Locale::translate("&modules.comment.bo.workflow.validateComment.FullAuthorAnonymousLabel;", array("label" => $this->getAuthorName()));
+			$substitutions =  array('label' => $this->getAuthorName());
+			$fullAuthorLabel = $ls->transFO('m.comment.bo.workflow.validatecomment.fullauthoranonymouslabel', array('ucf'), $substitutions);
 		}
 		return $fullAuthorLabel;
 	}

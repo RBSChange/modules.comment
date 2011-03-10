@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlrewriting>
 	<rules>
-		<rule documentModel="comment" viewMode="detail">
-			<template>/comment-$id</template>
-		</rule>
 		<rule redirection="comment/ViewFeed">
 			<template>/comment/rss/feed,$targetId.xml</template>
 			<parameters>
