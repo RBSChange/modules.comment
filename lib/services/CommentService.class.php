@@ -374,7 +374,10 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	public function getRSSFeedWriterByWebsiteId($websiteId)
 	{
 		$query = $this->createQuery()->add(Restrictions::published());
-		$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
+		if ($this->filterByWebsite())
+		{
+			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
+		}
 		//TODO: parameter?
 		/*$limit = ModuleService::getInstance()->getPreferenceValue('blog', 'rssMaxItemCount');
 		if ($limit > 0)

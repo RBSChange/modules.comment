@@ -150,6 +150,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	public function executeSave($request, $response, comment_persistentdocument_comment $comment)
 	{
+		$comment->setWebsiteId(website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId());
 		$comment->save();
 		$request->setAttribute('comment', $comment);
 		
