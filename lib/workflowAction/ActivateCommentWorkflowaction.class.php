@@ -46,4 +46,14 @@ class comment_ActivateCommentWorkflowaction extends workflow_ActivateContentWork
 		
 		return parent::execute();
 	}
+	
+	/**
+	 * @param String $notificationCodeName
+	 * @return array array(websiteId, lang) by default, workflow's document websiteId and original lang
+	 */
+	protected function getNotificationWebsiteIdAndLang($notificationCodeName)
+	{
+		$document = $this->getDocument();
+		return array($document->getWebsiteId(), $document->getLang());
+	}
 }
