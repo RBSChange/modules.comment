@@ -236,15 +236,14 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
 		if ($user !== null)
 		{
-			$ps = f_permission_PermissionService::getInstance();
 			$target = DocumentHelper::getDocumentInstance($targetId);
-			if ($ps->hasPermission($user, $this->getValidatePermissionNameByTarget($target), $targetId))
+			if ($this->hasPermission($user, $this->getValidatePermissionNameByTarget($target), $target))
 			{
-				$query->add(Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE')));
+				$query->add($this->getValidatorVisibilityRestriction($user));
 			}
 			else 
 			{
-				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::eq('authorid', $user->getId())));
+				$query->add($this->getVisitorVisibilityRestriction($user));
 			}
 		}
 		else
@@ -269,6 +268,33 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			$query->add(Restrictions::eq('rating', comment_RatingService::normalizeRating($ratingValue)));
 		}
+	}
+	
+	/**
+	 * @param users_persistentdocument_user $user
+	 * @return f_persistentdocument_criteria_Criterion
+	 */
+	protected function getValidatorVisibilityRestriction($user)
+	{
+		return Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE'));
+	}
+	
+	/**
+	 * @param users_persistentdocument_user $user
+	 * @return f_persistentdocument_criteria_Criterion
+	 */
+	protected function getVisitorVisibilityRestriction($user)
+	{
+		return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::eq('authorid', $user->getId()), $this->getAuthorVisibilityRestriction()));
+	}
+	
+	/**
+	 * @param users_persistentdocument_user $user
+	 * @return f_persistentdocument_criteria_Criterion
+	 */
+	protected function getAuthorVisibilityRestriction($user)
+	{
+		return Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE'));
 	}
 	
 	/**
@@ -578,27 +604,6 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		$target->setMeta(comment_persistentdocument_comment::COMMENTED_META, "true");
 		$target->saveMeta();
 	}
-	
-	/**
-	 * @param f_persistentdocument_PersistentDocument $target
-	 * @return f_persistentdocument_criteria_Query
-	 */
-	protected function addPublishedCommentRestriction($query, $target)
-	{
-		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
-		if ($user === null)
-		{
-			$query->add(Restrictions::published());
-		}
-		else if (!f_permission_PermissionService::getInstance()->hasFrontEndPermission($user, 'modules_' . $target->getPersistentModel()->getModuleName() . '.Validate.comment', $target->getId()))
-		{
-			$query->add(Restrictions::orExp(
-				Restrictions::published(),
-				Restrictions::eq('authorId', $user->getId())
-			));
-		}
-		return $query;
-	}
 
 	/**
 	 * @return Boolean
@@ -646,6 +651,26 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	// Deprecated.
+	
+	/**
+	 * @deprecated (will be removed in 4.0) use addVisibilityRestrictions
+	 */
+	protected function addPublishedCommentRestriction($query, $target)
+	{
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
+		if ($user === null)
+		{
+			$query->add(Restrictions::published());
+		}
+		else if (!f_permission_PermissionService::getInstance()->hasFrontEndPermission($user, 'modules_' . $target->getPersistentModel()->getModuleName() . '.Validate.comment', $target->getId()))
+		{
+			$query->add(Restrictions::orExp(
+				Restrictions::published(),
+				Restrictions::eq('authorId', $user->getId())
+			));
+		}
+		return $query;
+	}
 	
 	/**
 	 * @deprecated (will be removed in 4.0) use getRSSFeedWriterByTargetId
