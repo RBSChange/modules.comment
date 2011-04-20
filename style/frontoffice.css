@@ -25,10 +25,13 @@ table.rating-distribution{
 	border: 1px #999 solid;
 	padding: 8px;
 }
-table.rating-distribution td,table.rating-distribution th,table.rating-distribution caption{
+table.rating-distribution td,
+table.rating-distribution th,
+table.rating-distribution caption{
 	text-align: center;
 }
-table.rating-distribution td,table.rating-distribution th{
+table.rating-distribution td,
+table.rating-distribution th{
 	padding: 0 10px 0 10px;
 }
 table.rating-distribution caption{
@@ -44,13 +47,20 @@ table.rating-distribution td.left-col{
 ul.mini-navigation{
 	float: right;
 }
-.modules-comment-toolbar h3,p.sort-options{
+.modules-comment-toolbar h3,
+p.sort-options{
 	display: inline;
 }
-ol.star-rating-accessible,ol.star-rating-accessible li{
+ol.star-rating-accessible,
+ol.star-rating-accessible li{
 	display: inline;
 }
-.star-rating,.star-rating a:hover,.star-rating a:active,.star-rating a:focus,.star-rating a.clicked,.star-rating .current-rating{
+.star-rating,
+.star-rating a:hover,
+.star-rating a:active,
+.star-rating a:focus,
+.star-rating a.clicked,
+.star-rating .current-rating{
 	background: url(/media/frontoffice/star.gif) left -1000px repeat-x;
 	margin: 0;
 	padding: 0;
@@ -70,7 +80,8 @@ ul.star-rating li.star{
 	margin: 0;
 	padding: 0;
 }
-.star-rating a,.star-rating .current-rating{
+.star-rating a,
+.star-rating .current-rating{
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -81,7 +92,10 @@ ul.star-rating li.star{
 	overflow: hidden;
 	border: none;
 }
-.star-rating a:hover,.star-rating a:active,.star-rating a:focus,.star-rating a.clicked{
+.star-rating a:hover,
+.star-rating a:active,
+.star-rating a:focus,
+.star-rating a.clicked{
 	background-position: left bottom;
 }
 .star-rating a.one-star{
@@ -158,7 +172,11 @@ li.current-rating.rating-100{
 	width: 50px;
 	height: 10px;
 }
-.small-star,.small-star a:hover,.small-star a:active,.small-star a:focus,.small-star .current-rating{
+.small-star,
+.small-star a:hover,
+.small-star a:active,
+.small-star a:focus,
+.small-star .current-rating{
 	background-image: url(/media/frontoffice/star_small.gif) ;
 	line-height: 10px;
 	height: 10px;
