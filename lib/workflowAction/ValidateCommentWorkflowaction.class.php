@@ -47,7 +47,7 @@ class comment_ValidateCommentWorkflowaction extends workflow_BaseWorkflowaction
 	 * @param String $notificationCodeName
 	 * @return array array(websiteId, lang) by default, workflow's document websiteId and original lang
 	 */
-	protected function getNotificationWebsiteIdAndLang($notificationCodeName)
+	public function getNotificationWebsiteIdAndLang($notificationCodeName)
 	{
 		$document = $this->getDocument();
 		return array($document->getWebsiteId(), $document->getLang());
