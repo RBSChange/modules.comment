@@ -285,7 +285,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	protected function getVisitorVisibilityRestriction($user)
 	{
-		return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::eq('authorid', $user->getId()), $this->getAuthorVisibilityRestriction()));
+		return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::eq('authorid', $user->getId()), $this->getAuthorVisibilityRestriction($user)));
 	}
 	
 	/**
@@ -559,7 +559,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	protected function preInsert($document, $parentNodeId)
 	{
-		$document->setMeta('author_IP', comment_ModuleService::getInstance()->getIp());
+		$document->setMeta('author_IP', RequestContext::getInstance()->getClientIp());
 		$document->setInsertInTree(false);
 		parent::preInsert($document, $parentNodeId);
 	}
@@ -648,6 +648,47 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		$session = Controller::getInstance()->getContext()->getUser();
 		return $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
+	}
+	
+	/**
+	 * @param array $array an associative array containing enties for 'comment' and 'specificParams'
+	 */
+	public function getNotificationParameters($array)
+	{
+		/* @var $comment comment_persistentdocument_comment */ 
+		$comment = $array['comment'];
+		
+		$replacements = array();
+		$replacements['commentId'] = $comment->getId();
+		$replacements['commentLabel'] = $comment->getLabelAsHtml();
+		$replacements['commentContent'] = $comment->getContentsAsHtml();
+		$replacements['commentRating'] = $comment->getRating();
+		$replacements['commentCreationDate'] = date_DateFormat::format($comment->getUICreationdate(), date_DateFormat::getDateFormat());
+		
+		$target = $comment->getTarget();
+		$replacements['targetId'] = $target->getId();
+		$replacements['targetLabel'] = $target->getLabelAsHtml();		
+		$replacements['targetUrl'] = LinkHelper::getDocumentUrl($target);
+		$replacements['targetType'] = f_Locale::translate($target->getPersistentModel()->getLabel());
+				
+		$replacements['authorEmail'] = $comment->getEmail();
+		$replacements['authorName'] = $comment->getAuthorNameAsHtml();
+		$replacements['authorWebsiteUrl'] = $comment->getAuthorwebsiteurl();
+		$replacements['authorWebsiteLink'] = $replacements['authorWebsiteUrl'] ? '' : '<a href="' . $replacements['authorWebsiteUrl'] . '">' . $replacements['authorWebsiteUrl'] . '</a>';
+		$replacements['authorIp'] = $comment->getMeta('author_IP');
+		
+		// For compatibility...
+		$replacements['documentId'] = $replacements['commentId'];
+		$replacements['documentLabel'] = $replacements['commentLabel'];
+		$replacements['documentCreationDate'] = $replacements['commentCreationDate'];
+		$replacements['targetLink'] = '<a href="' . $replacements['targetUrl'] . '">' . $replacements['targetLabel'] . '</a>';
+		
+		// Add specific params.
+		if (isset($array['specificParams']) && is_array($array['specificParams']))
+		{
+			$replacements = array_merge($replacements, $array['specificParams']);
+		}
+		return $replacements;
 	}
 	
 	// Deprecated.

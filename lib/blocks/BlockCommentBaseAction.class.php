@@ -196,6 +196,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		{
 			$tm->beginTransaction();
 
+			$comment->setWebsiteId(website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId());
 			$comment->save();
 
 			// Ask validation.

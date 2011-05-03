@@ -3,7 +3,7 @@
  * @author intportg
  * @package modules.comment.lib.workflowAction
  */
-class comment_ValidateCommentWorkflowaction extends workflow_BaseWorkflowaction
+class comment_ValidateCommentWorkflowaction extends comment_BaseCommentWorkflowaction
 {
 	/**
 	 * This method will execute the action.
@@ -24,8 +24,6 @@ class comment_ValidateCommentWorkflowaction extends workflow_BaseWorkflowaction
 	}
 	
 	/**
-	 * @see workflow_BaseWorkflowaction::updateTaskInfos()
-	 *
 	 * @param task_persistentdocument_usertask $task
 	 */
 	public function updateTaskInfos($task)
@@ -41,15 +39,5 @@ class comment_ValidateCommentWorkflowaction extends workflow_BaseWorkflowaction
 		{
 			$task->setCommentary($commentary);
 		}	
-	}
-	
-	/**
-	 * @param String $notificationCodeName
-	 * @return array array(websiteId, lang) by default, workflow's document websiteId and original lang
-	 */
-	public function getNotificationWebsiteIdAndLang($notificationCodeName)
-	{
-		$document = $this->getDocument();
-		return array($document->getWebsiteId(), $document->getLang());
 	}
 }

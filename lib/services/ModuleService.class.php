@@ -50,9 +50,10 @@ class comment_ModuleService extends ModuleBaseService
 		return null;
 	}
 	
+	// Deprecated.
+	
 	/**
-	 * @deprecated
-	 * @return String
+	 * @deprecated (will be removed in 4.0) use RequestContext::getClientIp()
 	 */
 	public function getIp()
 	{

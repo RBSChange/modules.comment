@@ -3,7 +3,7 @@
  * @author intportg
  * @package modules.comment.lib.workflowAction
  */
-class comment_CancelCommentWorkflowaction extends workflow_CancelContentWorkflowaction
+class comment_CancelCommentWorkflowaction extends comment_BaseCommentWorkflowaction
 {
 	/**
 	 * This method will execute the action.
@@ -11,49 +11,25 @@ class comment_CancelCommentWorkflowaction extends workflow_CancelContentWorkflow
 	 */
 	function execute()
 	{		
-		// Send the notification.
-		$notificationService = notification_NotificationService::getInstance();
-		$notification = $notificationService->getByCodeName('modules_comment/commentRejected');
-		if ($notification !== null && $notification->isPublished())
-		{
-			$document = $this->getDocument();
-			
-			$replacements = array();
-			$replacements['documentId'] = $document->getId();
-			$replacements['documentLabel'] = $document->getLabel();
-			
-			$date = date_Calendar::getInstance($document->getCreationdate());
-			$uiDate = date_Converter::convertDateToLocal($date);		
-			$replacements['documentCreationDate'] = date_DateFormat::smartFormat($uiDate);
-			
-			$replacements['targetId'] = $document->getTargetId();
-			$replacements['targetLabel'] = $document->getTarget()->getLabel();
-			
-			$currentUser = users_UserService::getInstance()->getCurrentBackEndUser();
-			if ($currentUser !== null)
-			{
-				$replacements['currentUserId'] = $currentUser->getId();
-				$replacements['currentUserFullname'] = $currentUser->getFullname();
-			}	
-			
-			$replacements['validationComment'] = $this->getCaseParameter('__LAST_COMMENTARY');
-			
-			$recipients = new mail_MessageRecipients();
-			$recipients->setTo($document->getEmail());
-			
-			$notificationService->send($notification, $recipients, $replacements, 'comment');
-		}
-		
-		return parent::execute();
-	}
-	
-	/**
-	 * @param String $notificationCodeName
-	 * @return array array(websiteId, lang) by default, workflow's document websiteId and original lang
-	 */
-	public function getNotificationWebsiteIdAndLang($notificationCodeName)
-	{
+		// Update the document's status.
 		$document = $this->getDocument();
-		return array($document->getWebsiteId(), $document->getLang());
+		$document->getDocumentService()->cancel($document->getId());
+
+		// Send the notification.
+		$specificParams = array();
+		$currentUser = users_UserService::getInstance()->getCurrentUser();
+		if ($currentUser !== null)
+		{
+			$specificParams['currentUserId'] = $currentUser->getId();
+			$specificParams['currentUserFullname'] = $currentUser->getFullname();
+		}	
+		$specificParams['validationComment'] = $this->getCaseParameter('__LAST_COMMENTARY');
+
+		$callback = array($document->getDocumentService(), 'getNotificationParameters');
+		$params = array('comment' => $document, 'specificParams' => $specificParams);
+		$this->sendNotificationToAuthorCallback('modules_comment/commentRejected', $callback, $params);
+
+		$this->setExecutionStatus(workflow_WorkitemService::EXECUTION_SUCCESS);
+		return true;
 	}
 }
