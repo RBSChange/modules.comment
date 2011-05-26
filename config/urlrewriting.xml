@@ -4,7 +4,7 @@
 		<rule redirection="comment/ViewFeed">
 			<template>/comment/rss/feed,$targetId.xml</template>
 			<parameters>
-				<parameter name="targetId" format="[0-9]+" />
+				<parameter name="targetId" />
 			</parameters>
 		</rule>
 	</rules>

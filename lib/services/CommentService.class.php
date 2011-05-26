@@ -86,24 +86,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		}
 		$comment->getDocumentService()->createWorkflowInstance($comment->getId(), array());
 	}
-	
-	/**
-	 * @var comment_persistentdocument_comment $document
-	 * @return website_persistentdocument_page
-	 */
-	public function getDisplayPage($document)
-	{
-		try
-		{
-			$target = $document->getTarget();
-			return $target->getDocumentService()->getDisplayPage($target);
-		}
-		catch (Exception $e)
-		{
-			return null;
-		}
-	}
-	
+		
 	/**
 	 * @param users_persistentdocument_user $user
 	 * @param String $permission
@@ -612,19 +595,34 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		return (Framework::getConfigurationValue('modules/comment/filterByWebsite', 'true') == 'true');
 	}
-	
+		
 	/**
-	 * Returns the URL of the document if has no URL Rewriting rule.
-	 *
+	 * @param website_UrlRewritingService $urlRewritingService
 	 * @param comment_persistentdocument_comment $document
+	 * @param website_persistentdocument_website $website
 	 * @param string $lang
 	 * @param array $parameters
-	 * @return string
+	 * @return f_web_Link | null
 	 */
-	public function generateUrl($document, $lang, $parameters)
+	public function getWebLink($urlRewritingService, $document, $website, $lang, $parameters)
 	{
 		$parameters['commentId'] = $document->getId();
-		return LinkHelper::getDocumentUrl($document->getTarget(), $lang, $parameters) . '#' . $document->getAnchor();
+		$link = $urlRewritingService->getDocumentLinkForWebsite($document->getTarget(), $website, $lang, $parameters);
+		if ($link) {$link->setFragment($document->getAnchor());}
+		return $link;
+	}
+	
+	/**
+	 * @param website_persistentdocument_website $website
+	 * @param string $lang
+	 * @param string $modelName
+	 * @param integer $offset
+	 * @param integer $chunkSize
+	 * @return comment_persistentdocument_comment[]
+	 */
+	public function getDocumentForSitemap($website, $lang, $modelName, $offset, $chunkSize)
+	{
+		return array();
 	}
 	
 	/**
