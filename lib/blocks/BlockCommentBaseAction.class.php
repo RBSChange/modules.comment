@@ -89,12 +89,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	protected function addCanonical($target, $pageNumber, $request)
 	{
-		$globalRequest = f_mvc_HTTPRequest::getInstance();
-		if ($globalRequest->hasParameter('commentId') || $globalRequest->hasParameter('filter') || $globalRequest->hasParameter('sort'))
-		{
-			$params = ($pageNumber > 1) ? array('page' => $pageNumber) : array();
-			$this->getContext()->addLink('canonical', null, LinkHelper::getDocumentUrl($target, null, $params));
-		}
+		$this->getContext()->addCanonicalParam('page', $pageNumber > 1 ? $pageNumber : null, $this->getModuleName());
 	}
 
 	/**

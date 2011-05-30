@@ -20,6 +20,12 @@ class comment_ViewFeedAction extends f_action_BaseAction
 		if ($targetId !== null)
 		{
 			$target = DocumentHelper::getDocumentInstance($targetId);
+			if (f_util_ClassUtils::methodExists($target->getDocumentService(), 'getTargetForComment'))
+			{
+				$target = $target->getDocumentService()->getTargetForComment($target);
+				$targetId = $target->getId();
+			}	
+						
 			if ($target instanceof website_persistentdocument_website)
 			{
 				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByWebsiteId($targetId);
