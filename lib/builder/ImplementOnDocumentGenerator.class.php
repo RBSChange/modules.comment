@@ -12,7 +12,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		$blockName = self::BLOCK_PREFIX.ucfirst($documentName);
 		$this->_generateBlockAction($documentModule, $blockName);
 		$this->_generateBlocksxml($documentModule, $blockName, 'comments');
-		block_BlockService::getInstance()->compileBlocksForPackage('modules_'.$this->name);
+		block_BlockService::getInstance()->compileBlocks();
 	}
 
 	/**
@@ -86,8 +86,8 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		echo "Add $localeId locale in $baseKey package.\n";
 		$ls = LocaleService::getInstance();
 		$keysInfos = array();
-		$keysInfos[$ls->getLCID('fr')] = array($localeId => $blockName);
-		$keysInfos[$ls->getLCID('en')] = array($localeId => $blockName);
+		$keysInfos[$ls->getLCID('fr')] = array('title' => $blockName);
+		$keysInfos[$ls->getLCID('en')] = array('title' => $blockName);
 		$ls->updatePackage($baseKey, $keysInfos, false, true, 'm.comment.bo.blocks.commentbase');
 	}
 
@@ -145,11 +145,9 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		$templateDir = f_util_FileUtils::buildWebeditPath('modules', 'comment', 'templates', 'builder', $folder);
 		$generator = new builder_Generator();
 		$generator->setTemplateDir($templateDir);
-		$generator->assign('author', $this->author);
 		$generator->assign('blockName', $blockName);
 		$generator->assign('module', $this->name);
 		$generator->assign('icon', $icon);
-		$generator->assign('date', $this->date);
 		$docName = strtolower(substr($blockName, strlen(self::BLOCK_PREFIX)));
 		$generator->assign('documentName', $docName);
 		$generator->assign('documentModule', $documentModule);
