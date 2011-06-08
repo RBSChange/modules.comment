@@ -42,4 +42,5 @@
 	<key id="save">enregistrer</key>
 	<key id="will-be-published-after-validation">Ce commentaire ne sera publié qu'après validation.</key>
 	<key id="error-not-logged-in">Vous devez vous connecter pour pouvoir poster un commentaire.</key>
+	<key id="comments-closed-for-this-document">Les commentaires sont fermés pour ce document.</key>
 </i18n>

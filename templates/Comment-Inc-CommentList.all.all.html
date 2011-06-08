@@ -1,5 +1,5 @@
 <a name="comment-list"></a>
-<tal:block change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}" />
+<tal:block change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}" disableRSS="${disableRSS}" />
 
 <tal:block tal:condition="showRatingDistribution" change:block="" inheritedParams="cmpref,filter,sort" module="comment" name="ratingdistribution" />
 

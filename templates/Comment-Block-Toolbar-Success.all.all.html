@@ -21,7 +21,7 @@
 )</p>
 <tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentFilterReset' ; type 'html' ; ratingFilterValue ratingFilterValue; target target; anchor 'comment-toolbar-title'" />
 
-<ul class="mini-navigation">
+<ul class="mini-navigation" tal:condition="not: disableRSS">
 	<li tal:define="targetId target/getId">
 		<img change:img="front/rss.gif" alt="" /> <a class="link" change:link="module comment; action ViewFeed; targetId targetId" i18n:translate="&modules.comment.frontoffice.Rss-link;"></a>
 	</li>

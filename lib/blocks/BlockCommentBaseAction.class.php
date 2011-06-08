@@ -65,21 +65,49 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		// Handle restriction to connected users.
 		$user = users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser();
 		$request->setAttribute('connectToPost', (!$this->allowNotRegistered() && $user === null));
-		
-		// Add the RSS feed.
-		$feedTitle = LocaleService::getInstance()->transFO('m.comment.frontoffice.rss-feed-title', array('ucf'), array('target' => $target->getLabel()));
-		$page = $this->getPage();
-		$page->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
-		
+			
 		// Deal with filters.
 		$ratingFilterValue = $globalRequest->getParameter('filter', null);
 		if ($ratingFilterValue !== null)
 		{
 			$request->setAttribute('ratingFilterValue', comment_RatingService::getInstance()->normalizeRating($ratingFilterValue));
 		}
-
+		
+		// Add the RSS feed.
+		$disableRSS = $this->getDisableRSS($request, $target);
+		$request->setAttribute('disableRSS', $disableRSS);
+		if (!$disableRSS)
+		{
+			$feedTitle = LocaleService::getInstance()->transFO('m.comment.frontoffice.rss-feed-title', array('ucf'), array('target' => $target->getLabel()));
+			$page = $this->getPage();
+			$page->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
+		}
+		
+		// Handle comments closing.
+		$request->setAttribute('closeComments', $this->getCloseComments($request, $target));
+		
 		// Add link rel canonical.
 		$this->addCanonical($target, $pageNumber, $request);
+	}
+	
+	/**
+	 * @param f_mvc_Request $request
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return boolean
+	 */
+	protected function getDisableRSS($request, $target)
+	{
+		return false;
+	}
+	
+	/**
+	 * @param f_mvc_Request $request
+	 * @param f_persistentdocument_PersistentDocument $target
+	 * @return boolean
+	 */
+	protected function getCloseComments($request, $target)
+	{
+		return false;
 	}
 	
 	/**
@@ -193,10 +221,10 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 
 			$comment->setWebsiteId(website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId());
 			$comment->save();
-
+			
 			// Ask validation.
 			$comment->getDocumentService()->frontendValidation($comment);
-
+			
 			$tm->commit();
 		}
 		catch (Exception $e)
