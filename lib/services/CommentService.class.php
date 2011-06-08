@@ -272,7 +272,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		$postedIds = $this->getPostedFromSession();
 		if (f_util_ArrayUtils::isNotEmpty($postedIds))
 		{
-			return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::in('id', $postedIds), $this->getAuthorVisibilityRestriction($user)));
+			return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::in('id', $postedIds), $this->getAuthorVisibilityRestriction()));
 		}
 		else 
 		{
@@ -284,7 +284,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 * @param users_persistentdocument_user $user
 	 * @return f_persistentdocument_criteria_Criterion
 	 */
-	protected function getAuthorVisibilityRestriction($user)
+	protected function getAuthorVisibilityRestriction($user = null)
 	{
 		return Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE'));
 	}
