@@ -84,6 +84,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 				}
 			}
 		}
+		
 		$comment->getDocumentService()->createWorkflowInstance($comment->getId(), array());
 	}
 		
@@ -231,15 +232,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		}
 		else
 		{
-			$postedIds = $this->getPostedFromSession();
-			if (f_util_ArrayUtils::isNotEmpty($postedIds))
-			{
-				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::in('id', $postedIds)));
-			}
-			else 
-			{
-				$query->add(Restrictions::published());
-			}
+			$query->add($this->getAnonymousVisibilityRestriction());
 		}
 		
 		if ($websiteId !== null && $this->filterByWebsite())
@@ -269,6 +262,22 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	protected function getVisitorVisibilityRestriction($user)
 	{
 		return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::eq('authorid', $user->getId()), $this->getAuthorVisibilityRestriction($user)));
+	}
+	
+	/**
+	 * @return f_persistentdocument_criteria_Criterion
+	 */
+	protected function getAnonymousVisibilityRestriction()
+	{
+		$postedIds = $this->getPostedFromSession();
+		if (f_util_ArrayUtils::isNotEmpty($postedIds))
+		{
+			return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::in('id', $postedIds), $this->getAuthorVisibilityRestriction($user)));
+		}
+		else 
+		{
+			return Restrictions::published();
+		}
 	}
 	
 	/**
@@ -632,7 +641,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		$session = Controller::getInstance()->getContext()->getUser();
 		$ids = $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
-		if (!in_array($commentId, $ids))
+		if (!is_array($ids) || !in_array($commentId, $ids))
 		{
 			$ids[] = $commentId;
 			$session->setAttribute('postedComments', $ids, self::SESSION_NAMESPACE);
