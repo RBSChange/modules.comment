@@ -3,7 +3,7 @@
  * @author intportg
  * @package modules.comment.lib.workflowAction
  */
-class comment_BaseCommentWorkflowaction extends workflow_ActivateContentWorkflowaction
+class comment_BaseCommentWorkflowaction extends workflow_BaseWorkflowaction
 {
 	/**
 	 * Send a notification to the document author with the default sender. The notification replacements are returned by the callback function.
@@ -30,7 +30,7 @@ class comment_BaseCommentWorkflowaction extends workflow_ActivateContentWorkflow
 				$notification->setSendingModuleName('workflow');
 			}
 			$recipients = new mail_MessageRecipients();
-			$recipients->setTo($document->getEmail());
+			$recipients->setTo($this->getDocument()->getEmail());
 			return $notification->getDocumentService()->sendNotificationCallback($notification, $recipients, $callback, $callbackParameter);
 		}
 	}

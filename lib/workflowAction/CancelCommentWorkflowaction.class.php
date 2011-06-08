@@ -9,7 +9,7 @@ class comment_CancelCommentWorkflowaction extends comment_BaseCommentWorkflowact
 	 * This method will execute the action.
 	 * @return boolean true if the execution end successfully, false in error case.
 	 */
-	function execute()
+	public function execute()
 	{		
 		// Update the document's status.
 		$document = $this->getDocument();

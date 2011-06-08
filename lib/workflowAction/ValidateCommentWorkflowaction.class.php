@@ -9,7 +9,7 @@ class comment_ValidateCommentWorkflowaction extends comment_BaseCommentWorkflowa
 	 * This method will execute the action.
 	 * @return boolean true if the execution end successfully, false in error case.
 	 */
-	function execute()
+	public function execute()
 	{
 		$decision = $this->getDecision();
 		if ($decision)
