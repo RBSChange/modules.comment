@@ -33,7 +33,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	private function getFullTextForIndexation()
 	{
 		$fullText = $this->getAuthorName();
-		$fullText .= ' ' . website_BBCodeService::getInstance()->toText($this->getContents());
+		$fullText .= ' ' . f_util_StringUtils::htmlToText($this->getContentsAsHtml());
 		return f_util_StringUtils::htmlToText($fullText);
 	}
 	
@@ -77,21 +77,32 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		}
 		return $url;
 	}
-	
+
 	/**
 	 * @return String
 	 */
 	public function getContentsAsHtml()
 	{
-		return website_BBCodeService::getInstance()->ToHtml(parent::getContents());
+		$parser = new website_BBCodeParser();
+		return $parser->convertXmlToHtml($this->getContents());
 	}
-	
+
 	/**
-	 * @return String
+	 * @return string
 	 */
-	public function getContentsAsInput()
+	public function getContentsAsBBCode()
 	{
-		return htmlspecialchars(parent::getContents());
+		$parser = new website_BBCodeParser();
+		return $parser->convertXmlToBBCode($this->getContents());
+	}
+
+	/**
+	 * @param string $bbcode
+	 */
+	public function setContentsAsBBCode($bbcode)
+	{
+		$parser = new website_BBCodeParser();
+		$this->setContents($parser->convertBBCodeToXml($bbcode, 'default'));
 	}
 	
 	/**
