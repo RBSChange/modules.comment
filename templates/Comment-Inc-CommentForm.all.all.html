@@ -26,7 +26,7 @@
 			<label change:fieldlabel="name rating" required="${ratingRequired}"></label>
 			<tal:block change:starrating="" name="rating" />
 		</li>
-		<li><input change:bbcodeinput="name contentsAsBBCode" labeled="true" /></li>
+		<li><input change:bbcodeinput="name contentsAsBBCode" module-profile="comment" labeled="true" /></li>
 		<li tal:condition="not: currentUser">
 			<img change:captcha="key 'comment'" style="vertical-align: bottom;" />
 			<input change:captcha="key 'comment'" />

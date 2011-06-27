@@ -102,7 +102,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	public function setContentsAsBBCode($bbcode)
 	{
 		$parser = new website_BBCodeParser();
-		$this->setContents($parser->convertBBCodeToXml($bbcode, 'default'));
+		$this->setContents($parser->convertBBCodeToXml($bbcode, $parser->getModuleProfile('comment')));
 	}
 	
 	/**
