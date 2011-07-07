@@ -1,30 +1,47 @@
-<h3 tal:condition="php: totalCount LE 1" change:h="" change:translate="&modules.comment.frontoffice.Comment; count totalCount" id="comment-toolbar-title"></h3>
-<h3 tal:condition="php: totalCount GT 1" change:h="" change:translate="&modules.comment.frontoffice.Comments; count totalCount"></h3>
-
-<p class="sort-options" id="sort-options" tal:condition="displaySortOptions">(
-	<tal:block tal:condition="hasFilter">
-		<a tal:condition="php: currentSortOption !== 'date' && currentSortOption !== null" change:link="document target; sort 'date'; anchor 'sort-options'; filter ratingFilterValue" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></a>
-		<span tal:condition="php: currentSortOption == 'date' || currentSortOption == null" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor 'sort-options'; filter ratingFilterValue" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></a>
-		<span tal:condition="php: currentSortOption == 'relevancy'" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor 'sort-options'; filter ratingFilterValue" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></a>
-		<span tal:condition="php: currentSortOption == 'rating'" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></span>			
-	</tal:block>
-	<tal:block tal:condition="not: hasFilter">
-		<a tal:condition="php: currentSortOption !== 'date'" change:link="document target; sort 'date'; anchor 'sort-options'" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></a>
-		<span tal:condition="php: currentSortOption == 'date'" change:translate="&modules.comment.frontoffice.Comments-sort-by-date;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor 'sort-options'" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></a>
-		<span tal:condition="php: currentSortOption == 'relevancy'" change:translate="&modules.comment.frontoffice.Comments-sort-by-relevancy;"></span>,	
-		<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor 'sort-options'" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></a>
-		<span tal:condition="php: currentSortOption == 'rating'" change:translate="&modules.comment.frontoffice.Comments-sort-by-rating;"></span>	
-	</tal:block>
-)</p>
-<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentFilterReset' ; type 'html' ; ratingFilterValue ratingFilterValue; target target; anchor 'comment-toolbar-title'" />
-
 <ul class="mini-navigation" tal:condition="not: disableRSS">
 	<li tal:define="targetId target/getId">
-		<img change:img="front/rss.gif" alt="" /> <a class="link" change:link="module comment; action ViewFeed; targetId targetId" i18n:translate="&modules.comment.frontoffice.Rss-link;"></a>
+		<img change:img="front/rss.gif" alt="" /> <a class="link" change:link="module comment; action ViewFeed; targetId targetId">${trans:m.comment.frontoffice.rss-link,ucf}</a>
 	</li>
 </ul>
+
+<h2 tal:condition="php: totalCount LE 1" change:h="" id="comment-toolbar-title">${trans:m.comment.frontoffice.comment,ucf,count=totalCount}</h2>
+<h2 tal:condition="php: totalCount GT 1" change:h="" id="comment-toolbar-title">${trans:m.comment.frontoffice.comments,ucf,count=totalCount}</h2>
+
+<dl class="normal inline-list" id="sort-options" tal:condition="displaySortOptions">
+	<dt>${trans:m.comment.frontoffice.sort-by,ucf}</dt>
+	<tal:block tal:condition="hasFilter">
+		<dd>
+			<a tal:condition="php: currentSortOption !== 'date' && currentSortOption !== null" change:link="document target; sort 'date'; anchor anchor; filter ratingFilterValue">${trans:m.comment.frontoffice.date}</a>
+			<span tal:condition="php: currentSortOption == 'date' || currentSortOption == null">${trans:m.comment.frontoffice.date}</span>
+			<span>, </span>
+		</dd>
+		<dd>
+			<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor anchor; filter ratingFilterValue">${trans:m.comment.frontoffice.relevancy}</a>
+			<span tal:condition="php: currentSortOption == 'relevancy'">${trans:m.comment.frontoffice.relevancy}</span>
+			<span>, </span>
+		</dd>
+		<dd>
+			<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor anchor; filter ratingFilterValue">${trans:m.comment.frontoffice.rating}</a>
+			<span tal:condition="php: currentSortOption == 'rating'">${trans:m.comment.frontoffice.rating}</span>
+		</dd>
+	</tal:block>
+	<tal:block tal:condition="not: hasFilter">
+		<dd>
+			<a tal:condition="php: currentSortOption !== 'date' && currentSortOption !== null" change:link="document target; sort 'date'; anchor anchor">${trans:m.comment.frontoffice.date}</a>
+			<span tal:condition="php: currentSortOption == 'date' || currentSortOption == null">${trans:m.comment.frontoffice.date}</span>
+			<span>, </span>
+		</dd>
+		<dd>
+			<a tal:condition="php: currentSortOption !== 'relevancy'" change:link="document target; sort 'relevancy';  anchor anchor">${trans:m.comment.frontoffice.relevancy}</a>
+			<span tal:condition="php: currentSortOption == 'relevancy'">${trans:m.comment.frontoffice.relevancy}</span>
+			<span>, </span>
+		</dd>
+		<dd>
+			<a tal:condition="php: currentSortOption !== 'rating'" change:link="document target; sort 'rating'; anchor anchor" >${trans:m.comment.frontoffice.rating}</a>
+			<span tal:condition="php: currentSortOption == 'rating'">${trans:m.comment.frontoffice.rating}</span>
+		</dd>
+	</tal:block>
+</dl>
+<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentFilterReset' ; type 'html' ; ratingFilterValue ratingFilterValue; target target; anchor anchor" />
 
 <div class="cleaner"></div>

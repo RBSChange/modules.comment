@@ -4,6 +4,8 @@
 		<enabled>true</enabled>
 		<visible>false</visible>
 		<icon>messages</icon>
-		<usetopic>true</usetopic>
 	</module>
+	<project>
+		<entry name="add-starrating-styles">true</entry>
+	</project>
 </config>

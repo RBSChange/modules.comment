@@ -1,26 +1,3 @@
-ul.comment-list{
-	list-style: none;
-	display: block;
-}
-ul.comment-list li{
-	margin-bottom: 10px;
-	overflow-y: auto;
-}
-ul.comment-list img.avatar{
-	float: left;
-	margin-right: 5px;
-	margin-bottom: 5px;
-}
-ul.comment-list li.odd{
-	background: #eee;
-	padding: 10px;
-}
-ul.comment-list li.even{
-	padding: 5px;
-}
-ul.comment-list li.current{
-	background: #ddd;
-}
 table.rating-distribution{
 	border: 1px #999 solid;
 	padding: 8px;
@@ -43,13 +20,6 @@ table.rating-distribution td.left-col{
 	padding: 0 10px 0 10px;
 	margin-right: 5px;
 	border-right: 1px #CCC solid;
-}
-ul.mini-navigation{
-	float: right;
-}
-.modules-comment-toolbar h3,
-p.sort-options{
-	display: inline;
 }
 ol.star-rating-accessible,
 ol.star-rating-accessible li{
@@ -128,13 +98,6 @@ ul.star-rating li.star{
 	display: inline-block;
 	vertical-align: middle;
 }
-ul.accessible-hidden{
-	display: none;
-}
-div.comment-preview{
-	margin: 10px 0px 10px 36px;
-	padding-bottom: 10px;
-}
 ul.current-rating.rating-0{
 	width: 0%;
 }
@@ -180,4 +143,7 @@ li.current-rating.rating-100{
 	background-image: url(/media/frontoffice/star_small.gif) ;
 	line-height: 10px;
 	height: 10px;
+}
+ul.accessible-hidden{
+	display: none;
 }

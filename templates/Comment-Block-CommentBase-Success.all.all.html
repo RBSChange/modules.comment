@@ -3,14 +3,13 @@
 		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentList' ; type 'html' ; comments comments ; target target ; offset offset ; totalCount totalCount ; currentCommentId currentCommentId ; showGravatars configuration/getShowgravatars ; enableRating configuration/getEnableRating ; displaySortOptions configuration/getDisplaySortOptions ; enableEvaluation configuration/getEnableEvaluation ; showRatingDistribution configuration/getShowRatingDistribution ; filter filter ; sort sort ; disableRSS disableRSS" />
 	</tal:block>
 	
+	<h2 change:h="" id="leave-comment">${trans:m.comment.frontoffice.leave-a-comment,ucf}</h2>
 	<tal:block tal:condition="closeComments">
-		<h3 change:h="">${trans: m.comment.frontoffice.leave-a-comment,ucf}</h3>
 		<p>${trans: m.comment.frontoffice.comments-closed-for-this-document,ucf}</p>
 	</tal:block>
 	
 	<tal:block tal:condition="not: closeComments">
 		<tal:block tal:condition="connectToPost">
-			<h3 change:h="">${trans: m.comment.frontoffice.leave-a-comment,ucf}</h3>
 			<p>${trans: m.comment.frontoffice.error-not-logged-in,ucf}</p>
 		</tal:block>
 		

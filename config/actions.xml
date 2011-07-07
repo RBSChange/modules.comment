@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actions></actions>
+<actions>
+	<action name="createFolder">
+		<parameter name="listWidget" />
+		<body><![CDATA[this.createDocumentEditor('modules_abcd_folder', listWidget.getSelectedItems()[0].id);]]></body>
+	</action>
+</actions>

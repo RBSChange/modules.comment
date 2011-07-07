@@ -1,8 +1,8 @@
-<p tal:condition="php: ratingFilterValue !== null" class="rating-filter-msg">
+<p tal:condition="php: ratingFilterValue !== null" class="normal rating-filter-msg">
 	<strong>
-		<tal:block tal:condition="php: ratingFilterValue > 1" change:translate="&modules.comment.frontoffice.Showing-rating-review-plural; value ratingFilterValue" />
-		<tal:block tal:condition="php: ratingFilterValue == 1" change:translate="&modules.comment.frontoffice.Showing-rating-review-single;" />
-		<tal:block tal:condition="php: ratingFilterValue == 0" change:translate="&modules.comment.frontoffice.Showing-rating-review-void;" />
+		<tal:block tal:condition="php: ratingFilterValue > 1">${trans:m.comment.frontoffice.showing-rating-review-plural,ucf,value=ratingFilterValue}</tal:block>
+		<tal:block tal:condition="php: ratingFilterValue == 1">${trans:m.comment.frontoffice.showing-rating-review-single,ucf}</tal:block>
+		<tal:block tal:condition="php: ratingFilterValue == 0">${trans:m.comment.frontoffice.showing-rating-review-void,ucf}</tal:block>
 	</strong>
-	<a change:link="document target; anchor anchor" change:translate="&modules.comment.frontoffice.Rating-see-all-comments;"></a>
+	<a change:link="document target; anchor anchor">${trans:m.comment.frontoffice.rating-see-all-comments,ucf}</a>.
 </p>

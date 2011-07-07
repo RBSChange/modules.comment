@@ -1,9 +1,9 @@
 <table class="rating-distribution">
-	<caption change:translate="&modules.comment.frontoffice.Rating-distribution;"></caption>
+	<caption>${trans:m.comment.frontoffice.rating-distribution,ucf}</caption>
 	<thead>
 		<tr>
-			<th class="rating-head" change:translate="&modules.comment.frontoffice.Rating;"></th>
-			<th class="count-head" change:translate="&modules.comment.frontoffice.Comment-count;"></th>
+			<th class="rating-head">${trans:m.comment.frontoffice.rating,ucf}</th>
+			<th class="count-head">${trans:m.comment.frontoffice.comment-count,ucf}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -11,12 +11,12 @@
 			<td class="left-col"><tal:block change:starrating="" value="5" displayOnly="true" small="true" /></td>
 			<td>
 				<tal:block tal:condition="displayRating5Link">
-					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor 'comment-list'; filter '5'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating5Count"></tal:block></a>
-					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '5'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating5Count"></tal:block></a>
+					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '5'">${trans:m.comment.frontoffice.rating-comment-count,count=rating5Count}</a>
+					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '5'">${trans:m.comment.frontoffice.rating-comment-count,count=rating5Count}</a>
 				</tal:block>
 				<tal:block tal:condition="not: displayRating5Link">
-					<span tal:condition="rating5Count" class="current-rating" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating5Count"></span>
-					<tal:block tal:condition="not: rating5Count" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating5Count" />
+					<span tal:condition="rating5Count" class="current-rating">${trans:m.comment.frontoffice.rating-comment-count,count=rating5count}</span>
+					<tal:block tal:condition="not: rating5Count">${trans:m.comment.frontoffice.rating-comment-count,count=rating5count}</tal:block>
 				</tal:block>
 			</td>
 		</tr>
@@ -24,12 +24,12 @@
 			<td class="left-col"><tal:block change:starrating="" value="4" displayOnly="true" small="true" /></td>
 			<td>
 				<tal:block tal:condition="displayRating4Link">
-					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor 'comment-list'; filter '4'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating4Count"></tal:block></a>
-					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '4'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating4Count"></tal:block></a>
+					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '4'">${trans:m.comment.frontoffice.rating-comment-count,count=rating4Count}</a>
+					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '4'">${trans:m.comment.frontoffice.rating-comment-count,count=rating4Count}</a>
 				</tal:block>
 				<tal:block tal:condition="not: displayRating4Link">
-					<span tal:condition="rating4Count" class="current-rating" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating4Count"></span>
-					<tal:block tal:condition="not: rating4Count" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating4Count" />
+					<span tal:condition="rating4Count" class="current-rating">${trans:m.comment.frontoffice.rating-comment-count,count=rating4Count}</span>
+					<tal:block tal:condition="not: rating4Count">${trans:m.comment.frontoffice.rating-comment-count,count=rating4Count}</tal:block>
 				</tal:block>
 			</td>
 		</tr>
@@ -37,12 +37,12 @@
 			<td class="left-col"><tal:block change:starrating="" value="3" displayOnly="true" small="true" /></td>
 			<td>
 				<tal:block tal:condition="displayRating3Link">
-					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '3'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating3Count"></tal:block></a>
-					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '3'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating3Count"></tal:block></a>
+					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '3'">${trans:m.comment.frontoffice.rating-comment-count,count=rating3Count}</a>
+					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '3'">${trans:m.comment.frontoffice.rating-comment-count,count=rating3Count}</a>
 				</tal:block>
 				<tal:block tal:condition="not: displayRating3Link">
-					<span tal:condition="rating3Count" class="current-rating" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating3Count"></span>
-					<tal:block tal:condition="not: rating3Count" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating3Count" />
+					<span tal:condition="rating3Count" class="current-rating">${trans:m.comment.frontoffice.rating-comment-count,count=rating3Count}</span>
+					<tal:block tal:condition="not: rating3Count">${trans:m.comment.frontoffice.rating-comment-count,count=rating3Count}</tal:block>
 				</tal:block>
 			</td>
 		</tr>
@@ -50,12 +50,12 @@
 			<td class="left-col"><tal:block change:starrating="" value="2" displayOnly="true" small="true" /></td>
 			<td>
 				<tal:block tal:condition="displayRating2Link">
-					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '2'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating2Count"></tal:block></a>
-					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '2'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating2Count"></tal:block></a>
+					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '2'">${trans:m.comment.frontoffice.rating-comment-count,count=rating2Count}</a>
+					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '2'">${trans:m.comment.frontoffice.rating-comment-count,count=rating2Count}</a>
 				</tal:block>
 				<tal:block tal:condition="not: displayRating2Link">
-					<span tal:condition="rating2Count" class="current-rating" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating2Count"></span>
-					<tal:block tal:condition="not: rating2Count" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating2Count" />
+					<span tal:condition="rating2Count" class="current-rating">${trans:m.comment.frontoffice.rating-comment-count,count=rating2Count}</span>
+					<tal:block tal:condition="not: rating2Count">${trans:m.comment.frontoffice.rating-comment-count,count=rating2Count}</tal:block>
 				</tal:block>
 			</td>
 		</tr>
@@ -63,12 +63,12 @@
 			<td class="left-col"><tal:block change:starrating="" value="1" displayOnly="true" small="true" /></td>
 			<td>
 				<tal:block tal:condition="displayRating1Link">
-					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '1'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating1Count"></tal:block></a>
-					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '1'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating1Count"></tal:block></a>
+					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '1'">${trans:m.comment.frontoffice.rating-comment-count,count=rating1Count}</a>
+					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '1'">${trans:m.comment.frontoffice.rating-comment-count,count=rating1Count}</a>
 				</tal:block>
 				<tal:block tal:condition="not: displayRating1Link">
-					<span tal:condition="rating1Count" class="current-rating" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating1Count"></span>
-					<tal:block tal:condition="not: rating1Count" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating1Count" />
+					<span tal:condition="rating1Count" class="current-rating">${trans:m.comment.frontoffice.rating-comment-count,count=rating1Count}</span>
+					<tal:block tal:condition="not: rating1Count">${trans:m.comment.frontoffice.rating-comment-count,count=rating1Count}</tal:block>
 				</tal:block>
 			</td>
 		</tr>
@@ -76,24 +76,19 @@
 			<td class="left-col"><tal:block change:starrating="" value="0" displayOnly="true" small="true" /></td>
 			<td>
 				<tal:block tal:condition="displayRating0Link">
-					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '0'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating0Count"></tal:block></a>
-					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '0'"><tal:block change:translate="&modules.comment.frontoffice.rating-comment-count; count rating0Count"></tal:block></a>
+					<a tal:condition="hasSortOption" change:link="document target; sort sortOption; anchor anchor; filter '0'">${trans:m.comment.frontoffice.rating-comment-count,count=rating0Count}</a>
+					<a tal:condition="not: hasSortOption" change:link="document target; anchor anchor; filter '0'">${trans:m.comment.frontoffice.rating-comment-count,count=rating0Count}</a>
 				</tal:block>
 				<tal:block tal:condition="not: displayRating0Link">
-					<span tal:condition="rating0Count" class="current-rating" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating0Count"></span>
-					<tal:block tal:condition="not: rating0Count" change:translate="&modules.comment.frontoffice.rating-comment-count; count rating0Count" />
+					<span tal:condition="rating0Count" class="current-rating">${trans:m.comment.frontoffice.rating-comment-count,count=rating0Count}</span>
+					<tal:block tal:condition="not: rating0Count">${trans:m.comment.frontoffice.rating-comment-count,count=rating0Count}</tal:block>
 				</tal:block>
 			</td>
 		</tr>
 	</tbody>
 	<tfoot>
 		<tr>
-			<th colspan="2" change:translate="&modules.comment.frontoffice.Rating-avg;" />
-		</tr>
-		<tr>
-			<th colspan="2">
-				<tal:block change:starrating="" value="3" displayOnly="true" value="${avgRating}" small="true"/>
-			</th>
+			<th colspan="2">${trans:m.comment.frontoffice.rating-avg,lab,ucf} <tal:block change:starrating="" value="3" displayOnly="true" value="${avgRating}" small="true" /></th>
 		</tr>
 	</tfoot>
 </table>

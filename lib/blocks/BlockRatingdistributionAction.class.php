@@ -6,13 +6,11 @@
 class comment_BlockRatingdistributionAction extends website_BlockAction
 {
 	/**
-	 * @see website_BlockAction::execute()
-	 *
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
 	 * @return String
 	 */
-	function execute($request, $response)
+	public function execute($request, $response)
 	{
 		$target = $this->getDocumentParameter();
 		if ($target === null)
@@ -35,6 +33,7 @@ class comment_BlockRatingdistributionAction extends website_BlockAction
 		$request->setAttribute('totalCount', $totalCount);
 		$request->setAttribute('target', $target);
 		$request->setAttribute('avgRating', comment_CommentService::getInstance()->getRatingAverageByTargetId($target->getId(), $website->getId()));
+		$request->setAttribute('anchor', $request->getParameter('anchor', 'comment-toolbar-title'));
 		return $this->getCommentView(website_BlockView::SUCCESS);
 	}
 	
