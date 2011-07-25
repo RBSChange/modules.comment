@@ -8,15 +8,15 @@
 	<tal:block tal:repeat="comment comments">
 		<li id="${comment/getAnchor}" class="${php: repeat.comment.odd ? 'odd' : 'even'}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
 			<p class="normal comment-info">
-				<a change:currentPageLink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
+				<a change:currentpagelink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
 				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
 				${trans: m.comment.frontoffice.posted-by,ucf}
 				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a>
 				- <tal:block change:datetime="value comment/getCreationdate; format 'classic'" />
 			</p>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
-			<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${comment/getContentsAsHtml}</div>
-			<div tal:condition="php: !comment.isPublished() OR enableEvaluation" class="normal comment-contents">${comment/getContentsAsHtml}</div>
+			<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${structure comment/getContentsAsHtml}</div>
+			<div tal:condition="php: !comment.isPublished() OR enableEvaluation" class="normal comment-contents">${structure ccomment/getContentsAsHtml}</div>
 			<ul tal:condition="php: comment.isPublished() AND enableEvaluation" class="comment-evaluation" tal:define="evaluationcount comment/getEvaluationcount; usefulcount php: intval(comment.getUsefulcount())">
 				<li tal:condition="evaluationcount" class="evaluation-overview">
 					<p tal:condition="php: usefulcount GT 1">${trans: m.comment.frontoffice.comment-useful-stat,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</p>

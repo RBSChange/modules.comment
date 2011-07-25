@@ -1,7 +1,7 @@
 <?php
 // change:starrating
 
-class PHPTAL_Php_Attribute_CHANGE_starrating extends ChangeTalAttribute 
+class PHPTAL_Php_Attribute_CHANGE_Starrating extends ChangeTalAttribute 
 {
 	/**
 	 * @var integer
