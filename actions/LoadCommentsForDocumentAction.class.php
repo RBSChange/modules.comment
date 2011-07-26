@@ -32,11 +32,10 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 			if (count($comments) > 0)
 			{
 				$ps = f_permission_PermissionService::getInstance();
-				$package = 'modules_' . $document->getPersistentModel()->getOriginalModuleName();
+				$package = 'modules_' . $document->getPersistentModel()->getModuleName();
 				$permission = $package . '.Validate.comment';
 				$canValidate = $ps->hasPermission(users_UserService::getInstance()->getCurrentBackEndUser(), $permission, $document->getId());
 				
-				$dateTimeFormat = f_Locale::translateUI('&modules.uixul.bo.datePicker.calendar.dataWriterTimeFormat;');
 				foreach ($comments as $comment)
 				{	
 					$status = $comment->getPublicationstatus();
@@ -53,7 +52,7 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 						}
 					}
 					$commentInfo['tasks'] = $taskData;
-					$commentInfo['creationdate'] = date_DateFormat::format($comment->getUICreationdate(), $dateTimeFormat);			
+					$commentInfo['creationdate'] = date_Formatter::toDefaultDateTimeBO($comment->getUICreationdate());			
 					$commentInfo['authorName'] = $comment->getAuthorName();
 					$commentInfo['email'] = $comment->getEmail();
 					$commentInfo['authorwebsiteurl'] = $comment->getAuthorwebsiteurl();
@@ -67,7 +66,7 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 		}
 		else
 		{
-			return $this->sendJSONError(f_Locale::translateUI('&modules.comment.bo.general.No-comment;'), false);
+			return $this->sendJSONError(LocaleService::getInstance()->transBO('m.comment.bo.general.no-comment'), array('ucf'));
 		}
 		$result['comments'] = $commentsInfo;
 		
@@ -87,7 +86,7 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 	{
 		if (!isset($this->statusLabels[$status]))
 		{
-			$this->statusLabels[$status] = f_Locale::translate('&modules.comment.bo.doceditor.status.' . ucfirst(strtolower($status)) . ';');
+			$this->statusLabels[$status] = LocaleService::getInstance()->transFO('m.comment.bo.doceditor.status.' . strtolower($status), array('ucf'));
 		}
 		return $this->statusLabels[$status];
 	}

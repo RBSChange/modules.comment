@@ -664,7 +664,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		$replacements['commentLabel'] = $comment->getLabelAsHtml();
 		$replacements['commentContent'] = $comment->getContentsAsHtml();
 		$replacements['commentRating'] = $comment->getRating();
-		$replacements['commentCreationDate'] = date_DateFormat::format($comment->getUICreationdate(), date_DateFormat::getDateFormat());
+		$replacements['commentCreationDate'] = date_Formatter::toDefaultDate($comment->getUICreationdate());
 		
 		$target = $comment->getTarget();
 		$replacements['targetId'] = $target->getId();
