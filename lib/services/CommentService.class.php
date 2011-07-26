@@ -575,8 +575,8 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			'target' => f_util_StringUtils::shortenString($target->getLabel(), 125),
 			'author' => f_util_StringUtils::shortenString($document->getAuthorName(), 75)
 		);
-		$document->setLabel(f_Locale::translate('&modules.comment.document.comment.Label-pattern;', $replacements));
-		$document->setTargetdocumentmodel($target->getPersistentModel()->getOriginalModelName());
+		$document->setLabel(LocaleService::getInstance()->transFO('m.comment.document.comment.label-pattern', array('ucf'), $replacements));
+		$document->setTargetdocumentmodel($target->getPersistentModel()->getName());
 	}
 	
 	/**
