@@ -12,7 +12,7 @@
 				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
 				${trans: m.comment.frontoffice.posted-by,ucf}
 				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a>
-				- <tal:block change:datetime="value comment/getCreationdate; format 'classic'" />
+				- <tal:block tal:replace="datetime:comment/getCreationdate,from=gmt" />
 			</p>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
 			<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${structure comment/getContentsAsHtml}</div>

@@ -3,7 +3,7 @@
 		<li class="odd">
 			<div class="normal comment-info">
 				<tal:block change:starrating="" value="${previewComment/getRating}" displayOnly="true" small="true" />
-				${trans:m.comment.frontoffice.posted-by-author,ucf,author=previewComment/getAuthorNameAsHtml} - <tal:block change:datetime="value previewComment/getCreationDate; format 'classic'" />
+				${trans:m.comment.frontoffice.posted-by-author,ucf,author=previewComment/getAuthorNameAsHtml} - <tal:block tal:replace="datetime:previewComment/getCreationDate,from=gmt" />
 			</div>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${previewComment/getGravatarUrl}" alt="" />
 			<div class="normal">${previewComment/getContentsAsHtml}</div>
