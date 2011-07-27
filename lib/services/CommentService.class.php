@@ -691,34 +691,4 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		}
 		return $replacements;
 	}
-	
-	// Deprecated.
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use addVisibilityRestrictions
-	 */
-	protected function addPublishedCommentRestriction($query, $target)
-	{
-		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
-		if ($user === null)
-		{
-			$query->add(Restrictions::published());
-		}
-		else if (!f_permission_PermissionService::getInstance()->hasFrontEndPermission($user, 'modules_' . $target->getPersistentModel()->getModuleName() . '.Validate.comment', $target->getId()))
-		{
-			$query->add(Restrictions::orExp(
-				Restrictions::published(),
-				Restrictions::eq('authorId', $user->getId())
-			));
-		}
-		return $query;
-	}
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use getRSSFeedWriterByTargetId
-	 */
-	public function getRSSFeedWirterByTargetId($targetId)
-	{
-		return $this->getRSSFeedWriterByTargetId($targetId);
-	}
 }

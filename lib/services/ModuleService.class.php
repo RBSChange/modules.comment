@@ -49,14 +49,4 @@ class comment_ModuleService extends ModuleBaseService
 		}
 		return null;
 	}
-	
-	// Deprecated.
-	
-	/**
-	 * @deprecated (will be removed in 4.0) use RequestContext::getClientIp()
-	 */
-	public function getIp()
-	{
-		return RequestContext::getInstance()->getClientIp();
-	}
 }

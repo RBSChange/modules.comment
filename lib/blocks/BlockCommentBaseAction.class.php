@@ -79,8 +79,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		if (!$disableRSS)
 		{
 			$feedTitle = LocaleService::getInstance()->transFO('m.comment.frontoffice.rss-feed-title', array('ucf'), array('target' => $target->getLabel()));
-			$page = $this->getPage();
-			$page->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
+			$this->getContext()->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
 		}
 		
 		// Handle comments closing.
