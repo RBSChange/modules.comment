@@ -162,7 +162,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		// Captcha is tested only for not logged-in users.
 		if ($user === null)
 		{
-			$code = Controller::getInstance()->getContext()->getRequest()->getModuleParameter('form', 'CHANGE_CAPTCHA');
+			$code = change_Controller::getInstance()->getContext()->getRequest()->getModuleParameter('form', 'CHANGE_CAPTCHA');
 			if (!FormHelper::checkCaptchaForKey($code, 'comment'))
 			{
 				$this->addError(LocaleService::getInstance()->transFO('m.comment.frontoffice.error-captcha', array('ucf')));
@@ -205,7 +205,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$this->saveComment($comment);
 
 		$url = LinkHelper::getDocumentUrl($comment);
-		HttpController::getInstance()->redirectToUrl($url);
+		change_Controller::getInstance()->redirectToUrl($url);
 	}
 
 	/**

@@ -633,7 +633,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function addPostedToSession($commentId)
 	{
-		$session = Controller::getInstance()->getContext()->getUser();
+		$session = change_Controller::getInstance()->getContext()->getUser();
 		$ids = $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
 		if (!is_array($ids) || !in_array($commentId, $ids))
 		{
@@ -647,7 +647,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getPostedFromSession()
 	{
-		$session = Controller::getInstance()->getContext()->getUser();
+		$session = change_Controller::getInstance()->getContext()->getUser();
 		return $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
 	}
 	
