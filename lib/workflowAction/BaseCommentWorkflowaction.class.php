@@ -29,9 +29,7 @@ class comment_BaseCommentWorkflowaction extends workflow_BaseWorkflowaction
 			{
 				$notification->setSendingModuleName('workflow');
 			}
-			$recipients = new mail_MessageRecipients();
-			$recipients->setTo($this->getDocument()->getEmail());
-			return $notification->getDocumentService()->sendNotificationCallback($notification, $recipients, $callback, $callbackParameter);
+			return $notification->getDocumentService()->sendNotificationCallback($notification, change_MailService::getInstance()->getRecipientsArray(array($this->getDocument()->getEmail())), $callback, $callbackParameter);
 		}
 	}
 	
