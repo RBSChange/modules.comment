@@ -18,7 +18,7 @@ class comment_BlockRatingdistributionAction extends website_BlockAction
 			return website_BlockView::NONE;
 		}
 		$totalCount = 0;
-		$ratingFilter = f_mvc_HTTPRequest::getInstance()->getParameter('filter');
+		$ratingFilter = change_Controller::getInstance()->getRequest()->getParameter('filter');
 		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
 		foreach (comment_CommentService::getInstance()->getRatingDistributionByTargetId($target->getId(), $website->getId()) as $key => $val)
 		{
@@ -27,7 +27,7 @@ class comment_BlockRatingdistributionAction extends website_BlockAction
 			$request->setAttribute('rating' . $key .'Count', $val);
 			$request->setAttribute('filter'. $key. 'Params', array('filter' => $key));
 		}
-		$sortOption = f_mvc_HTTPRequest::getInstance()->getParameter('sort');
+		$sortOption = change_Controller::getInstance()->getRequest()->getParameter('sort');
 		$request->setAttribute('hasSortOption', $sortOption !== null);
 		$request->setAttribute('sortOption', $sortOption);
 		$request->setAttribute('totalCount', $totalCount);

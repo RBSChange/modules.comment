@@ -42,7 +42,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	protected function loadSuccessView($request)
 	{
-		$globalRequest = f_mvc_HTTPRequest::getInstance();
+		$globalRequest = change_Controller::getInstance()->getRequest();
 		$target = $this->getTarget($request);
 		$request->setAttribute('target', $target);
 		$allComments = $this->getCommentsListByTarget($target);
@@ -319,7 +319,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 
 		// Else look for a comment id.
-		$globalRequest = f_mvc_HTTPRequest::getInstance();
+		$globalRequest = change_Controller::getInstance()->getRequest();
 		$commentId = intval($globalRequest->getParameter('commentId'));
 		if ($commentId)
 		{
@@ -370,7 +370,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	protected function getCommentsListByTarget($target)
 	{
-		$globalRequest = f_mvc_HTTPRequest::getInstance();
+		$globalRequest = change_Controller::getInstance()->getRequest();
 		$ratingFilterValue = $globalRequest->getParameter('filter');
 		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
 		switch ($globalRequest->getParameter('sort', 'date'))

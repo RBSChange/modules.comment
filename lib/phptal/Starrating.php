@@ -36,8 +36,8 @@ class PHPTAL_Php_Attribute_CHANGE_Starrating extends ChangeTalAttribute
 		} 
 		else
 		{
-			$moduleName = f_mvc_HTTPRequest::getInstance ()->getParameter ( 'module' );
-			$moduleValues = f_mvc_HTTPRequest::getInstance ()->getModuleParameters ( $moduleName );
+			$moduleName = change_Controller::getInstance()->getRequest()->getParameter('module');
+			$moduleValues = change_Controller::getInstance()->getRequest()->getModuleParameters($moduleName);
 			$currentValue = $moduleValues [$params ['name']];
 		}
 

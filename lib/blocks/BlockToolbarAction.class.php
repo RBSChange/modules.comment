@@ -14,7 +14,7 @@ class comment_BlockToolbarAction extends website_BlockAction
 	{
 		$request->setAttribute('target', $this->getDocumentParameter());
 		// Deal with filters 
-		$globalRequest = f_mvc_HTTPRequest::getInstance();
+		$globalRequest = change_Controller::getInstance()->getRequest();
 		$ratingFilterValue = $globalRequest->getParameter('filter', null);
 		if ($ratingFilterValue !== null)
 		{
