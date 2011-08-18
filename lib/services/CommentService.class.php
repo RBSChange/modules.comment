@@ -633,12 +633,12 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function addPostedToSession($commentId)
 	{
-		$session = change_Controller::getInstance()->getContext()->getUser();
-		$ids = $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
+		$storage = change_Controller::getInstance()->getStorage();
+		$ids = $storage->read('comment_postedComments');
 		if (!is_array($ids) || !in_array($commentId, $ids))
 		{
 			$ids[] = $commentId;
-			$session->setAttribute('postedComments', $ids, self::SESSION_NAMESPACE);
+			$storage->write('comment_postedComments', $ids);
 		}
 	}
 	
@@ -647,8 +647,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getPostedFromSession()
 	{
-		$session = change_Controller::getInstance()->getContext()->getUser();
-		return $session->getAttribute('postedComments', self::SESSION_NAMESPACE);
+		return change_Controller::getInstance()->getStorage()->read('comment_postedComments');
 	}
 	
 	/**
