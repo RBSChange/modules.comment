@@ -164,4 +164,7 @@
     <locale lang="fr">enregistrer</locale>
     <locale lang="en">save</locale>
   </entity>
+  <entity id="will-be-published-after-validation">
+    <locale lang="fr">Ce commentaire ne sera publié qu'après validation.</locale>
+  </entity>
 </localization>

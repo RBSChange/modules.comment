@@ -6,6 +6,14 @@
 abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 {
 	/**
+	 * @return array
+	 */
+	public function getRequestModuleNames()
+	{
+		return array('comment', $this->getModuleName());
+	}
+	
+	/**
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
 	 * @return String
@@ -41,7 +49,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	
 	/**
 	 * This method loads data for success view.
-	 * @param unknown_type $request
+	 * @param f_mvc_Request $request
 	 */
 	protected function loadSuccessView($request)
 	{
@@ -150,14 +158,41 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	public function executeSave($request, $response, comment_persistentdocument_comment $comment)
 	{
-		$comment->setWebsiteId(website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId());
-		$comment->save();
-		$request->setAttribute('comment', $comment);
+		$this->saveComment($comment);
 		
-		// Ask validation.
-		comment_CommentHelper::validateComment($comment);
-		$request->setAttribute('published', $comment->isPublished());
-		return $this->getCommentView('Save');
+		$url = LinkHelper::getDocumentUrl($comment);
+		HttpController::getInstance()->redirectToUrl($url . '#comment-' . $comment->getId());
+	}
+	
+	/**
+	 * @param funcard_persistentdocument_comment $comment
+	 */
+	protected function saveComment($comment)
+	{
+		$tm = f_persistentdocument_TransactionManager::getInstance();
+		try
+		{
+			$tm->beginTransaction();
+			
+			$comment->setWebsiteId(website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId());
+			$comment->save();
+			
+			// Ask validation.
+			$comment->getDocumentService()->frontendValidation($comment);
+			
+			$tm->commit();
+		}
+		catch (Exception $e)
+		{
+			$tm->rollBack($e);
+			throw $e;
+		}
+
+		$user = users_UserService::getCurrentFrontendUser();
+		if ($user === null)
+		{
+			$comment->getDocumentService()->addPostedToSession($comment->getId());
+		}
 	}
 	
 	/**

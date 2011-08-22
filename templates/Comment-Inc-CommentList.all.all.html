@@ -13,8 +13,9 @@
 				<tal:block tal:condition="not: comment/getAuthorwebsiteurl"><tal:block change:translate="&modules.comment.frontoffice.Posted-by;" /> ${comment/getAuthorNameAsHtml}</tal:block> - <tal:block change:datetime="comment/getCreationdate" />
 			</p>
 			<img tal:condition="showGravatars" class="avatar" src="${comment/getGravatarUrl}" alt="" />
-			<div>${comment/getContentsAsHtml}</div>
-			<ul tal:condition="enableEvaluation"  class="comment-evaluation" tal:define="evaluationcount comment/getEvaluationcount; usefulcount php: intval(comment.getUsefulcount())">
+			<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${comment/getContentsAsHtml}</div>
+			<div tal:condition="php: !comment.isPublished() OR enableEvaluation" class="normal comment-contents">${comment/getContentsAsHtml}</div>
+			<ul tal:condition="php: comment.isPublished() AND enableEvaluation"  class="comment-evaluation" tal:define="evaluationcount comment/getEvaluationcount; usefulcount php: intval(comment.getUsefulcount())">
 				<li tal:condition="evaluationcount" class="evaluation-overview">
 					<tal:block tal:condition="php: usefulcount GT 1"><p change:translate="&modules.comment.frontoffice.Comment-useful-stat; usefulcount usefulcount; evaluationcount evaluationcount" /></tal:block>
 					<tal:block tal:condition="php: usefulcount LT 2"><p change:translate="&modules.comment.frontoffice.Comment-useful-stat-single; usefulcount usefulcount; evaluationcount evaluationcount" /></tal:block>
@@ -32,6 +33,7 @@
 					<p tal:condition="comment/isEvaluatedByCurrentUser" change:translate="&modules.comment.frontoffice.Comment-already-evaluated;"></p>
 				</li>
 			</ul>
+			<p tal:condition="not: comment/isPublished" change:translate="modules.comment.frontoffice.Will-be-published-after-validation"></p>
 		</li>
 	</tal:block>
 </ul>
