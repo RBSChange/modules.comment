@@ -31,7 +31,7 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 			$comments = $cs->getByTargetId($document->getId(), $offset, $limit, $website->getId());
 			if (count($comments) > 0)
 			{
-				$ps = f_permission_PermissionService::getInstance();
+				$ps = change_PermissionService::getInstance();
 				$package = 'modules_' . $document->getPersistentModel()->getModuleName();
 				$permission = $package . '.Validate.comment';
 				$canValidate = $ps->hasPermission(users_UserService::getInstance()->getCurrentBackEndUser(), $permission, $document->getId());

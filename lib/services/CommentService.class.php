@@ -19,7 +19,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		if (self::$instance === null)
 		{
-			self::$instance = self::getServiceClassInstance(get_class());
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -96,7 +96,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	private function hasPermission($user, $permission, $target)
 	{
-		$ps = f_permission_PermissionService::getInstance();
+		$ps = change_PermissionService::getInstance();
 		$result = $ps->hasExplicitPermission($user, $permission, $target->getId());
 		return $result;
 	}
@@ -145,7 +145,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getValidators($comment)
 	{
-		$ps = f_permission_PermissionService::getInstance();
+		$ps = change_PermissionService::getInstance();
 		$permission = $this->getValidatePermissionNameByTarget($comment->getTarget());
 		$package = f_util_ArrayUtils::firstElement(explode('.', $permission));
 		$definitionPoint = $ps->getDefinitionPointForPackage($comment->getTargetId(), $package);
