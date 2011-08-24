@@ -3,7 +3,7 @@
  * comment_persistentdocument_comment
  * @package comment.persistentdocument
  */
-class comment_persistentdocument_comment extends comment_persistentdocument_commentbase implements indexer_IndexableDocument, rss_Item
+class comment_persistentdocument_comment extends comment_persistentdocument_commentbase implements rss_Item
 {
 	/**
 	 * Meta used to mark a document as commented by some comment
@@ -11,31 +11,6 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	 */
 	const COMMENTED_META = "modules.comment.commented";
 	
-	/**
-	 * Get the indexable document
-	 *
-	 * @return indexer_IndexedDocument
-	 */
-	public function getIndexedDocument()
-	{
-		$indexedDoc = new indexer_IndexedDocument();
-		$indexedDoc->setId($this->getId());
-		$indexedDoc->setDocumentModel('modules_comment/comment');
-		$indexedDoc->setLabel($this->getLabel());
-		$indexedDoc->setLang($this->getLang());
-		$indexedDoc->setText($this->getFullTextForIndexation());
-		return $indexedDoc;
-	}
-	
-	/**
-	 * @return String
-	 */
-	private function getFullTextForIndexation()
-	{
-		$fullText = $this->getAuthorName();
-		$fullText .= ' ' . f_util_StringUtils::htmlToText($this->getContentsAsHtml());
-		return f_util_StringUtils::htmlToText($fullText);
-	}
 	
 	/**
 	 * @return f_persistentdocument_PersistentDocument

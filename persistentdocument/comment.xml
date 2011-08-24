@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/3.5.xsd"
+	xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/4.0.xsd"
 	model-version="1.0" publish-on-day-change="false" 
 	indexable="true" use-rewrite-url="false"
 	backoffice-indexable="false" icon="message">
 	<properties>
-		<add name="authorName" type="String" min-occurs="1" />
-		<add name="email" type="String" min-occurs="1">
+		<add name="authorName" type="String" min-occurs="1" indexed="property"/>
+		<add name="email" type="String" min-occurs="1" indexed="none">
 			<constraints>email:true</constraints>
 		</add>
-		<add name="contents" type="LongString" min-occurs="1" />
+		<add name="contents" type="LongString" min-occurs="1" indexed="description"/>
 		<add name="targetId" type="Integer" min-occurs="1" />
-		<add name="targetdocumentmodel" type="String" min-occurs="1" />
+		<add name="targetdocumentmodel" type="String" min-occurs="1" indexed="none"/>
 		<add name="websiteId" type="Integer" />
 		<add name="rating" type="Integer" default-value="0"/>
 		<add name="usefulcount" type="Integer" />
 		<add name="uselesscount" type="Integer" />
 		<add name="relevancy" type="Double" />
-		<add name="authorwebsiteurl" type="String" >
+		<add name="authorwebsiteurl" type="String"  indexed="none">
 			<constraints>url:true</constraints>
 		</add>
 		<add name="private" type="Boolean" default-value="false" />

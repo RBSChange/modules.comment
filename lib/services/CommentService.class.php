@@ -281,6 +281,14 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	/**
+	 * @see f_persistentdocument_DocumentService::updateIndexDocument()
+	 */
+	protected function updateIndexDocument($indexedDocument, $document, $indexService)
+	{
+		$indexedDocument->setDocumentModel('modules_comment/comment');
+	}
+
+	/**
 	 * @param users_persistentdocument_user $user
 	 * @return f_persistentdocument_criteria_Criterion
 	 */
