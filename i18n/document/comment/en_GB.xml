@@ -21,7 +21,7 @@
   <key id="rating">rating</key>
   <key id="rating-help">rating given by the author</key>
   <key id="authorwebsiteurl">author's website</key>
-  <key id="authorwebsiteurl-help">the auhtor's website URL</key>
+  <key id="authorwebsiteurl-help">the author's website URL</key>
   <key id="view-website">view website</key>
   <key id="label-pattern">comment on ″{target}″ by {author}</key>
 </i18n>
