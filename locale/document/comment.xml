@@ -98,7 +98,7 @@
   </entity>
   <entity id="authorwebsiteurl-help">
     <locale lang="fr">URL du site web de l'auteur</locale>
-    <locale lang="en">the auhtor's website URL</locale>
+    <locale lang="en">the author's website URL</locale>
   </entity>
   <entity id="view-website">
     <locale lang="fr">voir le site</locale>
