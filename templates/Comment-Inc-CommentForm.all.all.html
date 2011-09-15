@@ -6,7 +6,7 @@
 				${trans:m.comment.frontoffice.posted-by-author,ucf,author=previewComment/getAuthorNameAsHtml} - <tal:block tal:replace="datetime:previewComment/getCreationDate,from=gmt" />
 			</div>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${previewComment/getGravatarUrl}" alt="" />
-			<div class="normal">${previewComment/getContentsAsHtml}</div>
+			<div class="normal">${structure previewComment/getContentsAsHtml}</div>
 			<p class="warning">${trans:m.comment.frontoffice.this-is-only-preview,ucf}</p>
 			<div class="cleaner"></div>
 		</li>

@@ -11,7 +11,7 @@
 				<a change:currentpagelink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
 				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
 				${trans: m.comment.frontoffice.posted-by,ucf}
-				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a>
+				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${structure comment/getAuthorNameAsHtml}</a>
 				- <tal:block tal:replace="datetime:comment/getCreationdate,from=gmt" />
 			</p>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
