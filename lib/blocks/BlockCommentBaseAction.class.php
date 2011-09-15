@@ -305,6 +305,8 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 
 	/**
 	 * @param f_mvc_Request $request
+	 * @param integer $itemPerPage
+	 * @param comment_persistentodcument_comment[] $allComments
 	 */
 	protected function getPageNumber($request, $itemPerPage, $allComments)
 	{
