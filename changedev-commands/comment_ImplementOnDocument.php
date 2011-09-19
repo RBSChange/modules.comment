@@ -2,7 +2,7 @@
 /**
  * @package modules.comment
  */
-class commands_comment_ImplementOnDocument extends commands_AbstractChangeCommand
+class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 {
 	/**
 	 * @return String
@@ -85,8 +85,8 @@ class commands_comment_ImplementOnDocument extends commands_AbstractChangeComman
 		// Recompile locales for module.
 		$this->message("Recompile locales for module $destModuleName.");
 		LocaleService::getInstance()->regenerateLocalesForModule($destModuleName);
-		$this->getParent()->executeCommand('clear-webapp-cache');
-		$this->getParent()->executeCommand('clear-template-cache');
+		$this->executeCommand('clear-webapp-cache');
+		$this->executeCommand('clear-template-cache');
 		
 		$this->quitOk("Block 'CommentsOn$documentName' added in module '$destModuleName' and ready to use.
 To specialize rendering, add the following templates:
