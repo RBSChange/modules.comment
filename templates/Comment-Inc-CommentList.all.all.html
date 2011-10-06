@@ -46,7 +46,7 @@
 				    <li class="fn">${structure comment/getAuthorNameAsHtml}</li>
 				    <li class="url">${comment/getAuthorwebsiteurl}</li>
 				</ul>
-				<span class="dtreviewed">${php: date('c', date_Calendar::getInstance(comment.getCreationdate()).getTimestamp())}</span>
+				<span class="dtreviewed">${datetime:comment/getCreationdate, 'c'}</span>
 				<ul class="rating">
 				    <li class="value">${php: number_format(comment.getRating(),1)}</li>
 				</ul>
