@@ -7,36 +7,54 @@
 <ul tal:condition="comments" class="document-list">
 	<tal:block tal:repeat="comment comments">
 		<li id="${comment/getAnchor}" class="${php: repeat.comment.odd ? 'odd' : 'even'}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
-			<p class="normal comment-info">
-				<a change:currentpagelink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
-				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
-				${trans: m.comment.frontoffice.posted-by,ucf}
-				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${structure comment/getAuthorNameAsHtml}</a>
-				- <tal:block tal:replace="datetime:comment/getCreationdate,from=gmt" />
-			</p>
-			<img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
-			<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${structure comment/getContentsAsHtml}</div>
-			<div tal:condition="php: !comment.isPublished() OR enableEvaluation" class="normal comment-contents">${structure ccomment/getContentsAsHtml}</div>
-			<ul tal:condition="php: comment.isPublished() AND enableEvaluation" class="comment-evaluation" tal:define="evaluationcount comment/getEvaluationcount; usefulcount php: intval(comment.getUsefulcount())">
-				<li tal:condition="evaluationcount" class="evaluation-overview">
-					<p tal:condition="php: usefulcount GT 1">${trans: m.comment.frontoffice.comment-useful-stat,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</p>
-					<p tal:condition="php: usefulcount LT 2">${trans: m.comment.frontoffice.comment-useful-stat-single,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</p>
-				</li>
-				<li tal:condition="not: evaluationcount" class="evaluation-overview">
-					<p>${trans: m.comment.frontoffice.comment-be-first,ucf}</p>
-				</li>
-				<li>
-					<form class="comment-evaluation" tal:condition="not: comment/isEvaluatedByCurrentUser" change:form="" id="evaluate_${comment/getId}" action="#${comment/getAnchor}">
-						<input change:hiddeninput="name commentId; value comment/getId" />
-						<span>${trans: m.comment.frontoffice.was-this-comment-useful,ucf}</span>
-						<input change:submit="name rateUseful" labeli18n="m.comment.frontoffice.comment-useful-button" />
-						<input change:submit="name rateUseless" labeli18n="m.comment.frontoffice.comment-useless-button" />
-					</form>
-					<p tal:condition="comment/isEvaluatedByCurrentUser">${trans: m.comment.frontoffice.comment-already-evaluated,ucf}</p>
-				</li>
-			</ul>
-			<p tal:condition="not: comment/isPublished">${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</p>
-			<div class="cleaner"></div>
+		    <div class="hreview">
+			    <p class="normal comment-info">
+				    <a change:currentpagelink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a>
+				    <tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating" />
+			    ${trans: m.comment.frontoffice.posted-by,ucf}
+				    <a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${structure comment/getAuthorNameAsHtml}</a>
+				    - <tal:block tal:replace="datetime:comment/getCreationdate,from=gmt" />
+			    </p>
+			    <img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
+			    <div class="description">
+				<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${structure comment/getContentsAsHtml}</div>
+				<div tal:condition="php: !comment.isPublished() OR enableEvaluation" class="normal comment-contents">${structure comment/getContentsAsHtml}</div>
+			    </div>
+			    <ul tal:condition="php: comment.isPublished() AND enableEvaluation" class="comment-evaluation" tal:define="evaluationcount comment/getEvaluationcount; usefulcount php: intval(comment.getUsefulcount())">
+				    <li tal:condition="evaluationcount" class="evaluation-overview">
+					    <p tal:condition="php: usefulcount GT 1">${trans: m.comment.frontoffice.comment-useful-stat,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</p>
+					    <p tal:condition="php: usefulcount LT 2">${trans: m.comment.frontoffice.comment-useful-stat-single,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</p>
+				    </li>
+				    <li tal:condition="not: evaluationcount" class="evaluation-overview">
+					    <p>${trans: m.comment.frontoffice.comment-be-first,ucf}</p>
+				    </li>
+				    <li>
+					    <form class="comment-evaluation" tal:condition="not: comment/isEvaluatedByCurrentUser" change:form="" id="evaluate_${comment/getId}" action="#${comment/getAnchor}">
+						    <input change:hiddeninput="name commentId; value comment/getId" />
+						    <span>${trans: m.comment.frontoffice.was-this-comment-useful,ucf}</span>
+						    <input change:submit="name rateUseful" labeli18n="m.comment.frontoffice.comment-useful-button" />
+						    <input change:submit="name rateUseless" labeli18n="m.comment.frontoffice.comment-useless-button" />
+					    </form>
+					    <p tal:condition="comment/isEvaluatedByCurrentUser">${trans: m.comment.frontoffice.comment-already-evaluated,ucf}</p>
+				    </li>
+			    </ul>
+			    <p tal:condition="not: comment/isPublished">${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</p>
+			    <div class="cleaner"></div>
+			    <!-- microformat hidden informations -->
+			    <div style="display: none">
+				<ul class="reviewer vcard">
+				    <li class="fn">${structure comment/getAuthorNameAsHtml}</li>
+				    <li class="url">${comment/getAuthorwebsiteurl}</li>
+				</ul>
+				<span class="dtreviewed">${php: date('c', date_Calendar::getInstance(comment.getCreationdate()).getTimestamp())}</span>
+				<ul class="rating">
+				    <li class="value">${php: number_format(comment.getRating(),1)}</li>
+				</ul>
+				<ul class="item">
+				    <li class="url">${php: linkHelper::getCurrentUrl() . '#' . comment.getAnchor()}</li>
+				</ul>
+			    </div>
+		    </div>
 		</li>
 	</tal:block>
 </ul>
