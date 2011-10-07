@@ -218,7 +218,10 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			}
 			else 
 			{
-				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::eq('authorid', $user->getId())));
+				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::andExp(
+					Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE')), 
+					Restrictions::eq('authorid', $user->getId())
+				)));
 			}
 		}
 		else
@@ -226,7 +229,10 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			$postedIds = $this->getPostedFromSession();
 			if (f_util_ArrayUtils::isNotEmpty($postedIds))
 			{
-				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::in('id', $postedIds)));
+				$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::andExp(
+					Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE')), 
+					Restrictions::in('id', $postedIds)
+				)));
 			}
 			else 
 			{
