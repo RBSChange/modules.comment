@@ -15,7 +15,7 @@ class comment_InitFormInfoLoadHandler extends website_ViewLoadHandlerImpl
 	 */
 	function execute($request, $response)
 	{
-		$currentUser = users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser();
+		$currentUser = users_UserService::getInstance()->getCurrentFrontEndUser();
 		$request->setAttribute('currentUser', $currentUser);
 	}
 }

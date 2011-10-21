@@ -32,7 +32,7 @@ class comment_ViewFeedAction extends change_Action
 			}
 			else 
 			{
-				$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+				$website = website_WebsiteService::getInstance()->getCurrentWebsite();
 				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
 			}
 			

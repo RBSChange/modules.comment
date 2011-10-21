@@ -19,7 +19,7 @@ class comment_BlockRatingdistributionAction extends website_BlockAction
 		}
 		$totalCount = 0;
 		$ratingFilter = change_Controller::getInstance()->getRequest()->getParameter('filter');
-		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+		$website = website_WebsiteService::getInstance()->getCurrentWebsite();
 		foreach (comment_CommentService::getInstance()->getRatingDistributionByTargetId($target->getId(), $website->getId()) as $key => $val)
 		{
 			$totalCount += $val;

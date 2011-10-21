@@ -12,7 +12,7 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 	public function _execute($context, $request)
 	{
 		$cs = comment_CommentService::getInstance();
-		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+		$website = website_WebsiteService::getInstance()->getCurrentWebsite();
 		$result = array();
 		$document = $this->getDocumentInstanceFromRequest($request);
 		$result['total'] = $cs->getCountByTargetId($document->getId(), $website->getId());
@@ -34,7 +34,7 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 				$ps = change_PermissionService::getInstance();
 				$package = 'modules_' . $document->getPersistentModel()->getModuleName();
 				$permission = $package . '.Validate.comment';
-				$canValidate = $ps->hasPermission(users_UserService::getInstance()->getCurrentBackEndUser(), $permission, $document->getId());
+				$canValidate = $ps->hasPermission(users_UserService::getInstance()->getCurrentUser(), $permission, $document->getId());
 				
 				foreach ($comments as $comment)
 				{	

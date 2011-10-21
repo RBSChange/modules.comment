@@ -73,11 +73,11 @@ class PHPTAL_Php_Attribute_CHANGE_Starrating extends ChangeTalAttribute
 		echo '<li class="current-rating rating-'.$currentRating .' star">'. $ls->transFO('m.comment.frontoffice.current-star-rating', array(), array("rating" => round(floatval($params['value'])))) .'</li>';
 		if ($params['displayOnly'] === false)
 		{
-			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-1;') .'" class="one-star'. ($currentValue == 1 ? ' clicked' : '') .'">1</a></li>';
-			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-2;') .'" class="two-stars'. ($currentValue == 2 ? ' clicked' : '') .'">2</a></li>';
-			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-3;') .'" class="three-stars'. ($currentValue == 3 ? ' clicked' : '') .'">3</a></li>';
-			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-4;') .'" class="four-stars'. ($currentValue == 4 ? ' clicked' : '') .'">4</a></li>';
-			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-5;') .'" class="five-stars'. ($currentValue == 5 ? ' clicked' : '') .'">5</a></li>';
+			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-1') .'" class="one-star'. ($currentValue == 1 ? ' clicked' : '') .'">1</a></li>';
+			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-2') .'" class="two-stars'. ($currentValue == 2 ? ' clicked' : '') .'">2</a></li>';
+			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-3') .'" class="three-stars'. ($currentValue == 3 ? ' clicked' : '') .'">3</a></li>';
+			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-4') .'" class="four-stars'. ($currentValue == 4 ? ' clicked' : '') .'">4</a></li>';
+			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-5') .'" class="five-stars'. ($currentValue == 5 ? ' clicked' : '') .'">5</a></li>';
 		}
 		echo '</ul>';
 		if ($params['inline'] == true)

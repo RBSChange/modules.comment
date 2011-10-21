@@ -412,7 +412,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
 		}
-		$user = users_FrontenduserService::getInstance()->getCurrentFrontEndUser();
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
 		
 		$target = DocumentHelper::getDocumentInstance($targetId);
 		$targetService = $target->getDocumentService();

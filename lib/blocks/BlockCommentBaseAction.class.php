@@ -63,7 +63,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		
 		// Handle restriction to connected users.
-		$user = users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser();
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
 		$request->setAttribute('connectToPost', (!$this->allowNotRegistered() && $user === null));
 			
 		// Deal with filters.
@@ -144,7 +144,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	public function validateSaveInput($request, $bean)
 	{
 		// Check if the user is connected.
-		$user = users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser();
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
 		if (!$this->allowNotRegistered() && $user === null)
 		{
 			$this->addError(LocaleService::getInstance()->transFO('m.comment.frontoffice.error-not-logged-in', array('ucf')));
@@ -218,7 +218,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		{
 			$tm->beginTransaction();
 
-			$comment->setWebsiteId(website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId());
+			$comment->setWebsiteId(website_WebsiteService::getInstance()->getCurrentWebsite()->getId());
 			$comment->save();
 			
 			// Ask validation.
@@ -374,7 +374,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		$globalRequest = change_Controller::getInstance()->getRequest();
 		$ratingFilterValue = $globalRequest->getParameter('filter');
-		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
+		$website = website_WebsiteService::getInstance()->getCurrentWebsite();
 		switch ($globalRequest->getParameter('sort', 'date'))
 		{
 			case 'relevancy':
