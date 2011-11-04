@@ -208,6 +208,16 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	/**
+	 * @param integer $userId
+	 * @return integer
+	 */
+	public function getCountByAuthorid($userId)
+	{
+		$row = $this->createQuery()->add(Restrictions::eq('authorid', $userId))->setProjection(Projections::rowCount('nb'))->findUnique();
+		return $row['nb'];
+	}
+	
+	/**
 	 * @param f_persistentdocument_criteria_Query $query
 	 * @param Integer $targetId
 	 * @param Integer $ratingValue

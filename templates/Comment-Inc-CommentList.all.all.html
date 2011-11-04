@@ -15,7 +15,8 @@
 				    <a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${structure comment/getAuthorNameAsHtml}</a>
 				    - <tal:block tal:replace="datetime:comment/getCreationdate,from=gmt" />
 			    </p>
-			    <img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
+			    
+			    <img tal:condition="showGravatars" class="avatar document-visual" change:avatar="email comment/getEmail; user comment/getAuthoridInstance" size="48" />
 			    <div class="description">
 				<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${structure comment/getContentsAsHtml}</div>
 				<div tal:condition="php: !comment.isPublished() OR enableEvaluation" class="normal comment-contents">${structure comment/getContentsAsHtml}</div>

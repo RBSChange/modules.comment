@@ -35,23 +35,6 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	{
 		return 'comment-'.$this->getId();
 	}
-	
-	/**
-	 * @see http://fr.gravatar.com/site/implement/url
-	 * @param Integer $size
-	 * @param String $defaultImageUrl
-	 * @param String $rating
-	 * @return String 
-	 */
-	public function getGravatarUrl($size = '48', $defaultImageUrl = '', $rating = 'g')
-	{
-		$url = 'http://www.gravatar.com/avatar/'.md5($this->getEmail()).'?s='.$size.'&amp;r='.$rating;
-		if ($defaultImageUrl)
-		{
-			$url .= '&amp;d='.urlencode($defaultImageUrl);
-		}
-		return $url;
-	}
 
 	/**
 	 * @return String
@@ -224,5 +207,20 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	public function getSummary($maxLength = 80)
 	{
 		return f_util_StringUtils::shortenString(f_util_StringUtils::htmlToText($this->getContentsAsHtml()), $maxLength);
+	}
+	
+	// Deprecated
+
+	/**
+	 * @deprecated use change:avatar
+	 */
+	public function getGravatarUrl($size = '48', $defaultImageUrl = '', $rating = 'g')
+	{
+		$url = 'http://www.gravatar.com/avatar/'.md5($this->getEmail()).'?s='.$size.'&amp;r='.$rating;
+		if ($defaultImageUrl)
+		{
+			$url .= '&amp;d='.urlencode($defaultImageUrl);
+		}
+		return $url;
 	}
 }
