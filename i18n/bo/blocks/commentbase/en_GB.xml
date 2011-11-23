@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<i18n baseKey="m.comment.bo.blocks.comment" lcid="en_GB">
-	<key id="nbitemperpage">comments per page</key>
-	<key id="nbitemperpage-help">comments per page</key>
-	<key id="allownotregistered">enable anonymous comments</key>
-	<key id="allownotregistered-help">Allow non-logged users to post comments.</key>
-	<key id="enablerating">enable rating</key>
-	<key id="enablerating-help">activate rating</key>
-	<key id="showratingdistribution">show rating distribution</key>
-	<key id="showratingdistribution-help">show rating distribution</key>
-	<key id="displaysortoptions">enable sorting</key>
-	<key id="displaysortoptions-help">enable sorting of comments</key>
-	<key id="enableevaluation">enable evaluation</key>
-	<key id="enableevaluation-help">enable evaluation of comments</key>
-	<key id="showgravatars">show avatar</key>
-	<key id="showgravatars-help">show avatar (www.gravatar.com)</key>
+<i18n baseKey="m.comment.bo.blocks.commentbase" lcid="en_GB">
+  <key id="nbitemperpage">comments per page</key>
+  <key id="nbitemperpage-help">Number of comments to display per page.</key>
+  <key id="allownotregistered">enable anonymous comments</key>
+  <key id="allownotregistered-help">Allows or forbids non-logged in users to post comments.</key>
+  <key id="enablerating">enable rating</key>
+  <key id="enablerating-help">Enables er disables rating.</key>
+  <key id="showratingdistribution">display ratings distribution</key>
+  <key id="showratingdistribution-help">Display the distribution of given ratings.</key>
+  <key id="displaysortoptions">enable sorting</key>
+  <key id="displaysortoptions-help">Enables comment sorting.</key>
+  <key id="enableevaluation">enable evaluation</key>
+  <key id="enableevaluation-help">Enables rating of comments.</key>
+  <key id="showgravatars">display avatar</key>
+  <key id="showgravatars-help">Display avatar using www.gravatar.com (according to the email address).</key>
 </i18n>

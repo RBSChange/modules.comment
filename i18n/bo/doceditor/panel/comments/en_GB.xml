@@ -3,9 +3,9 @@
   <key id="date">date</key>
   <key id="status">status</key>
   <key id="author-name">author's name</key>
-  <key id="author-email">author's e-mail</key>
-  <key id="author-website">author's web site</key>
+  <key id="author-email">author's email</key>
+  <key id="author-website">author's website</key>
   <key id="rating">rating</key>
-  <key id="relevancy">relevancy</key>
+  <key id="relevancy">relevance</key>
   <key id="short-text">short text</key>
 </i18n>
