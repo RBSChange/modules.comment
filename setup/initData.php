@@ -7,10 +7,6 @@ class comment_Setup extends object_InitDataSetup
 	public function install()
 	{
 		$this->executeModuleScript('init.xml');
-		@copy(f_util_FileUtils::buildWebeditPath('modules', 'comment', 'setup', 'media', 'star.gif'), 
-			f_util_FileUtils::buildWebeditPath('media', 'frontoffice', 'star.gif'));
-		@copy(f_util_FileUtils::buildWebeditPath('modules', 'comment', 'setup', 'media', 'star_small.gif'), 
-			f_util_FileUtils::buildWebeditPath('media', 'frontoffice', 'star_small.gif'));	
 	}
 
 	/**
