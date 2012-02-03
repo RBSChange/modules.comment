@@ -1,4 +1,6 @@
-<tal:block change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}" disableRSS="${disableRSS}" />
+<div class="normal">
+	<tal:block change:block="displaySortOptions displaySortOptions" inheritedParams="cmpref,filter,sort" module="comment" name="toolbar" totalCount="${totalCount}" disableRSS="${disableRSS}" />
+</div>
 
 <div tal:condition="showRatingDistribution" class="normal">
 	<tal:block change:block="" inheritedParams="cmpref,filter,sort" module="comment" name="ratingdistribution" />
@@ -6,36 +8,35 @@
 
 <ul tal:condition="comments" class="document-list">
 	<tal:block tal:repeat="comment comments">
-		<li id="${comment/getAnchor}" class="${php: repeat.comment.odd ? 'odd' : 'even'}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
-			<p class="normal comment-info">
+		<li id="${comment/getAnchor}" class="${alternateclass:commentIndex}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
+			<div class="normal meta-info">
 				<a change:currentPageLink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
 				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
 				${trans: m.comment.frontoffice.posted-by,ucf}
-				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a>
-				- <tal:block change:datetime="value comment/getCreationdate; format 'classic'" />
-			</p>
+				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a><span class="separator"> - </span>
+				<tal:block change:datetime="value comment/getCreationdate; format 'classic'" />
+			</div>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
-			<div tal:condition="php: comment.isPublished() AND !enableEvaluation" class="comment-contents">${comment/getContentsAsHtml}</div>
-			<div tal:condition="php: !comment.isPublished() OR enableEvaluation" class="normal comment-contents">${comment/getContentsAsHtml}</div>
-			<ul tal:condition="php: comment.isPublished() AND enableEvaluation" class="comment-evaluation" tal:define="evaluationcount comment/getEvaluationcount; usefulcount php: intval(comment.getUsefulcount())">
-				<li tal:condition="evaluationcount" class="evaluation-overview">
-					<p tal:condition="php: usefulcount GT 1">${trans: m.comment.frontoffice.comment-useful-stat,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</p>
-					<p tal:condition="php: usefulcount LT 2">${trans: m.comment.frontoffice.comment-useful-stat-single,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</p>
-				</li>
-				<li tal:condition="not: evaluationcount" class="evaluation-overview">
-					<p>${trans: m.comment.frontoffice.comment-be-first,ucf}</p>
-				</li>
-				<li>
-					<form class="comment-evaluation" tal:condition="not: comment/isEvaluatedByCurrentUser" change:form="" id="evaluate_${comment/getId}" action="#${comment/getAnchor}">
+			<div class="normal comment-contents">${comment/getContentsAsHtml}</div>
+			<tal:block tal:condition="php: comment.isPublished() AND enableEvaluation" class="normal-margin comment-evaluation" tal:define="evaluationcount comment/getEvaluationcount; usefulcount php: intval(comment.getUsefulcount())">
+				<p class="normal evaluation-overview">
+					<tal:block tal:condition="evaluationcount">
+						<tal:block tal:condition="php: usefulcount GT 1">${trans: m.comment.frontoffice.comment-useful-stat,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</tal:block>
+						<tal:block tal:condition="php: usefulcount LT 2">${trans: m.comment.frontoffice.comment-useful-stat-single,ucf,usefulcount=usefulcount,evaluationcount=evaluationcount}</tal:block>
+					</tal:block>
+					<tal:block tal:condition="not: evaluationcount">${trans: m.comment.frontoffice.comment-be-first,ucf}</tal:block>
+				</p>
+				<form class="normal-margin comment-evaluation" tal:condition="not: comment/isEvaluatedByCurrentUser" change:form="" id="evaluate_${comment/getId}" action="#${comment/getAnchor}">
+					<div>
 						<input change:hiddeninput="name commentId; value comment/getId" />
 						<span>${trans: m.comment.frontoffice.was-this-comment-useful,ucf}</span>
 						<input change:submit="name rateUseful" labeli18n="m.comment.frontoffice.comment-useful-button" />
 						<input change:submit="name rateUseless" labeli18n="m.comment.frontoffice.comment-useless-button" />
-					</form>
-					<p tal:condition="comment/isEvaluatedByCurrentUser">${trans: m.comment.frontoffice.comment-already-evaluated,ucf}</p>
-				</li>
-			</ul>
-			<p tal:condition="not: comment/isPublished">${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</p>
+					</div>
+				</form>
+				<p tal:condition="comment/isEvaluatedByCurrentUser" class="normal">${trans: m.comment.frontoffice.comment-already-evaluated,ucf}</p>
+			</tal:block>
+			<p tal:condition="not: comment/isPublished" class="normal">${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</p>
 			<div class="cleaner"></div>
 		</li>
 	</tal:block>

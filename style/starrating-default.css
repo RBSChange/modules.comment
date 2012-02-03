@@ -93,8 +93,6 @@ ul.star-rating li.star{
 	background-position: left center;
 }
 .inline-rating{
-	display: -moz-inline-block;
-	display: -moz-inline-box;
 	display: inline-block;
 	vertical-align: middle;
 }

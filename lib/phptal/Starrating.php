@@ -53,19 +53,11 @@ class PHPTAL_Php_Attribute_CHANGE_starrating extends ChangeTalAttribute
 			echo '<label for="rating-accessible-input-' . self::$idCounter . '-5" class="option-label">5</label><input id="rating-accessible-input-' .  self::$idCounter . '-5" value="5" ' . ($currentValue == 5 ? 'checked="checked"' : '') . ' name="' . $moduleName . 'Param[' .  $params['name'] . ']"  class="option-label" type="radio">';
 			echo '</ol>';						
 		}
-		if ($params['inline'] == true)
-		{
-			echo '<span class="inline-rating">';
-		}
+		
 		echo '<ul class="star-rating'; 
-		if ($params['displayOnly'] === false)
-		{
-			echo " accessible-hidden";
-		}
-		if ($params['small'] === true)
-		{
-			echo " small-star";
-		}
+		echo ($params['displayOnly'] === false) ? ' accessible-hidden' : '';
+		echo ($params['small'] === true) ? ' small-star' : '';
+		echo ($params['inline'] == true) ? ' inline-rating' : '';
 		echo '" id="change-starrating-' . self::$idCounter . '">';
 		$currentRating = intval(round(floatval($params['value'])*20));
 		$currentRating = $currentRating - $currentRating%10;
@@ -81,10 +73,6 @@ class PHPTAL_Php_Attribute_CHANGE_starrating extends ChangeTalAttribute
 			echo '<li class="star"><a href="#' . self::$idCounter . '" title="' . $ls->transFO('m.comment.frontoffice.star-rating-5', $format) .'" class="five-stars'. ($currentValue == 5 ? ' clicked' : '') .'">5</a></li>';
 		}
 		echo '</ul>';
-		if ($params['inline'] == true)
-		{
-			echo '</span>';
-		}
 		self::$idCounter++;
 	}
 	

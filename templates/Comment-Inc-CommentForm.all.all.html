@@ -1,9 +1,10 @@
 <div class="normal comment-preview">
 	<ul class="document-list " tal:condition="previewComment">
 		<li class="odd">
-			<div class="normal comment-info">
+			<div class="normal meta-info">
 				<tal:block change:starrating="" value="${previewComment/getRating}" displayOnly="true" small="true" />
-				${trans:m.comment.frontoffice.posted-by-author,ucf,author=previewComment/getAuthorNameAsHtml} - <tal:block change:datetime="value previewComment/getCreationDate; format 'classic'" />
+				${trans:m.comment.frontoffice.posted-by-author,ucf,author=previewComment/getAuthorNameAsHtml}<span class="separator"> - </span>
+				<tal:block change:datetime="value previewComment/getCreationDate; format 'classic'" />
 			</div>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${previewComment/getGravatarUrl}" alt="" />
 			<div class="normal">${previewComment/getContentsAsHtml}</div>
@@ -15,9 +16,8 @@
 
 <form change:form="beanClass comment_persistentdocument_comment; beanName comment" action="#leave-comment" id="comment-form">
 	<fieldset>
-		<legend>${trans:m.comment.frontoffice.comment-form,ucf}</legend>
+		<legend class="h-3">${trans:m.comment.frontoffice.comment-form,ucf}</legend>
 		<ul change:errors=""></ul>
-		<tal:block change:field="name beanId" hidden="true" />
 		<ol>
 			<tal:block tal:condition="currentUser">
 				<li><input change:field="name authorName ; value currentUser/getFullName" readonly="readonly" /></li>
@@ -32,13 +32,14 @@
 				<label change:fieldlabel="name rating" required="${ratingRequired}"></label>
 				<tal:block change:starrating="" name="rating" />
 			</li>
-			<li><input change:bbcodeinput="name contentsAsBBCode" module-profile="comment" labeled="true" required="true" /></li>
+			<li><input change:bbcodeinput="name contentsAsBBCode;  required true" module-profile="comment" labeled="true" /></li>
 			<li tal:condition="not: currentUser">
 				<img change:captcha="key 'comment'" />
 				<input change:captcha="key 'comment'" />
 			</li>
 		</ol>
 		<p class="buttons">
+			<input change:field="name beanId" hidden="true" />
 			<input type="hidden" change:hiddeninput="name targetId" value="${target/getId}" />
 			<input change:submit="" name="save" labeli18n="m.comment.frontoffice.save" class="button submit" />
 			<input change:submit="" name="preview" labeli18n="m.comment.frontoffice.preview" class="button submit" />
