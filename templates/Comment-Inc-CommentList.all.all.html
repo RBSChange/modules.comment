@@ -36,7 +36,9 @@
 				</form>
 				<p tal:condition="comment/isEvaluatedByCurrentUser" class="normal">${trans: m.comment.frontoffice.comment-already-evaluated,ucf}</p>
 			</tal:block>
-			<p tal:condition="not: comment/isPublished" class="normal">${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</p>
+			<ul tal:condition="not: comment/isPublished" class="warnings">
+				<li>${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</li>
+			</ul>
 			<div class="cleaner"></div>
 		</li>
 	</tal:block>

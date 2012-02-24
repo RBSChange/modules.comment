@@ -8,7 +8,9 @@
 			</div>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${previewComment/getGravatarUrl}" alt="" />
 			<div class="normal">${previewComment/getContentsAsHtml}</div>
-			<p class="warning">${trans:m.comment.frontoffice.this-is-only-preview,ucf}</p>
+			<ul class="warnings">
+				<li>${trans:m.comment.frontoffice.this-is-only-preview,ucf}</li>
+			</ul>
 			<div class="cleaner"></div>
 		</li>
 	</ul>
