@@ -11,7 +11,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 * @var comment_CommentService
 	 */
 	private static $instance;
-
+	
 	/**
 	 * @return comment_CommentService
 	 */
@@ -23,7 +23,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		}
 		return self::$instance;
 	}
-
+	
 	/**
 	 * @return comment_persistentdocument_comment
 	 */
@@ -31,7 +31,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		return $this->getNewDocumentInstanceByModelName('modules_comment/comment');
 	}
-
+	
 	/**
 	 * Create a query based on 'modules_comment/comment' model.
 	 * Return document that are instance of modules_comment/comment,
@@ -65,7 +65,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			$comment->activate();
 			return;
 		}
-			
+		
 		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
 		if ($user !== null)
 		{
@@ -87,7 +87,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		
 		$comment->getDocumentService()->createWorkflowInstance($comment->getId(), array());
 	}
-		
+	
 	/**
 	 * @param users_persistentdocument_user $user
 	 * @param String $permission
@@ -132,7 +132,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			$rootModel = f_persistentdocument_PersistentDocumentModel::getInstanceFromDocumentModelName($rootModelName);
 			$moduleName = $rootModel->getModuleName();
 		}
-		else 
+		else
 		{
 			$moduleName = $model->getModuleName();
 		}
@@ -216,7 +216,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	private function addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId)
 	{
 		$query->add(Restrictions::eq('targetId', $targetId));
-				
+		
 		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
 		if ($user !== null)
 		{
@@ -225,7 +225,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			{
 				$query->add($this->getValidatorVisibilityRestriction($user));
 			}
-			else 
+			else
 			{
 				$query->add($this->getVisitorVisibilityRestriction($user));
 			}
@@ -274,7 +274,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			return Restrictions::orExp(Restrictions::published(), Restrictions::andExp(Restrictions::in('id', $postedIds), $this->getAuthorVisibilityRestriction()));
 		}
-		else 
+		else
 		{
 			return Restrictions::published();
 		}
@@ -291,15 +291,55 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	
 	/**
 	 * @param Integer $targetId
-	 * @param Integer $ratingValue
 	 * @param Integer $websiteId
-	 * @return comment_persistentdocument_comment[]
+	 * @return Integer
 	 */
-	public function getPublishedByTargetId($targetId, $ratingValue = null, $websiteId = null)
+	public function getPublishedCountByTargetId($targetId, $websiteId = null, $ratingValue = null)
 	{
 		$query = $this->createQuery();
 		$this->addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
-		$query->addOrder(Order::asc('document_creationdate'));
+		$query->setProjection(Projections::rowCount('count'));
+		$row = $query->findUnique();
+		return $row['count'];
+	}
+	
+	/**
+	 * Count comments published before the comment with comment Id
+	 * @param Integer $targetId
+	 * @param Integer $commentId
+	 * @param Integer $websiteId
+	 * @param unknown_type $ratingValue
+	 */
+	public function getPublishedCountByTargetIdBeforeCommentId($targetId, $commentId, $websiteId = null, $ratingValue = null)
+	{
+		$query = $this->createQuery();
+		$this->addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
+		$query->add(Restrictions::lt('id', $commentId));
+		$query->setProjection(Projections::rowCount('count'));
+		$row = $query->findUnique();
+		return $row['count'];
+	}
+	
+	/**
+	 * @param Integer $targetId
+	 * @param Integer $ratingValue
+	 * @param Integer $websiteId
+	 * @param String $sortOrder
+	 * @param String $sortField
+	 * @return comment_persistentdocument_comment[]
+	 */
+	public function getPublishedByTargetId($targetId, $ratingValue = null, $websiteId = null, $offset = null, $limit = null, $sortOrder = 'asc', $sortField = 'document_creationdate')
+	{
+		$query = $this->createQuery();
+		$this->addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
+		
+		if ($offset != null && $limit != null)
+		{
+			$query->setFirstResult($offset);
+			$query->setMaxResults($limit);
+		}
+		
+		$query->addOrder(Order::$sortOrder($sortField));
 		return $query->find();
 	}
 	
@@ -308,6 +348,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 * @param Integer $ratingValue
 	 * @param Integer $websiteId
 	 * @return comment_persistentdocument_comment[]
+	 * @deprecated
 	 */
 	public function getPublishedByTargetIdOrderByRating($targetId, $ratingValue = null, $websiteId = null)
 	{
@@ -322,6 +363,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 * @param Integer $ratingValue
 	 * @param Integer $websiteId
 	 * @return comment_persistentdocument_comment[]
+	 * @deprecated
 	 */
 	public function getPublishedByTargetIdOrderByRelevancy($targetId, $ratingValue = null, $websiteId = null)
 	{
@@ -329,20 +371,6 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		$this->addVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
 		$query->addOrder(Order::desc('relevancy'));
 		return $query->find();
-	}
-	
-	/**
-	 * @param Integer $targetId
-	 * @param Integer $websiteId
-	 * @return Integer
-	 */
-	public function getPublishedCountByTargetId($targetId, $websiteId = null)
-	{
-		$query = $this->createQuery();
-		$this->addVisibilityRestrictions($query, $targetId, null, $websiteId);
-		$query->setProjection(Projections::rowCount('count'));
-		$row = $query->findUnique();
-		return $row['count'];
 	}
 	
 	/**
@@ -408,8 +436,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		
 		$target = DocumentHelper::getDocumentInstance($targetId);
 		$targetService = $target->getDocumentService();
-		if (!f_util_ClassUtils::methodExists($targetService, "canViewCommentsRSS") ||
-			!$targetService->canViewCommentsRSS($target, $user))
+		if (!f_util_ClassUtils::methodExists($targetService, "canViewCommentsRSS") || !$targetService->canViewCommentsRSS($target, $user))
 		{
 			$query->add(Restrictions::eq("private", false));
 		}
@@ -430,9 +457,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getRSSFeedWriterByWebsiteId($websiteId)
 	{
-		$query = $this->createQuery()->add(Restrictions::published())
-			->add(Restrictions::eq("private", false))
-			->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
+		$query = $this->createQuery()->add(Restrictions::published())->add(Restrictions::eq("private", false))->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
 		$query->setMaxResults(100);
 		$query->addOrder(Order::desc('document_creationdate'));
 		
@@ -453,7 +478,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		$modifiedProperties = $comment->getOldValues();
 		$modifiedPropertyNames = $comment->getModifiedPropertyNames();
-		try 
+		try
 		{
 			$this->tm->beginTransaction();
 			$relevancy = comment_RatingService::getInstance()->getRelevancyForComment($comment);
@@ -465,9 +490,9 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			$this->tm->rollBack($e);
 			throw $e;
-		}		
+		}
 		$params = array('document' => $comment, 'modifiedPropertyNames' => $modifiedPropertyNames, 'oldPropertyValues' => $modifiedProperties);
-		f_event_EventManager::dispatchEvent('persistentDocumentUpdated', $this,	$params);
+		f_event_EventManager::dispatchEvent('persistentDocumentUpdated', $this, $params);
 	}
 	
 	/**
@@ -532,9 +557,9 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 			$query->add(Restrictions::orExp(Restrictions::isNull('websiteId'), Restrictions::eq('websiteId', $websiteId)));
 		}
 		$query->add(Restrictions::gt('rating', 0));
-		return $query; 
+		return $query;
 	}
-
+	
 	/**
 	 * @param comment_persistentdocument_comment $document
 	 * @return Boolean
@@ -567,14 +592,12 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		if ($document->getTargetId() === null && $parentNodeId !== null)
 		{
 			$document->setTargetId($parentNodeId);
-			$document->setTargetdocumentmodel(DocumentHelper::getDocumentInstance($parentNodeId)->getDocumentModelName());			
+			$document->setTargetdocumentmodel(DocumentHelper::getDocumentInstance($parentNodeId)->getDocumentModelName());
 		}
 		
 		$target = $document->getTarget();
-		$replacements = array(
-			'target' => f_util_StringUtils::shortenString($target->getLabel(), 125),
-			'author' => f_util_StringUtils::shortenString($document->getAuthorName(), 75)
-		);
+		$replacements = array('target' => f_util_StringUtils::shortenString($target->getLabel(), 125), 
+			'author' => f_util_StringUtils::shortenString($document->getAuthorName(), 75));
 		$document->setLabel(f_Locale::translate('&modules.comment.document.comment.Label-pattern;', $replacements));
 		$document->setTargetdocumentmodel($target->getPersistentModel()->getOriginalModelName());
 	}
@@ -586,11 +609,11 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	protected function postSave($document, $parentNodeId)
 	{
-		$target = $document->getTarget(); 
+		$target = $document->getTarget();
 		$target->setMeta(comment_persistentdocument_comment::COMMENTED_META, "true");
 		$target->saveMeta();
 	}
-
+	
 	/**
 	 * @return Boolean
 	 */
@@ -598,7 +621,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		return (Framework::getConfigurationValue('modules/comment/filterByWebsite', 'true') == 'true');
 	}
-		
+	
 	/**
 	 * @param website_UrlRewritingService $urlRewritingService
 	 * @param comment_persistentdocument_comment $document
@@ -611,7 +634,10 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	{
 		$parameters['commentId'] = $document->getId();
 		$link = $urlRewritingService->getDocumentLinkForWebsite($document->getTarget(), $website, $lang, $parameters);
-		if ($link) {$link->setFragment($document->getAnchor());}
+		if ($link)
+		{
+			$link->setFragment($document->getAnchor());
+		}
 		return $link;
 	}
 	
@@ -656,7 +682,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getNotificationParameters($array)
 	{
-		/* @var $comment comment_persistentdocument_comment */ 
+		/* @var $comment comment_persistentdocument_comment */
 		$comment = $array['comment'];
 		
 		$replacements = array();
@@ -668,10 +694,10 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		
 		$target = $comment->getTarget();
 		$replacements['targetId'] = $target->getId();
-		$replacements['targetLabel'] = $target->getLabelAsHtml();		
+		$replacements['targetLabel'] = $target->getLabelAsHtml();
 		$replacements['targetUrl'] = LinkHelper::getDocumentUrl($target);
 		$replacements['targetType'] = f_Locale::translate($target->getPersistentModel()->getLabel());
-				
+		
 		$replacements['authorEmail'] = $comment->getEmail();
 		$replacements['authorName'] = $comment->getAuthorNameAsHtml();
 		$replacements['authorWebsiteUrl'] = $comment->getAuthorwebsiteurl();
@@ -694,6 +720,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	
 	// Deprecated.
 	
+
 	/**
 	 * @deprecated (will be removed in 4.0) use addVisibilityRestrictions
 	 */
@@ -706,10 +733,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		}
 		else if (!f_permission_PermissionService::getInstance()->hasFrontEndPermission($user, 'modules_' . $target->getPersistentModel()->getModuleName() . '.Validate.comment', $target->getId()))
 		{
-			$query->add(Restrictions::orExp(
-				Restrictions::published(),
-				Restrictions::eq('authorId', $user->getId())
-			));
+			$query->add(Restrictions::orExp(Restrictions::published(), Restrictions::eq('authorId', $user->getId())));
 		}
 		return $query;
 	}

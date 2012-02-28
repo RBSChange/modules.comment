@@ -8,7 +8,7 @@
 
 <ul tal:condition="comments" class="document-list">
 	<tal:block tal:repeat="comment comments">
-		<li id="${comment/getAnchor}" class="${alternateclass:commentIndex}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
+		<li tal:define="task comment/getValidationTask" id="${comment/getAnchor}" class="${alternateclass:commentIndex}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
 			<div class="normal meta-info">
 				<a change:currentPageLink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
 				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
@@ -36,9 +36,15 @@
 				</form>
 				<p tal:condition="comment/isEvaluatedByCurrentUser" class="normal">${trans: m.comment.frontoffice.comment-already-evaluated,ucf}</p>
 			</tal:block>
-			<ul tal:condition="not: comment/isPublished" class="warnings">
-				<li>${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</li>
-			</ul>
+			<tal:block tal:condition="not: comment/isPublished">
+				<ul class="warnings">
+					<li>${trans: m.comment.frontoffice.will-be-published-after-validation,ucf}</li>
+				</ul>	
+				<div tal:condition="task">
+					<a change:link="module comment; action Moderate; decision 'ACCEPTED'; cmpref comment/getId; currentPage page">${trans:m.comment.frontoffice.accept,ucf}</a>
+					<a change:link="module comment; action Moderate; decision 'REFUSED'; cmpref comment/getId; currentPage page" >${trans:m.comment.frontoffice.refuse,ucf}</a>
+				</div>
+			</tal:block>
 			<div class="cleaner"></div>
 		</li>
 	</tal:block>

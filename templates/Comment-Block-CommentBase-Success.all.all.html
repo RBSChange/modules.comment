@@ -1,6 +1,6 @@
 <div id="comments-${target/getId}">
 	<tal:block tal:condition="totalCount">
-		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentList' ; type 'html' ; comments comments ; target target ; offset offset ; totalCount totalCount ; currentCommentId currentCommentId ; showGravatars configuration/getShowgravatars ; enableRating configuration/getEnableRating ; displaySortOptions configuration/getDisplaySortOptions ; enableEvaluation configuration/getEnableEvaluation ; showRatingDistribution configuration/getShowRatingDistribution ; filter filter ; sort sort ; disableRSS disableRSS" />
+		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentList' ; type 'html' ; comments comments ; target target ; offset offset ; totalCount totalCount ; currentCommentId currentCommentId ; showGravatars configuration/getShowgravatars ; enableRating configuration/getEnableRating ; displaySortOptions configuration/getDisplaySortOptions ; enableEvaluation configuration/getEnableEvaluation ; showRatingDistribution configuration/getShowRatingDistribution ; filter filter ; sort sort ; disableRSS disableRSS; page page" />
 	</tal:block>
 	
 	<h2 change:h="" id="leave-comment">${trans:m.comment.frontoffice.leave-a-comment,ucf}</h2>

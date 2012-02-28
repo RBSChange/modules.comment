@@ -48,4 +48,6 @@
   <key id="sort-by">sort by</key>
   <key id="this-is-only-preview">Beware, this is only a preview, this comment has not been saved yet.</key>
   <key id="will-be-published-after-validation">This comment will only be published once it has been approved.</key>
+  <key id="accept">validate</key>
+  <key id="refuse">unvalidate</key>
 </i18n>

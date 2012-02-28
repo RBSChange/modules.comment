@@ -48,4 +48,6 @@
 	<key id="date">date</key>
 	<key id="relevancy">pertinence</key>
 	<key id="this-is-only-preview">Attention, ceci n'est qu'une prévisualisation, ce commentaire n'est pas encore enregistré.</key>
+	<key id="accept">valider</key>
+	<key id="refuse">invalider</key>
 </i18n>
