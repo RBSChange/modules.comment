@@ -14,7 +14,7 @@
 				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
 				${trans: m.comment.frontoffice.posted-by,ucf}
 				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a><span class="separator"> - </span>
-				<tal:block change:datetime="value comment/getCreationdate; format 'classic'" />
+				${datetime:comment/getUICreationdate}
 			</div>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${comment/getGravatarUrl}" alt="" />
 			<div class="normal comment-contents">${comment/getContentsAsHtml}</div>

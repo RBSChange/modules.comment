@@ -4,7 +4,7 @@
 			<div class="normal meta-info">
 				<tal:block change:starrating="" value="${previewComment/getRating}" displayOnly="true" small="true" />
 				${trans:m.comment.frontoffice.posted-by-author,ucf,author=previewComment/getAuthorNameAsHtml}<span class="separator"> - </span>
-				<tal:block change:datetime="value previewComment/getCreationDate; format 'classic'" />
+				${datetime:previewComment/getUICreationDate}
 			</div>
 			<img tal:condition="showGravatars" class="avatar document-visual" src="${previewComment/getGravatarUrl}" alt="" />
 			<div class="normal">${previewComment/getContentsAsHtml}</div>
