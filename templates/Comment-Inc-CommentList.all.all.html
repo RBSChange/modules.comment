@@ -11,7 +11,9 @@
 		<li tal:define="task comment/getValidationTask" id="${comment/getAnchor}" class="${alternateclass:commentIndex}${php: (comment.getId() == currentCommentId) ? ' current' : ''}${php: !comment.isPublished() ? ' not-published' : ''}">
 			<div class="normal meta-info">
 				<a change:currentPageLink="" anchor="${comment/getAnchor}" rel="nofollow">${php: repeat.comment.number + offset}.</a> 
-				<tal:block change:starrating="" small="true" value="${comment/getRating}" displayOnly="true" tal:condition="enableRating"  />
+				<tal:block tal:condition="enableRating">
+					<tal:block tal:condition="comment/getRating" change:starrating="" small="true" value="${comment/getRating}" displayOnly="true"  />
+				</tal:block>
 				${trans: m.comment.frontoffice.posted-by,ucf}
 				<a tal:omit-tag="not:comment/getAuthorwebsiteurl" class="link" href="${comment/getAuthorwebsiteurl}">${comment/getAuthorNameAsHtml}</a><span class="separator"> - </span>
 				${datetime:comment/getUICreationdate}
