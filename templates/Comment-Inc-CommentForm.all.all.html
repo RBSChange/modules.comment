@@ -1,5 +1,5 @@
-<div class="normal comment-preview">
-	<ul class="document-list " tal:condition="previewComment">
+<div class="normal comment-preview" tal:condition="previewComment">
+	<ul class="document-list">
 		<li class="odd">
 			<div class="normal meta-info">
 				<tal:block change:starrating="" value="${previewComment/getRating}" displayOnly="true" small="true" />
