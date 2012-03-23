@@ -39,7 +39,8 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	
 	/**
 	 * This method loads data for success view.
-	 * @param f_mvc_Request itemsPerPage*/
+	 * @param f_mvc_Request itemsPerPage
+	 */
 	protected function loadSuccessView($request)
 	{
 		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
