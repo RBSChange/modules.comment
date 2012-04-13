@@ -23,18 +23,18 @@
 		<ol>
 			<tal:block tal:condition="currentUser">
 				<li><input change:field="name authorName ; value currentUser/getFullName" readonly="readonly" /></li>
-				<li><input change:field="name email ; value currentUser/getEmail" readonly="readonly" /></li>
+				<li><input change:field="name email; value currentUser/getEmail" readonly="readonly" /></li>
 			</tal:block>
 			<tal:block tal:condition="not: currentUser">
 				<li><input change:field="name authorName" /></li>
-				<li><input change:field="name email" /></li>
+				<li><input change:field="name email" autocorrect="off" autocapitalize="off" /></li>
 			</tal:block>
-				<li><input change:field="name authorwebsiteurl" /></li>
+				<li><input change:field="name authorwebsiteurl" autocorrect="off" autocapitalize="off" /></li>
 			<li tal:condition="enableRating">
 				<label change:fieldlabel="name rating" required="${ratingRequired}"></label>
 				<tal:block change:starrating="" name="rating" />
 			</li>
-			<li><input change:bbcodeinput="name contentsAsBBCode;  required true" module-profile="comment" labeled="true" /></li>
+			<li><input change:bbcodeinput="name contentsAsBBCode; required true" module-profile="comment" labeled="true" /></li>
 			<li tal:condition="not: currentUser">
 				<img change:captcha="key 'comment'" />
 				<input change:captcha="key 'comment'" />
