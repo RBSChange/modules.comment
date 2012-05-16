@@ -244,6 +244,19 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		{
 			$query->add(Restrictions::eq('rating', comment_RatingService::normalizeRating($ratingValue)));
 		}
+		
+		$this->addSpecificVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId);
+	}
+	
+	/**
+	 * @param f_persistentdocument_criteria_Query $query
+	 * @param Integer $targetId
+	 * @param Integer $ratingValue
+	 * @param Integer $websiteId
+	 */
+	protected function addSpecificVisibilityRestrictions($query, $targetId, $ratingValue, $websiteId)
+	{
+		// Nothing to do by default. Override in your project
 	}
 	
 	/**
