@@ -288,7 +288,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	protected function getTarget($request)
 	{
 		$target = $this->getDocumentParameter();
-		if (f_util_ClassUtils::methodExists($target->getDocumentService(), 'getTargetForComment'))
+		if ($target !== null && f_util_ClassUtils::methodExists($target->getDocumentService(), 'getTargetForComment'))
 		{
 			return $target->getDocumentService()->getTargetForComment($target);
 		}
