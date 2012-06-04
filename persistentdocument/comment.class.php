@@ -206,7 +206,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	 */
 	public function getSummary($maxLength = 80)
 	{
-		return f_util_StringUtils::shortenString(f_util_StringUtils::htmlToText($this->getContentsAsHtml()), $maxLength);
+		return f_util_StringUtils::shortenString(f_util_HtmlUtils::htmlToText($this->getContentsAsHtml()), $maxLength);
 	}
 	
 	// Deprecated
