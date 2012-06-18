@@ -42,7 +42,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		{
 			echo "$blockactionFile already exists\n";
 		}
-		AutoloadBuilder::getInstance()->appendFile($blockactionFile);
+		change_AutoloadBuilder::getInstance()->appendFile($blockactionFile);
 		return $blockactionFile;
 	}
 
