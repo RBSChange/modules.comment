@@ -1,7 +1,6 @@
 <?php
 /**
- * comment_LoadCommentsForDocumentAction
- * @package modules.comment.actions
+ * @package modules.comment
  */
 class comment_LoadCommentsForDocumentAction extends change_JSONAction
 {

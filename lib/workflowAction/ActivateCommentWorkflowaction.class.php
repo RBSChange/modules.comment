@@ -11,13 +11,12 @@ class comment_ActivateCommentWorkflowaction extends comment_BaseCommentWorkflowa
 	 */
 	public function execute()
 	{
-		
-				$document = $this->getDocument();
+		// Update the document's status.
+		$document = $this->getDocument();
 		$document->getDocumentService()->activate($document->getId());
 		
-		
-		
-				$specificParams = array();
+		// Send the notification.
+		$specificParams = array();
 		$currentUser = users_UserService::getInstance()->getCurrentUser();
 		if ($currentUser !== null)
 		{

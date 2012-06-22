@@ -22,8 +22,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		if ($this->isInBackoffice())
 		{
-			$request->setAttribute('blockLabel', LocaleService::getInstance()->trans('m.' . $this->getModuleName() . '.bo.blocks.' . $this->getName(), array(
-				'ucf')));
+			$request->setAttribute('blockLabel', LocaleService::getInstance()->trans('m.' . $this->getModuleName() . '.bo.blocks.' . $this->getName(), array('ucf')));
 			return $this->getTemplate(website_BlockView::BACKOFFICE);
 		}
 		
@@ -49,9 +48,8 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		
 		$itemsPerPage = $this->getNbItemPerPage($request, null);
 		
-		
-		
-				$ratingFilterValue = $globalRequest->getParameter('filter', null);
+		// Deal with filters.
+		$ratingFilterValue = $globalRequest->getParameter('filter', null);
 		if ($ratingFilterValue !== null)
 		{
 			$request->setAttribute('ratingFilterValue', comment_RatingService::getInstance()->normalizeRating($ratingFilterValue));
@@ -60,9 +58,8 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$target = $this->getTarget($request);
 		$request->setAttribute('target', $target);
 		
-		
-		
-				$count = comment_CommentService::getInstance()->getPublishedCountByTargetId($target->getId(), $website->getId(), $ratingFilterValue);
+		// Get comment count.
+		$count = comment_CommentService::getInstance()->getPublishedCountByTargetId($target->getId(), $website->getId(), $ratingFilterValue);
 		$request->setAttribute('totalCount', $count);
 		
 		$pageNb = 1;
@@ -98,22 +95,19 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$offset = ($pageNb - 1) * $itemsPerPage;
 		$request->setAttribute('offset', $offset);
 		
-		
-		
-				$comments = comment_CommentService::getInstance()->getPublishedByTargetId($target->getId(), $ratingFilterValue, $website->getId(), $offset, $itemsPerPage, $sortOrder, $sortField);
+		// Get comment instances.
+		$comments = comment_CommentService::getInstance()->getPublishedByTargetId($target->getId(), $ratingFilterValue, $website->getId(), $offset, $itemsPerPage, $sortOrder, $sortField);
 		
 		$paginator = new paginator_Paginator($this->getModuleName(), $pageNb, $comments, $itemsPerPage, $count, array('commentId'));
 		$request->setAttribute('comments', $paginator);
 		
-		
-		
-				$user = users_UserService::getInstance()->getCurrentUser();
+		// Handle restriction to connected users.
+		$user = users_UserService::getInstance()->getCurrentUser();
 		$request->setAttribute('currentUser', $user);
 		$request->setAttribute('connectToPost', (!$this->allowNotRegistered() && $user === null));
 		
-		
-		
-				$disableRSS = $this->getDisableRSS($request, $target);
+		// Add the RSS feed.
+		$disableRSS = $this->getDisableRSS($request, $target);
 		$request->setAttribute('disableRSS', $disableRSS);
 		if (!$disableRSS)
 		{
@@ -122,13 +116,11 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			$this->getContext()->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
 		}
 		
+		// Handle comments closing.
+		$request->setAttribute('closeComments', $this->getCloseComments($request, $target));
 		
-		
-				$request->setAttribute('closeComments', $this->getCloseComments($request, $target));
-		
-		
-		
-				$this->addCanonical($target, $pageNb, $request);
+		// Add link rel canonical.
+		$this->addCanonical($target, $pageNb, $request);
 	}
 	
 	/**
@@ -185,27 +177,24 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	public function validateSaveInput($request, $bean)
 	{
-		
-				$user = users_UserService::getInstance()->getCurrentFrontEndUser();
+		// Check if the user is connected.
+		$user = users_UserService::getInstance()->getCurrentFrontEndUser();
 		if (!$this->allowNotRegistered() && $user === null)
 		{
 			$this->addError(LocaleService::getInstance()->trans('m.comment.frontoffice.error-not-logged-in', array('ucf')));
 			return false;
 		}
 		
-		
-		
-				$validationRules = BeanUtils::getBeanValidationRules('comment_persistentdocument_comment', null, array('label', 
-			'targetdocumentmodel'));
+		// Validation.
+		$validationRules = BeanUtils::getBeanValidationRules('comment_persistentdocument_comment', null, array('label', 'targetdocumentmodel'));
 		if ($this->isRatingRequired())
 		{
 			$validationRules[] = "rating{min:0;max:5}";
 		}
 		$isOk = $this->processValidationRules($validationRules, $request, $bean);
 		
-		
-		
-				if ($user === null)
+		// Captcha is tested only for not logged-in users.
+		if ($user === null)
 		{
 			$code = change_Controller::getInstance()->getContext()->getRequest()->getModuleParameter('form', 'CHANGE_CAPTCHA');
 			if (!FormHelper::checkCaptchaForKey($code, 'comment'))
@@ -266,9 +255,8 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			$comment->setWebsiteId(website_WebsiteService::getInstance()->getCurrentWebsite()->getId());
 			$comment->save();
 			
-			
-			
-						$comment->getDocumentService()->frontendValidation($comment);
+			// Ask validation.
+			$comment->getDocumentService()->frontendValidation($comment);
 			
 			$tm->commit();
 		}
@@ -358,7 +346,6 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	protected function getPageNb($request, $itemPerPage, $itemsCount)
 	{
-		
 		$pageNumber = $request->getParameter(paginator_Paginator::PAGEINDEX_PARAMETER_NAME);
 		if ($pageNumber)
 		{
@@ -368,7 +355,6 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			}
 		}
 		return 1;
-	
 	}
 	
 	/**
@@ -378,9 +364,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	protected function findPage($itemPerPage, $countBeforeCommentId)
 	{
-		
 		return 1 + floor($countBeforeCommentId / $itemPerPage);
-	
 	}
 	
 	/**

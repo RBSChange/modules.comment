@@ -198,7 +198,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		{
 			return null;
 		}
-			
+		
 		$user = users_UserService::getInstance()->getCurrentUser();
 		if ($user !== null)
 		{
@@ -216,9 +216,8 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		return f_util_StringUtils::shortenString(f_util_HtmlUtils::htmlToText($this->getContentsAsHtml()), $maxLength);
 	}
 	
+	// Deprecated
 	
-	
-		
 	/**
 	 * @deprecated use change:avatar
 	 */

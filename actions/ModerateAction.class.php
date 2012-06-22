@@ -1,7 +1,6 @@
 <?php
 /**
- * comment_ModerateAction
- * @package modules.comment.actions
+ * @package modules.comment
  */
 class comment_ModerateAction extends change_Action
 {
@@ -11,16 +10,12 @@ class comment_ModerateAction extends change_Action
 	 */
 	public function _execute($context, $request)
 	{
-		
-		
-		
-		
+		/* @var $comment comment_persistentdocument_comment */
 		$comment = null;
 		$task = null;
 		$url = null;
 		
 		$decision = $request->getParameter('decision');
-		
 		if ($request->hasParameter('cmpref'))
 		{
 			$comment = DocumentHelper::getDocumentInstanceIfExists($request->getParameter('cmpref'));
@@ -28,7 +23,6 @@ class comment_ModerateAction extends change_Action
 		
 		if ($comment != null)
 		{
-			
 			if (in_array($decision, array('ACCEPTED', 'REFUSED')))
 			{
 				
@@ -44,7 +38,6 @@ class comment_ModerateAction extends change_Action
 			}
 			
 			$url = LinkHelper::getDocumentUrl($comment->getTarget(), null, array("commentId" => $comment->getId()));
-		
 		}
 		
 		if ($url == null)
@@ -57,7 +50,5 @@ class comment_ModerateAction extends change_Action
 		}
 		
 		return change_View::NONE;
-	
 	}
-
 }

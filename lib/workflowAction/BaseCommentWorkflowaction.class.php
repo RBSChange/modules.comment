@@ -13,8 +13,8 @@ class comment_BaseCommentWorkflowaction extends workflow_BaseWorkflowaction
 	 */
 	protected function sendNotificationToAuthorCallback($codeName, $callback = null, $callbackParameter = null)
 	{
-		
-				$userId = workflow_CaseService::getInstance()->getParameter($this->getWorkitem()->getCase(), '__DOCUMENT_AUTHOR_ID');
+		// Look for the document author.
+		$userId = workflow_CaseService::getInstance()->getParameter($this->getWorkitem()->getCase(), '__DOCUMENT_AUTHOR_ID');
 		if ($userId)
 		{
 			$user = users_persistentdocument_user::getInstanceById($userId);

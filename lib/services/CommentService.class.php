@@ -695,8 +695,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function getNotificationParameters($array)
 	{
-		
-		
+		/* @var $comment comment_persistentdocument_comment */
 		$comment = $array['comment'];
 		
 		$replacements = array();
@@ -718,16 +717,14 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		$replacements['authorWebsiteLink'] = $replacements['authorWebsiteUrl'] ? '' : '<a href="' . $replacements['authorWebsiteUrl'] . '">' . $replacements['authorWebsiteUrl'] . '</a>';
 		$replacements['authorIp'] = $comment->getMeta('author_IP');
 		
-		
-		
-				$replacements['documentId'] = $replacements['commentId'];
+		// For compatibility...
+		$replacements['documentId'] = $replacements['commentId'];
 		$replacements['documentLabel'] = $replacements['commentLabel'];
 		$replacements['documentCreationDate'] = $replacements['commentCreationDate'];
 		$replacements['targetLink'] = '<a href="' . $replacements['targetUrl'] . '">' . $replacements['targetLabel'] . '</a>';
 		
-		
-		
-				if (isset($array['specificParams']) && is_array($array['specificParams']))
+		// Add specific params.
+		if (isset($array['specificParams']) && is_array($array['specificParams']))
 		{
 			$replacements = array_merge($replacements, $array['specificParams']);
 		}

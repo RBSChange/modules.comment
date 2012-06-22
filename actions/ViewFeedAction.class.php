@@ -1,7 +1,6 @@
 <?php
 /**
- * comment_ViewFeedAction
- * @package modules.comment.actions
+ * @package modules.comment
  */
 class comment_ViewFeedAction extends change_Action
 {
@@ -36,9 +35,8 @@ class comment_ViewFeedAction extends change_Action
 				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
 			}
 			
-			
-			
-						$this->setHeaders($feedWriter, $request, $target);
+			// Set the link, title and description of the feed.
+			$this->setHeaders($feedWriter, $request, $target);
 			$this->setContentType('text/xml');
 			echo $feedWriter->toString();
 		}
@@ -54,9 +52,8 @@ class comment_ViewFeedAction extends change_Action
 		$title = LocaleService::getInstance()->trans('m.comment.frontoffice.rss-feed-title', array('ucf'), array('target' => $parent->getNavigationLabel()));
 		$feedWriter->setTitle($title);
 		
-		
-		
-				$description = null;
+		// Description.
+		$description = null;
 		if (f_util_ClassUtils::methodExists($parent, 'getRSSDescription'))
 		{
 			$description = strip_tags($parent->getRSSDescription());

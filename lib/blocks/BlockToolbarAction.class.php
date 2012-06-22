@@ -10,11 +10,12 @@ class comment_BlockToolbarAction extends website_BlockAction
 	 * @param f_mvc_Response $response
 	 * @return string
 	 */
-	function execute($request, $response)
+	public function execute($request, $response)
 	{
 		$request->setAttribute('target', $this->getDocumentParameter());
 		
-				$globalRequest = change_Controller::getInstance()->getRequest();
+		// Deal with filters. 
+		$globalRequest = change_Controller::getInstance()->getRequest();
 		$ratingFilterValue = $globalRequest->getParameter('filter', null);
 		if ($ratingFilterValue !== null)
 		{

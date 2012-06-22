@@ -7,7 +7,7 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	/**
 	 * @return string
 	 */
-	function getUsage()
+	public function getUsage()
 	{
 		return "<moduleName> <documentName>";
 	}
@@ -15,7 +15,7 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	/**
 	 * @return string
 	 */
-	function getDescription()
+	public function getDescription()
 	{
 		return "implement comments on a document model.";
 	}
@@ -35,7 +35,7 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
 	 * @return string[] or null
 	 */
-	function getParameters($completeParamCount, $params, $options, $current)
+	public function getParameters($completeParamCount, $params, $options, $current)
 	{
 		if ($completeParamCount == 0)
 		{
@@ -64,7 +64,7 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
 	 * @see c_ChangescriptCommand::parseArgs($args)
 	 */
-	function _execute($params, $options)
+	public function _execute($params, $options)
 	{
 		$this->message("== Implement comments on a document model ==");
 
@@ -82,9 +82,8 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 			$this->warnMessage($message);
 		}
 		
-		
-		
-				$this->message("Recompile locales for module $destModuleName.");
+		// Recompile locales for module.
+		$this->message("Recompile locales for module $destModuleName.");
 		LocaleService::getInstance()->regenerateLocalesForModule($destModuleName);
 		$this->executeCommand('clear-webapp-cache');
 		$this->executeCommand('clear-template-cache');

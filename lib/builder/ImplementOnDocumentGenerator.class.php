@@ -80,9 +80,8 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 			f_util_FileUtils::write($blocksFile, $result);
 		}
 		
-		
-		
-				$baseKey = 'm.' . $this->name . '.bo.blocks.' . strtolower($blockName);
+		// Block's locales.
+		$baseKey = 'm.' . $this->name . '.bo.blocks.' . strtolower($blockName);
 		$localeId = strtolower($blockName);	
 		echo "Add $localeId locale in $baseKey package.\n";
 		$ls = LocaleService::getInstance();
@@ -101,13 +100,13 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		$moduleFolder = f_util_FileUtils::buildProjectPath('modules', $documentModule);
 		if (is_link($moduleFolder))
 		{
-			
-						$actionFile = f_util_FileUtils::buildOverridePath('modules', $documentModule, 'config', 'actions.xml');
+			// Module is not embeded with project => dest is webapp
+			$actionFile = f_util_FileUtils::buildOverridePath('modules', $documentModule, 'config', 'actions.xml');
 		}
 		else
 		{
-			
-						$actionFile = f_util_FileUtils::buildProjectPath('modules', $documentModule, 'config', 'actions.xml');
+			// Module is embeded with project => dest is module itself
+			$actionFile = f_util_FileUtils::buildProjectPath('modules', $documentModule, 'config', 'actions.xml');
 		}
 
 		if (!file_exists($actionFile))
