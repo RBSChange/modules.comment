@@ -1,7 +1,6 @@
 <?php
 /**
- * @author intportg
- * @package modules.comment.lib.workflowAction
+ * @package modules.comment
  */
 class comment_ActivateCommentWorkflowaction extends comment_BaseCommentWorkflowaction
 {
@@ -22,7 +21,7 @@ class comment_ActivateCommentWorkflowaction extends comment_BaseCommentWorkflowa
 		{
 			$specificParams['currentUserId'] = $currentUser->getId();
 			$specificParams['currentUserFullname'] = $currentUser->getFullname();
-		}	
+		}
 		$specificParams['validationComment'] = $this->getCaseParameter('__LAST_COMMENTARY');
 
 		$callback = array($document->getDocumentService(), 'getNotificationParameters');
