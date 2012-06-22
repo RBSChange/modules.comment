@@ -6,8 +6,8 @@
 		
 	<binding id="cValidateCommentDialog" extends="modules.task.cTaskDialog#cTaskDialog">
 		<implementation>		
-			<field name="title">"${transui: m.comment.bo.workflow.validatecomment.user-task-title,ucf,attr}"</field>
-			<field name="description">"${transui: m.comment.bo.workflow.validatecomment.user-task-help,ucf,attr}"</field>
+			<field name="title">"${trans: m.comment.bo.workflow.validatecomment.user-task-title,ucf,attr}"</field>
+			<field name="description">"${trans: m.comment.bo.workflow.validatecomment.user-task-help,ucf,attr}"</field>
 			<field name="loadDataModule">"comment"</field>
 			<field name="loadDataAction">"LoadValidateCommentData"</field>
 			<field name="documentSectionClass">"cCommentData"</field>
@@ -59,33 +59,33 @@
 	
 		<content>
 			<xul:row xbl:inherits="differs=targetLabelDiffers">
-				<xul:label value="${transui: m.comment.document.comment.target,ucf}"/>
+				<xul:label value="${trans: m.comment.document.comment.target,ucf}"/>
 				<xul:hbox align="center" flex="1">
 					<xul:label xbl:inherits="value=targetLabel" />
-					<xul:toolbarbutton oncommand="viewTarget()" tooltiptext="${transui: m.comment.document.comment.view-target,ucf}" image="{IconsBase}/small/search.png" />
+					<xul:toolbarbutton oncommand="viewTarget()" tooltiptext="${trans: m.comment.document.comment.view-target,ucf}" image="{IconsBase}/small/search.png" />
 				</xul:hbox>
 			</xul:row>
 			<xul:row xbl:inherits="differs=authorLabelDiffers">
-				<xul:label value="${transui: m.comment.document.comment.authorname,ucf}"/>
+				<xul:label value="${trans: m.comment.document.comment.authorname,ucf}"/>
 				<xul:label xbl:inherits="value=authorLabel" />
 			</xul:row>
 			<xul:row xbl:inherits="differs=authorEmailDiffers">
-				<xul:label value="${transui: m.comment.document.comment.email,ucf}"/>
+				<xul:label value="${trans: m.comment.document.comment.email,ucf}"/>
 				<xul:label xbl:inherits="value=authorEmail" />
 			</xul:row>
 			<xul:row xbl:inherits="differs=authorWebsiteDiffers">
-				<xul:label value="${transui: m.comment.document.comment.authorwebsiteurl,ucf}"/>
+				<xul:label value="${trans: m.comment.document.comment.authorwebsiteurl,ucf}"/>
 				<xul:hbox align="center">
 					<xul:label xbl:inherits="value=authorWebsite" />
-					<xul:toolbarbutton xbl:inherits="hidden=authorWebsiteHidden" oncommand="viewAuthorWebsite()" tooltiptext="${transui: m.comment.document.comment.view-website,ucf}" image="{IconsBase}/small/search.png" />
+					<xul:toolbarbutton xbl:inherits="hidden=authorWebsiteHidden" oncommand="viewAuthorWebsite()" tooltiptext="${trans: m.comment.document.comment.view-website,ucf}" image="{IconsBase}/small/search.png" />
 				</xul:hbox>
 			</xul:row>
 			<xul:row xbl:inherits="differs=ratingDiffers">
-				<xul:label value="${transui: m.comment.document.comment.rating,ucf}"/>
+				<xul:label value="${trans: m.comment.document.comment.rating,ucf}"/>
 				<xul:label xbl:inherits="value=rating" />
 			</xul:row>
 			<xul:row xbl:inherits="differs=contentsDiffers">
-				<xul:label value="${transui: m.comment.document.comment.contents,ucf}"/>
+				<xul:label value="${trans: m.comment.document.comment.contents,ucf}"/>
 				<div xmlns="http://www.w3.org/1999/xhtml" style="margin: 5px"><xbl:children /></div>
 			</xul:row>
 		</content>

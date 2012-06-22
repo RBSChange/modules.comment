@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/4.0.xsd" model-version="1.0" publish-on-day-change="false" indexable="true" use-rewrite-url="false" backoffice-indexable="false" icon="message">
-  <properties>
-    <property name="authorName" type="String" min-occurs="1" indexed="property"/>
-    <property name="email" type="String" min-occurs="1" indexed="none">
-      <constraint name="email" email="true"/>
-    </property>
-    <property name="contents" type="LongString" min-occurs="1" indexed="description"/>
-    <property name="targetId" type="Integer" min-occurs="1"/>
-    <property name="targetdocumentmodel" type="String" min-occurs="1" indexed="none"/>
-    <property name="websiteId" type="Integer"/>
-    <property name="rating" type="Integer" default-value="0"/>
-    <property name="usefulcount" type="Integer"/>
-    <property name="uselesscount" type="Integer"/>
-    <property name="relevancy" type="Double"/>
-    <property name="authorwebsiteurl" type="String" indexed="none">
-      <constraint name="url"/>
-    </property>
-    <property name="private" type="Boolean" default-value="false"/>
-  </properties>
-  <statuses default="DRAFT"/>
-  <workflow start-task="COMMENT_VALIDATION">
-    <parameter name="AFFECT_TASKS_TO_SUPER_ADMIN">true</parameter>
-    <parameter name="NOTIFICATION_ACTIVATION">modules_comment/sendactivatetoauthor</parameter>
-    <parameter name="NOTIFICATION_ERROR">modules_comment/sendcanceltoauthor</parameter>
-  </workflow>
+	<properties>
+		<property name="authorName" type="String" min-occurs="1" indexed="property" />
+		<property name="email" type="String" min-occurs="1" indexed="none">
+			<constraint name="email" />
+		</property>
+		<property name="contents" type="LongString" min-occurs="1" indexed="description" />
+		<property name="targetId" type="Integer" min-occurs="1" />
+		<property name="targetdocumentmodel" type="String" min-occurs="1" indexed="none" />
+		<property name="websiteId" type="Integer" />
+		<property name="rating" type="Integer" default-value="0" />
+		<property name="usefulcount" type="Integer" />
+		<property name="uselesscount" type="Integer" />
+		<property name="relevancy" type="Double" />
+		<property name="authorwebsiteurl" type="String" indexed="none">
+			<constraint name="url" />
+		</property>
+		<property name="private" type="Boolean" default-value="false" />
+	</properties>
+	<statuses default="DRAFT" />
+	<workflow start-task="COMMENT_VALIDATION">
+		<parameter name="AFFECT_TASKS_TO_SUPER_ADMIN">true</parameter>
+		<parameter name="NOTIFICATION_ACTIVATION">modules_comment/sendactivatetoauthor</parameter>
+		<parameter name="NOTIFICATION_ERROR">modules_comment/sendcanceltoauthor</parameter>
+	</workflow>
 </document>

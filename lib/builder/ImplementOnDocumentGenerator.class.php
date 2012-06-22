@@ -4,8 +4,8 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 	const BLOCK_PREFIX = 'CommentsOn';
 
 	/**
-	 * @param String $documentModule
-	 * @param String $documentName
+	 * @param string $documentModule
+	 * @param string $documentName
 	 */
 	public function generateBlock($documentModule, $documentName)
 	{
@@ -16,7 +16,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 	}
 
 	/**
-	 * @return String[] [$folder, $tplName]
+	 * @return string[] [$folder, $tplName]
 	 */
 	protected function getBlockTemplateInfo()
 	{
@@ -24,13 +24,13 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 	}
 
 	/**
-	 * @param String $documentModule
-	 * @param String $blockName
-	 * @return String the path of the generated PHP file
+	 * @param string $documentModule
+	 * @param string $blockName
+	 * @return string the path of the generated PHP file
 	 */
 	protected function _generateBlockAction($documentModule, $blockName)
 	{
-		$blockactionFile = f_util_FileUtils::buildWebeditPath('modules', $this->name, 'lib', 'blocks', 'Block'.$blockName.'Action.class.php');
+		$blockactionFile = f_util_FileUtils::buildProjectPath('modules', $this->name, 'lib', 'blocks', 'Block'.$blockName.'Action.class.php');
 		if(!file_exists($blockactionFile))
 		{
 			list($tplFolder, $tplName) = $this->getBlockTemplateInfo();
@@ -47,13 +47,13 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 	}
 
 	/**
-	 * @param String $documentModule
-	 * @param String $blockName
-	 * @param String $icon
+	 * @param string $documentModule
+	 * @param string $blockName
+	 * @param string $icon
 	 */
 	protected function _generateBlocksxml($documentModule, $blockName, $icon)
 	{
-		$blocksFile = f_util_FileUtils::buildWebeditPath('modules', $this->name, 'config', 'blocks.xml');
+		$blocksFile = f_util_FileUtils::buildProjectPath('modules', $this->name, 'config', 'blocks.xml');
 		$blockType = "modules_".$this->name."_".strtolower($blockName);
 		if (file_exists($blocksFile))
 		{
@@ -80,34 +80,34 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 			f_util_FileUtils::write($blocksFile, $result);
 		}
 		
-		// Block's locales.
-		$baseKey = 'm.' . $this->name . '.bo.blocks.' . strtolower($blockName);
+		
+		
+				$baseKey = 'm.' . $this->name . '.bo.blocks.' . strtolower($blockName);
 		$localeId = strtolower($blockName);	
 		echo "Add $localeId locale in $baseKey package.\n";
 		$ls = LocaleService::getInstance();
 		$keysInfos = array();
 		$keysInfos[$ls->getLCID('fr')] = array('title' => $blockName);
-		$keysInfos[$ls->getLCID('en')] = array('title' => $blockName);
 		$ls->updatePackage($baseKey, $keysInfos, false, true, 'm.comment.bo.blocks.commentbase');
 	}
 
 	/**
-	 * @param String $documentModule
-	 * @param String $documentName
-	 * @return String message to transmit to the user
+	 * @param string $documentModule
+	 * @param string $documentName
+	 * @return string message to transmit to the user
 	 */
 	public function addEditorTab($documentModule, $documentName)
 	{
-		$moduleFolder = f_util_FileUtils::buildWebeditPath('modules', $documentModule);
+		$moduleFolder = f_util_FileUtils::buildProjectPath('modules', $documentModule);
 		if (is_link($moduleFolder))
 		{
-			// Module is not embeded with project => dest is webapp
-			$actionFile = f_util_FileUtils::buildOverridePath('modules', $documentModule, 'config', 'actions.xml');
+			
+						$actionFile = f_util_FileUtils::buildOverridePath('modules', $documentModule, 'config', 'actions.xml');
 		}
 		else
 		{
-			// Module is embeded with project => dest is module itself
-			$actionFile = f_util_FileUtils::buildWebeditPath('modules', $documentModule, 'config', 'actions.xml');
+			
+						$actionFile = f_util_FileUtils::buildProjectPath('modules', $documentModule, 'config', 'actions.xml');
 		}
 
 		if (!file_exists($actionFile))
@@ -142,7 +142,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 
 	protected function _getTpl($documentModule, $folder, $tpl, $blockName, $icon = null, $additionalParams = null)
 	{
-		$templateDir = f_util_FileUtils::buildWebeditPath('modules', 'comment', 'templates', 'builder', $folder);
+		$templateDir = f_util_FileUtils::buildProjectPath('modules', 'comment', 'templates', 'builder', $folder);
 		$generator = new builder_Generator();
 		$generator->setTemplateDir($templateDir);
 		$generator->assign('blockName', $blockName);
@@ -151,8 +151,6 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 		$docName = strtolower(substr($blockName, strlen(self::BLOCK_PREFIX)));
 		$generator->assign('documentName', $docName);
 		$generator->assign('documentModule', $documentModule);
-		$generator->assign('documentNameFr', f_Locale::translate('&modules.'.$documentModule.'.document.'.$docName.'.document-name;', null, 'fr'));
-		$generator->assign('documentNameEn', f_Locale::translate('&modules.'.$documentModule.'.document.'.$docName.'.document-name;', null, 'en'));
 		foreach ($this->getAdditionalTplVariables() as $key => $value)
 		{
 			$generator->assign($key, $value);

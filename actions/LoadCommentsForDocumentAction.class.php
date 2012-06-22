@@ -52,7 +52,7 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 						}
 					}
 					$commentInfo['tasks'] = $taskData;
-					$commentInfo['creationdate'] = date_Formatter::toDefaultDateTimeBO($comment->getUICreationdate());			
+					$commentInfo['creationdate'] = date_Formatter::toDefaultDateTimeBO($comment->getUICreationdate());
 					$commentInfo['authorName'] = $comment->getAuthorName();
 					$commentInfo['email'] = $comment->getEmail();
 					$commentInfo['authorwebsiteurl'] = $comment->getAuthorwebsiteurl();
@@ -66,7 +66,7 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 		}
 		else
 		{
-			return $this->sendJSONError(LocaleService::getInstance()->transBO('m.comment.bo.general.no-comment'), array('ucf'));
+			return $this->sendJSONError(LocaleService::getInstance()->trans('m.comment.bo.general.no-comment', array('ucf')), false);
 		}
 		$result['comments'] = $commentsInfo;
 		
@@ -79,14 +79,14 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 	private $statusLabels = array();
 	
 	/**
-	 * @param String $status
-	 * @return String
+	 * @param string $status
+	 * @return string
 	 */
 	private function getStatusLabel($status)
 	{
 		if (!isset($this->statusLabels[$status]))
 		{
-			$this->statusLabels[$status] = LocaleService::getInstance()->transFO('m.comment.bo.doceditor.status.' . strtolower($status), array('ucf'));
+			$this->statusLabels[$status] = LocaleService::getInstance()->trans('m.comment.bo.doceditor.status.' . strtolower($status), array('ucf'));
 		}
 		return $this->statusLabels[$status];
 	}

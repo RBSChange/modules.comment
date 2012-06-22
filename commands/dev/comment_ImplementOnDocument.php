@@ -5,7 +5,7 @@
 class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 {
 	/**
-	 * @return String
+	 * @return string
 	 */
 	function getUsage()
 	{
@@ -13,7 +13,7 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	}
 
 	/**
-	 * @return String
+	 * @return string
 	 */
 	function getDescription()
 	{
@@ -21,7 +21,7 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	}
 	
 	/**
-	 * @param String[] $params
+	 * @param string[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
 	 */
 	protected function validateArgs($params, $options)
@@ -30,10 +30,10 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	}
 	
 	/**
-	 * @param Integer $completeParamCount the parameters that are already complete in the command line
-	 * @param String[] $params
+	 * @param integer $completeParamCount the parameters that are already complete in the command line
+	 * @param string[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
-	 * @return String[] or null
+	 * @return string[] or null
 	 */
 	function getParameters($completeParamCount, $params, $options, $current)
 	{
@@ -60,7 +60,7 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 	}
 	
 	/**
-	 * @param String[] $params
+	 * @param string[] $params
 	 * @param array<String, String> $options where the option array key is the option name, the potential option value or true
 	 * @see c_ChangescriptCommand::parseArgs($args)
 	 */
@@ -82,8 +82,9 @@ class commands_comment_ImplementOnDocument extends c_ChangescriptCommand
 			$this->warnMessage($message);
 		}
 		
-		// Recompile locales for module.
-		$this->message("Recompile locales for module $destModuleName.");
+		
+		
+				$this->message("Recompile locales for module $destModuleName.");
 		LocaleService::getInstance()->regenerateLocalesForModule($destModuleName);
 		$this->executeCommand('clear-webapp-cache');
 		$this->executeCommand('clear-template-cache');

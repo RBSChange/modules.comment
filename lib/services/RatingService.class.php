@@ -1,30 +1,13 @@
 <?php
 /**
- * comment_RatingService
  * @package modules.comment
+ * @method comment_RatingService getInstance()
  */
-class comment_RatingService extends BaseService 
+class comment_RatingService extends change_BaseService 
 {
 	/**
-	 * @var comment_ScoringService
-	 */
-	private static $instance;
-
-	/**
-	 * @return comment_ScoringService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-	
-	/**
-	 * @param Integer $RatingValue
-	 * @return Integer
+	 * @param integer $RatingValue
+	 * @return integer
 	 */
 	public function normalizeRating($RatingValue)
 	{
@@ -32,7 +15,7 @@ class comment_RatingService extends BaseService
 	}
 	
 	/**
-	 * @return Boolean
+	 * @return boolean
 	 */
 	function getRelevancyForComment($comment)
 	{

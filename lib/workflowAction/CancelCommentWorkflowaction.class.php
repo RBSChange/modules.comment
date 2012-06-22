@@ -11,12 +11,13 @@ class comment_CancelCommentWorkflowaction extends comment_BaseCommentWorkflowact
 	 */
 	public function execute()
 	{		
-		// Update the document's status.
-		$document = $this->getDocument();
+				
+				$document = $this->getDocument();
 		$document->getDocumentService()->cancel($document->getId());
 
-		// Send the notification.
-		$specificParams = array();
+		
+
+				$specificParams = array();
 		$currentUser = users_UserService::getInstance()->getCurrentUser();
 		if ($currentUser !== null)
 		{

@@ -11,7 +11,6 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	 */
 	const COMMENTED_META = "modules.comment.commented";
 	
-	
 	/**
 	 * @return f_persistentdocument_PersistentDocument
 	 */
@@ -21,7 +20,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getTargetUrl()
 	{
@@ -29,7 +28,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getAnchor()
 	{
@@ -37,7 +36,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getContentsAsHtml()
 	{
@@ -64,7 +63,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getRSSLabel()
 	{
@@ -72,7 +71,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getRSSDescription()
 	{
@@ -80,15 +79,23 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getRSSGuid()
+	{
+		return LinkHelper::getPermalink($this);
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getRSSLink()
 	{
 		return LinkHelper::getDocumentUrl($this);
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getRSSDate()
 	{
@@ -96,7 +103,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return Integer
+	 * @return integer
 	 */
 	public function getEvaluationcount()
 	{
@@ -104,7 +111,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */	
 	public function getRatingImageUrl()
 	{
@@ -112,7 +119,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getRatingImageAlt()
 	{
@@ -143,7 +150,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return Boolean
+	 * @return boolean
 	 */
 	public function isEvaluatedByCurrentUser()
 	{
@@ -156,7 +163,7 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getFullAuthorLabel()
 	{
@@ -164,18 +171,18 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		if ($this->getAuthorid() !== null)
 		{
 			$substitutions =  array('label' => $this->getAuthorName(), 'authorId' => $this->getAuthorid());
-			$fullAuthorLabel = $ls->transFO('m.comment.bo.workflow.validatecomment.fullauthorauthentifiedlabel', array('ucf'), $substitutions);
+			$fullAuthorLabel = $ls->trans('m.comment.bo.workflow.validatecomment.fullauthorauthentifiedlabel', array('ucf'), $substitutions);
 		}
 		else
 		{
 			$substitutions =  array('label' => $this->getAuthorName());
-			$fullAuthorLabel = $ls->transFO('m.comment.bo.workflow.validatecomment.fullauthoranonymouslabel', array('ucf'), $substitutions);
+			$fullAuthorLabel = $ls->trans('m.comment.bo.workflow.validatecomment.fullauthoranonymouslabel', array('ucf'), $substitutions);
 		}
 		return $fullAuthorLabel;
 	}
 	
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public final function getValidatePermissionName()
 	{
@@ -209,8 +216,9 @@ class comment_persistentdocument_comment extends comment_persistentdocument_comm
 		return f_util_StringUtils::shortenString(f_util_HtmlUtils::htmlToText($this->getContentsAsHtml()), $maxLength);
 	}
 	
-	// Deprecated
-
+	
+	
+		
 	/**
 	 * @deprecated use change:avatar
 	 */

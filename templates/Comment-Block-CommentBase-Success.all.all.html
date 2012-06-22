@@ -1,6 +1,6 @@
 <div id="comments-${target/getId}">
 	<tal:block tal:condition="totalCount">
-		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentList' ; type 'html' ; comments comments ; target target ; offset offset ; totalCount totalCount ; currentCommentId currentCommentId ; showGravatars configuration/getShowgravatars ; enableRating configuration/getEnableRating ; displaySortOptions configuration/getDisplaySortOptions ; enableEvaluation configuration/getEnableEvaluation ; showRatingDistribution configuration/getShowRatingDistribution ; filter filter ; sort sort ; disableRSS disableRSS" />
+		<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentList' ; type 'html' ; comments comments ; target target ; offset offset ; totalCount totalCount ; currentCommentId currentCommentId ; showGravatars configuration/getShowgravatars ; enableRating configuration/getEnableRating ; displaySortOptions configuration/getDisplaySortOptions ; enableEvaluation configuration/getEnableEvaluation ; showRatingDistribution configuration/getShowRatingDistribution ; filter filter ; sort sort ; disableRSS disableRSS; page page" />
 	</tal:block>
 	
 	<h2 change:h="" id="leave-comment">${trans:m.comment.frontoffice.leave-a-comment,ucf}</h2>
@@ -14,8 +14,7 @@
 		</tal:block>
 		
 		<tal:block tal:condition="not: connectToPost">
-			<tal:block change:loadhandler="comment_InitFormInfoLoadHandler" />
-			<tal:block change:loadhandler="form_FormLoadHandler" />
+			<script change:javascript="head 'modules.form.lib.js.form'"></script>
 			<tal:block change:include="module 'comment' ; template 'Comment-Inc-CommentForm' ; type 'html' ; target target ; currentUser currentUser ; previewComment previewComment ; enableRating configuration/getEnableRating ; showGravatars configuration/getShowgravatars" />
 		</tal:block>
 	</tal:block>

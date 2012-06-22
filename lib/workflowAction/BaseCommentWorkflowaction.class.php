@@ -1,21 +1,20 @@
 <?php
 /**
- * @author intportg
- * @package modules.comment.lib.workflowAction
+ * @package modules.comment
  */
 class comment_BaseCommentWorkflowaction extends workflow_BaseWorkflowaction
 {
 	/**
 	 * Send a notification to the document author with the default sender. The notification replacements are returned by the callback function.
 	 * @param string $codeName
-	 * @param function $callback
+	 * @param array $callback
 	 * @param mixed $callbackParameter
 	 * @return boolean
 	 */
 	protected function sendNotificationToAuthorCallback($codeName, $callback = null, $callbackParameter = null)
 	{
-		// Look for the document author.
-		$userId = workflow_CaseService::getInstance()->getParameter($this->getWorkitem()->getCase(), '__DOCUMENT_AUTHOR_ID');
+		
+				$userId = workflow_CaseService::getInstance()->getParameter($this->getWorkitem()->getCase(), '__DOCUMENT_AUTHOR_ID');
 		if ($userId)
 		{
 			$user = users_persistentdocument_user::getInstanceById($userId);
@@ -28,13 +27,17 @@ class comment_BaseCommentWorkflowaction extends workflow_BaseWorkflowaction
 			if ($notification !== null)
 			{
 				$notification->setSendingModuleName('workflow');
+				if (is_array($callback) && count($callback) == 2)
+				{
+					$notification->registerCallback($callback[0], $callback[1], $callbackParameter);
+				}
+				return $notification->send($this->getDocument()->getEmail());
 			}
-			return $notification->getDocumentService()->sendNotificationCallback($notification, change_MailService::getInstance()->getRecipientsArray(array($this->getDocument()->getEmail())), $callback, $callbackParameter);
 		}
 	}
 	
 	/**
-	 * @param String $notificationCodeName
+	 * @param string $notificationCodeName
 	 * @return array array(websiteId, lang) by default, workflow's document websiteId and original lang
 	 */
 	public function getNotificationWebsiteIdAndLang($notificationCodeName)

@@ -1,29 +1,12 @@
 <?php
 /**
- * @package modules.comment.lib.services
+ * @package modules.comment
+ * @method comment_ModuleService getInstance()
  */
 class comment_ModuleService extends ModuleBaseService
 {
 	/**
-	 * Singleton
-	 * @var comment_ModuleService
-	 */
-	private static $instance = null;
-
-	/**
-	 * @return comment_ModuleService
-	 */
-	public static function getInstance()
-	{
-		if (is_null(self::$instance))
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-	
-	/**
-	 * @param Integer $documentId
+	 * @param integer $documentId
 	 * @return f_persistentdocument_PersistentTreeNode
 	 */
 	public function getParentNodeForPermissions($documentId)

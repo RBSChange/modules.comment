@@ -36,8 +36,9 @@ class comment_ViewFeedAction extends change_Action
 				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
 			}
 			
-			// Set the link, title and description of the feed
-			$this->setHeaders($feedWriter, $request, $target);
+			
+			
+						$this->setHeaders($feedWriter, $request, $target);
 			$this->setContentType('text/xml');
 			echo $feedWriter->toString();
 		}
@@ -50,18 +51,19 @@ class comment_ViewFeedAction extends change_Action
 	 */
 	private function setHeaders($feedWriter, $request, $parent)
 	{
-		$title = f_Locale::translate('&modules.comment.frontoffice.Rss-feed-title;', array('target' => $parent->getLabel()));
+		$title = LocaleService::getInstance()->trans('m.comment.frontoffice.rss-feed-title', array('ucf'), array('target' => $parent->getNavigationLabel()));
 		$feedWriter->setTitle($title);
 		
-		// Description.
-		$description = null;
+		
+		
+				$description = null;
 		if (f_util_ClassUtils::methodExists($parent, 'getRSSDescription'))
 		{
 			$description = strip_tags($parent->getRSSDescription());
 		}
 		if ($description === null)
 		{
-			$description = $parent->getLabel();
+			$description = $parent->getNavigationLabel();
 		}
 		$feedWriter->setDescription($description);
 		
@@ -70,11 +72,17 @@ class comment_ViewFeedAction extends change_Action
 		$feedWriter->setLink($feedURL);
 	}
 	
+	/**
+	 * @return boolean
+	 */
 	public function isSecure()
 	{
 		return false;
 	}
 	
+	/**
+	 * @return boolean
+	 */
 	protected function isDocumentAction()
 	{
 		return false;
