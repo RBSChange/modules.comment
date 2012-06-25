@@ -60,7 +60,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	public function frontendValidation($comment)
 	{
-		if (!$comment->getPersistentModel()->hasWorkflow())
+		if (!workflow_ModuleService::getInstance()->hasPublishedWorkflowByDocument($comment))
 		{
 			$comment->activate();
 			return;
