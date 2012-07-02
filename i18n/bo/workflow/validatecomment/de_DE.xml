@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.bo.workflow.validatecomment" lcid="de_DE">
-  <key id="user-task-title">Kommentar bestätigen</key>
-  <key id="user-task-help">Sie müssen folgenden Kommentar bestätigen. Drücken Sie einen der Knöpfe oben rechts ″Übernehmen″ und ″Ablehnen″.</key>
+	<key id="user-task-title">Kommentar bestätigen</key>
+	<key id="user-task-help">Sie müssen folgenden Kommentar bestätigen. Drücken Sie einen der Knöpfe oben rechts ″Übernehmen″ und ″Ablehnen″.</key>
 </i18n>

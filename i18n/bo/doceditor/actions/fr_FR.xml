@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.bo.doceditor.actions" lcid="fr_FR">
-  <key id="confirm-delete-comment">confirmez-vous la suppression de ce commentaire ?</key>
-  <key id="success-deleting-comment">le commentaire a bien été supprimé.</key>
-  <key id="success-deactivating-comment">le commentaire a bien été désactivé.</key>
-  <key id="success-reactivating-comment">le commentaire a bien été réactivé.</key>
+	<key id="confirm-delete-comment">confirmez-vous la suppression de ce commentaire ?</key>
+	<key id="success-deleting-comment">le commentaire a bien été supprimé.</key>
+	<key id="success-deactivating-comment">le commentaire a bien été désactivé.</key>
+	<key id="success-reactivating-comment">le commentaire a bien été réactivé.</key>
 </i18n>

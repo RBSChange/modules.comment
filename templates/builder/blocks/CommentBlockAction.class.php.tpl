@@ -1,7 +1,7 @@
 <?php
 /**
- * <{$module}>_Block<{$blockName}>Action
- * @package modules.<{$module}>.lib.blocks
+ * @package modules.<{$module}>
+ * @method <{$module}>_Block<{$blockName}>Configuration getConfiguration()
  */
 class <{$module}>_Block<{$blockName}>Action extends comment_BlockCommentsBaseAction
 {	

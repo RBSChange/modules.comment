@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.bo.actions" lcid="fr_FR">
-  <key id="create_">créer</key>
-  <key id="create-comment">Create comment</key>
+	<key id="create_">créer</key>
+	<key id="create-comment">Create comment</key>
 </i18n>

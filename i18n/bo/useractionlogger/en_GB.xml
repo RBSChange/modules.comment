@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.bo.useractionlogger" lcid="en_GB">
-  <key id="deactivated-comment">deactivated.comment {documentlabel}</key>
-  <key id="delete-comment">delete.comment {documentlabel}</key>
-  <key id="log-deactivated-comment">log-deactivated-comment</key>
-  <key id="log-delete-comment">log-delete-comment</key>
-  <key id="log-reactivate-comment">log-reactivate-comment</key>
-  <key id="reactivate-comment">reactivate.comment {documentlabel}</key>
+	<key id="deactivated-comment">deactivated.comment {documentlabel}</key>
+	<key id="delete-comment">delete.comment {documentlabel}</key>
+	<key id="log-deactivated-comment">log-deactivated-comment</key>
+	<key id="log-delete-comment">log-delete-comment</key>
+	<key id="log-reactivate-comment">log-reactivate-comment</key>
+	<key id="reactivate-comment">reactivate.comment {documentlabel}</key>
 </i18n>

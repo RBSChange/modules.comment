@@ -126,7 +126,7 @@ class comment_ImplementOnCommentGenerator extends builder_BlockGenerator
 	var editor = event.originalTarget;
 	if (editor.documentname === \''.$documentName.'\')
 	{
-		editor.addTab(\'comments\', \'&modules.comment.bo.doceditor.tab.Comments;\', \'comments\');
+		editor.addTab("comments", "${trans:m.comment.bo.doceditor.tab.comments,ucf,js}", "comments");
 	}]]></handler>');
 
 			$newHandler = $actionsDom->importNode($newDom->documentElement, true);

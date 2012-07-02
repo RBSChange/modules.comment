@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.document.comment" lcid="en_GB">
-  <key id="edition-form-title">comment properties</key>
-  <key id="document-name">comment</key>
-  <key id="label">label</key>
-  <key id="label-help">label</key>
-  <key id="authorid">author ID</key>
-  <key id="authorid-help">ID of the author who submitted this comment.</key>
-  <key id="email">email address</key>
-  <key id="email-help">email address</key>
-  <key id="contents">comment</key>
-  <key id="contents-help">comment content</key>
-  <key id="targetid">target ID</key>
-  <key id="targetid-help">ID of the document related to this comment.</key>
-  <key id="target">target</key>
-  <key id="view-target">view target</key>
-  <key id="targetdocumentmodel">target type</key>
-  <key id="targetdocumentmodel-help">Type (Change document model name) of the comment's target.</key>
-  <key id="authorname">name or nickname</key>
-  <key id="authorname-help">name or nickname</key>
-  <key id="rating">rating</key>
-  <key id="rating-help">Rating given by the author.</key>
-  <key id="authorwebsiteurl">author's website</key>
-  <key id="authorwebsiteurl-help">The URL of the author's website.</key>
-  <key id="view-website">view website</key>
-  <key id="label-pattern">comment on ″{target}″ by {author}</key>
+	<key id="edition-form-title">comment properties</key>
+	<key id="document-name">comment</key>
+	<key id="label">label</key>
+	<key id="label-help">label</key>
+	<key id="authorid">author ID</key>
+	<key id="authorid-help">ID of the author who submitted this comment.</key>
+	<key id="email">email address</key>
+	<key id="email-help">email address</key>
+	<key id="contents">comment</key>
+	<key id="contents-help">comment content</key>
+	<key id="targetid">target ID</key>
+	<key id="targetid-help">ID of the document related to this comment.</key>
+	<key id="target">target</key>
+	<key id="view-target">view target</key>
+	<key id="targetdocumentmodel">target type</key>
+	<key id="targetdocumentmodel-help">Type (Change document model name) of the comment's target.</key>
+	<key id="authorname">name or nickname</key>
+	<key id="authorname-help">name or nickname</key>
+	<key id="rating">rating</key>
+	<key id="rating-help">Rating given by the author.</key>
+	<key id="authorwebsiteurl">author's website</key>
+	<key id="authorwebsiteurl-help">The URL of the author's website.</key>
+	<key id="view-website">view website</key>
+	<key id="label-pattern">comment on ″{target}″ by {author}</key>
 </i18n>

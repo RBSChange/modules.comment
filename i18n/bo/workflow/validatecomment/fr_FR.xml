@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.bo.workflow.validatecomment" lcid="fr_FR">
-  <key id="user-task-title">valider un commentaire</key>
-  <key id="user-task-help">vous devez valider le commentaire ci-dessous. Attention, le commentaire éventuellement saisi sera présent dans l'e-mail envoyé à l'internaute l'informant du résultat de la validation. Cliquez sur l'un des boutons ″Accepter″ ou ″Refuser″ présents dans cet écran.</key>
-  <key id="fullauthorauthentifiedlabel">{label} (identifiant utilisateur {authorId})</key>
-  <key id="fullauthoranonymouslabel">{label} (utilisateur non enregistré)</key>
+	<key id="user-task-title">valider un commentaire</key>
+	<key id="user-task-help">vous devez valider le commentaire ci-dessous. Attention, le commentaire éventuellement saisi sera présent dans l'e-mail envoyé à l'internaute l'informant du résultat de la validation. Cliquez sur l'un des boutons ″Accepter″ ou ″Refuser″ présents dans cet écran.</key>
+	<key id="fullauthorauthentifiedlabel">{label} (identifiant utilisateur {authorId})</key>
+	<key id="fullauthoranonymouslabel">{label} (utilisateur non enregistré)</key>
 </i18n>

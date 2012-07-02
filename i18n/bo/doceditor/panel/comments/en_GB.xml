@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.bo.doceditor.panel.comments" lcid="en_GB">
-  <key id="date">date</key>
-  <key id="status">status</key>
-  <key id="author-name">author's name</key>
-  <key id="author-email">author's email</key>
-  <key id="author-website">author's website</key>
-  <key id="rating">rating</key>
-  <key id="relevancy">relevance</key>
-  <key id="short-text">short text</key>
+	<key id="date">date</key>
+	<key id="status">status</key>
+	<key id="author-name">author's name</key>
+	<key id="author-email">author's email</key>
+	<key id="author-website">author's website</key>
+	<key id="rating">rating</key>
+	<key id="relevancy">relevance</key>
+	<key id="short-text">short text</key>
 </i18n>

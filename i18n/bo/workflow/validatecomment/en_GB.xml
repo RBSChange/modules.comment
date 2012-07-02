@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.comment.bo.workflow.validatecomment" lcid="en_GB">
-  <key id="user-task-title">approve a comment</key>
-  <key id="user-task-help">You must approve the comment below. Beware, the comment that you may have entered will be present in the email sent to the visitor to notify them of the approval. Click on one of the "Accept" or "Refuse" buttons on the screen.</key>
-  <key id="fullauthoranonymouslabel">{label} (non registered user)</key>
-  <key id="fullauthorauthentifiedlabel">{label} (user identifier {authorId})</key>
+	<key id="user-task-title">approve a comment</key>
+	<key id="user-task-help">You must approve the comment below. Beware, the comment that you may have entered will be present in the email sent to the visitor to notify them of the approval. Click on one of the "Accept" or "Refuse" buttons on the screen.</key>
+	<key id="fullauthoranonymouslabel">{label} (non registered user)</key>
+	<key id="fullauthorauthentifiedlabel">{label} (user identifier {authorId})</key>
 </i18n>

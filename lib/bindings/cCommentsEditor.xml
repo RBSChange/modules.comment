@@ -176,7 +176,7 @@
 					<xul:label xbl:inherits="value=creationdate" />
 					-
 					<xul:label xbl:inherits="value=authorName" />
-					<xul:toolbarbutton xbl:inherits="disabled=canDelete" anonid="delete" image="{IconsBase}/small/delete.png" tooltiptext="${trans:m.uixul.bo.actions.Delete,ucf,attr}" />
+					<xul:toolbarbutton xbl:inherits="disabled=canDelete" anonid="delete" image="{IconsBase}/small/delete.png" tooltiptext="${trans:m.uixul.bo.actions.delete,ucf,attr}" />
 				</xul:caption>
 				<xul:hbox>
 					<xul:grid width="250">
@@ -187,37 +187,37 @@
 						</xul:columns>
 						<xul:rows>
 							<xul:row>
-								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.Date,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.date,ucf,attr}" />
 								<xul:label xbl:inherits="value=creationdate" />
 							</xul:row>
 							<xul:row align="center">
-								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.Status,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.status,ucf,attr}" />
 								<xul:label xbl:inherits="value=statusLabel" />
 								<xul:hbox>
-									<xul:toolbarbutton xbl:inherits="hidden=canDeactivate" anonid="deactivate" image="{IconsBase}/small/deactivated.png" tooltiptext="${trans:m.uixul.bo.actions.Deactivate,ucf,attr}" />
-									<xul:toolbarbutton xbl:inherits="hidden=canReactivate" anonid="reactivate" image="{IconsBase}/small/reactivate.png" tooltiptext="${trans:m.uixul.bo.actions.ReActivate,ucf,attr}" />
+									<xul:toolbarbutton xbl:inherits="hidden=canDeactivate" anonid="deactivate" image="{IconsBase}/small/deactivated.png" tooltiptext="${trans:m.uixul.bo.actions.deactivate,ucf,attr}" />
+									<xul:toolbarbutton xbl:inherits="hidden=canReactivate" anonid="reactivate" image="{IconsBase}/small/reactivate.png" tooltiptext="${trans:m.uixul.bo.actions.reactivate,ucf,attr}" />
 									<xul:hbox anonid="tasks" />
 								</xul:hbox>
 							</xul:row>
 							<xul:row>
-								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.Author-name,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.author-name,ucf,attr}" />
 								<xul:label xbl:inherits="xbl:text=authorName,tooltiptext=authorName" crop="end" class="allow-text-selection" />
 							</xul:row>
 							<xul:row>
-								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.Author-email,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.author-email,ucf,attr}" />
 								<xul:label xbl:inherits="xbl:text=email,tooltiptext=email" crop="end" class="allow-text-selection" />
 							</xul:row>
 							<xul:row xbl:inherits="hidden=authorwebsiteurlhidden" align="center">
-								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.Author-website,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.author-website,ucf,attr}" />
 								<xul:label xbl:inherits="value=authorwebsiteurl,tooltiptext=authorwebsiteurl" crop="end" />
-								<xul:toolbarbutton tooltiptext="${trans:m.comment.document.comment.View-website,ucf,attr}" image="{IconsBase}/small/preview.png" oncommand="viewAuthorWebsite()" />
+								<xul:toolbarbutton tooltiptext="${trans:m.comment.document.comment.view-website,ucf,attr}" image="{IconsBase}/small/preview.png" oncommand="viewAuthorWebsite()" />
 							</xul:row>
 							<xul:row>
-								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.Rating,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.rating,ucf,attr}" />
 								<xul:label xbl:inherits="value=rating" />
 							</xul:row>
 							<xul:row>
-								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.Relevancy,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.relevancy,ucf,attr}" />
 								<xul:label xbl:inherits="value=relevancy" />
 							</xul:row>
 						</xul:rows>
@@ -290,22 +290,22 @@
 
 			<method name="delete">
 				<body><![CDATA[
-					if (confirm("${trans:m.comment.bo.doceditor.actions.Confirm-delete-comment,ucf,js}"))
+					if (confirm("${trans:m.comment.bo.doceditor.actions.confirm-delete-comment,ucf,js}"))
 					{
-						this.executeAction("DeleteJSON", "${trans:m.comment.bo.doceditor.actions.Success-deleting-comment,ucf,js}");
+						this.executeAction("DeleteJSON", "${trans:m.comment.bo.doceditor.actions.success-deleting-comment,ucf,js}");
 					}
 				]]></body>
 			</method>
 
 			<method name="deactivate">
 				<body><![CDATA[
-					this.executeAction("DeactivatedJSON", "${trans:m.comment.bo.doceditor.actions.Success-deactivating-comment,ucf,js}");
+					this.executeAction("DeactivatedJSON", "${trans:m.comment.bo.doceditor.actions.success-deactivating-comment,ucf,js}");
 				]]></body>
 			</method>
 
 			<method name="reactivate">
 				<body><![CDATA[
-					this.executeAction("ReActivateJSON", "${trans:m.comment.bo.doceditor.actions.Success-reactivating-comment,ucf,js}");
+					this.executeAction("ReActivateJSON", "${trans:m.comment.bo.doceditor.actions.success-reactivating-comment,ucf,js}");
 				]]></body>
 			</method>
 

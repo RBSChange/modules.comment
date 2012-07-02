@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<i18n baseKey="m.comment.bo.blocks.comment" lcid="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?>
+<i18n baseKey="m.comment.bo.blocks.commentbase" lcid="fr_FR">
 	<key id="nbitemperpage">commentaires par page</key>
 	<key id="nbitemperpage-help">Nombre de commentaires à afficher par page.</key>
 	<key id="allownotregistered">activer les commentaires anonymes</key>
