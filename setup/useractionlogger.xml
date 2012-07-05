@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <script>
-  <binding fileName="modules/useractionlogger/persistentdocument/import/useractionlogger_binding.xml"/>
-  <actiondef modulename="comment" actionname="deactivated.comment" label="modules.comment.bo.useractionlogger.deactivated-comment"/>
-  <actiondef modulename="comment" actionname="reactivate.comment" label="modules.comment.bo.useractionlogger.reactivate-comment"/>
-  <actiondef modulename="comment" actionname="delete.comment" label="modules.comment.bo.useractionlogger.delete-comment"/>
+	<binding fileName="modules/useractionlogger/persistentdocument/import/useractionlogger_binding.xml" />
+	<actiondef modulename="comment" actionname="deactivated.comment" label="modules.comment.bo.useractionlogger.deactivated-comment" />
+	<actiondef modulename="comment" actionname="reactivate.comment" label="modules.comment.bo.useractionlogger.reactivate-comment" />
+	<actiondef modulename="comment" actionname="delete.comment" label="modules.comment.bo.useractionlogger.delete-comment" />
 </script>

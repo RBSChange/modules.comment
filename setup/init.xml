@@ -4,118 +4,39 @@
 	<binding fileName="modules/generic/persistentdocument/import/generic_binding.xml" />
 	<binding fileName="modules/notification/persistentdocument/import/notification_binding.xml" />
 	<binding fileName="modules/workflow/persistentdocument/import/workflow_binding.xml" />
-	
-	<systemfolder module="notification" relatedmodule="comment">	
-		<notification id="n0create"
-			label="Validation d'un commentaire"
-			codename="modules_comment/newCommentValidation"
-			availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}, {__LAST_COMMENTARY}, {__LAST_DECISION}"
-			subject="Demande de validation d'un commentaire : {documentLabel}"
-			header="Processus de validation d'un commentaire"
-			body="Nouveau commentaire sur {targetLink} ({targetType})&lt;br/&gt;
-			- Auteur :  {authorName} ({authorEmail} - {authorIp}) {authorWebsiteUrl}&lt;br/&gt;
-			- Contenu : {commentContent}&lt;br/&gt;
-			Le commentaire ne sera pas publié avant validation."
-			footer="Veuillez vous connecter a &lt;a href=&quot;{UIHOST}/admin&quot; class=&quot;link&quot; &gt;l'interface d'administration&lt;/a&gt; pour effectuer cette tâche." />
-				
-		<notification id="n0termination"
-			label="Validation du contenu d'un commentaire"
-			codename="modules_comment/CommentValidationTermination"
-			availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}, {__LAST_COMMENTARY}, {__LAST_DECISION}"
-			subject="Vous avez traité la validation du commentaire : {documentLabel}"
-			header="Processus de validation d'un commentaire"
-			body="Récapitulatif des informations :&lt;br/&gt;
-- Page : &lt;strong&gt;{documentLabel}&lt;/strong&gt; &lt;br/&gt;
-- Décision : {__LAST_DECISION}&lt;br/&gt;
-- Commentaire : {__LAST_COMMENTARY}"
-			footer="&lt;a href=&quot;{UIHOST}/admin&quot; class=&quot;link&quot; &gt;Interface d'administration&lt;/a&gt;" />	
-
-		<notification id="n0cancellation"
-			label="Validation du contenu d'un commentaire"
-			codename="modules_comment/CommentValidationCancellation"
-			availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}, {__LAST_COMMENTARY}, {__LAST_DECISION}"
-			subject="Annulation de la validation pour le commentaire : {documentLabel}"
-			header="Processus de validation d'un commentaire"
-			body="La validation du commentaire &lt;strong&gt;{documentLabel}&lt;/strong&gt; à été effectuée par {currentUserFullname} :&lt;br/&gt;
-- Décision : {__LAST_DECISION}&lt;br/&gt;
-- Commentaire : {__LAST_COMMENTARY}&lt;br/&gt;
-&lt;br/&gt;
-Vous n'avez plus besoin d'intervenir sur la validation de ce commentaire."
-			footer="&lt;a href=&quot;{UIHOST}/admin&quot; class=&quot;link&quot; &gt;Interface d'administration&lt;/a&gt;" />
-			
-		<notification id="n0accepted"
-			label="Acceptation d'un commentaire"
-			codename="modules_comment/commentAccepted"
-			availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {validationComment}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}"
-			subject="Votre commentaire daté de {documentCreationDate} a été accepté"
-			header="Processus de validation d'un commentaire"
-			body="Votre commentaire daté de {documentCreationDate} sur &quot;{targetLabel}&quot; a été accepté et publié. &lt;br /&gt;&lt;br /&gt;{validationComment}"
-			footer="Merci pour votre contribution." />
-			
-		<notification id="n0rejected"
-			label="Rejet d'un commentaire"
-			codename="modules_comment/commentRejected"
-			availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {validationComment}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}"
-			subject="Votre commentaire daté de {documentCreationDate} a été rejeté"
-			header="Processus de validation d'un commentaire"
-			body="Votre commentaire daté de {documentCreationDate} sur &quot;{targetLabel}&quot; a été rejeté et ne sera pas publié. &lt;br /&gt;&lt;br /&gt;{validationComment}"
-			footer="" />
-			
+	<systemfolder module="notification" relatedmodule="comment">
+		<notification id="n0create" label="Validation d'un commentaire" codename="modules_comment/newCommentValidation" availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}, {__LAST_COMMENTARY}, {__LAST_DECISION}" subject="Demande de validation d'un commentaire : {documentLabel}" header="Processus de validation d'un commentaire" body="Nouveau commentaire sur {targetLink} ({targetType})&lt;br/&gt;		- Auteur :	{authorName} ({authorEmail} - {authorIp}) {authorWebsiteUrl}&lt;br/&gt;		- Contenu : {commentContent}&lt;br/&gt;		Le commentaire ne sera pas publié avant validation." footer="Veuillez vous connecter a &lt;a href=&quot;{UIHOST}/admin&quot; class=&quot;link&quot; &gt;l'interface d'administration&lt;/a&gt; pour effectuer cette tâche." />
+		<notification id="n0termination" label="Validation du contenu d'un commentaire" codename="modules_comment/CommentValidationTermination" availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}, {__LAST_COMMENTARY}, {__LAST_DECISION}" subject="Vous avez traité la validation du commentaire : {documentLabel}" header="Processus de validation d'un commentaire" body="Récapitulatif des informations :&lt;br/&gt; - Page : &lt;strong&gt;{documentLabel}&lt;/strong&gt; &lt;br/&gt; - Décision : {__LAST_DECISION}&lt;br/&gt; - Commentaire : {__LAST_COMMENTARY}" footer="&lt;a href=&quot;{UIHOST}/admin&quot; class=&quot;link&quot; &gt;Interface d'administration&lt;/a&gt;" />
+		<notification id="n0cancellation" label="Validation du contenu d'un commentaire" codename="modules_comment/CommentValidationCancellation" availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}, {__LAST_COMMENTARY}, {__LAST_DECISION}" subject="Annulation de la validation pour le commentaire : {documentLabel}" header="Processus de validation d'un commentaire" body="La validation du commentaire &lt;strong&gt;{documentLabel}&lt;/strong&gt; à été effectuée par {currentUserFullname} :&lt;br/&gt; - Décision : {__LAST_DECISION}&lt;br/&gt; - Commentaire : {__LAST_COMMENTARY}&lt;br/&gt; &lt;br/&gt; Vous n'avez plus besoin d'intervenir sur la validation de ce commentaire." footer="&lt;a href=&quot;{UIHOST}/admin&quot; class=&quot;link&quot; &gt;Interface d'administration&lt;/a&gt;" />
+		<notification id="n0accepted" label="Acceptation d'un commentaire" codename="modules_comment/commentAccepted" availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {validationComment}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}" subject="Votre commentaire daté de {documentCreationDate} a été accepté" header="Processus de validation d'un commentaire" body="Votre commentaire daté de {documentCreationDate} sur &quot;{targetLabel}&quot; a été accepté et publié. &lt;br /&gt;&lt;br /&gt;{validationComment}" footer="Merci pour votre contribution." />
+		<notification id="n0rejected" label="Rejet d'un commentaire" codename="modules_comment/commentRejected" availableparameters="{commentId}, {commentLabel}, {commentCreationDate}, {currentUserId}, {currentUserFullname}, {validationComment}, {authorEmail}, {authorName}, {authorWebsiteUrl}, {authorWebsiteLink}, {authorIp}, {commentContent}, {commentRating}, {targetId}, {targetLabel}, {targetUrl}, {targetType}" subject="Votre commentaire daté de {documentCreationDate} a été rejeté" header="Processus de validation d'un commentaire" body="Votre commentaire daté de {documentCreationDate} sur &quot;{targetLabel}&quot; a été rejeté et ne sera pas publié. &lt;br /&gt;&lt;br /&gt;{validationComment}" footer="" />
 	</systemfolder>
-	
 	<systemfolder module="workflow" relatedmodule="comment">
 		<workflow starttaskid="COMMENT_VALIDATION" label="Validation des commentaires (V2)">
-		
 			<places>
-				<startplace id="pStart" label="Commentaire en attente de validation" description="Commentaire en attente de validation de son contenu"/>
-
+				<startplace id="pStart" label="Commentaire en attente de validation" description="Commentaire en attente de validation de son contenu" />
 				<place id="p1" label="Valideurs sélectionnés" description="Valideurs sélectionnés" />
 				<place id="p2" label="Contenu accepté" description="Contenu accepté pour publication" />
 				<place id="p3" label="Contenu refusé" description="Contenu réfusé à la publication" />
-
-				<endplace id="pEnd" label="Validation terminée" description="Fin du workflow."/>
+				<endplace id="pEnd" label="Validation terminée" description="Fin du workflow." />
 			</places>
-			
 			<transitions>
-				<transition id="t-1" label="Sélection des valideurs" description="Les valideurs sont sélectionnés."
-					taskid="COMMENT_VALIDATION" 
-					trigger="AUTO"
-					actionname="comment_SelectValidatorsWorkflowaction" />
-					
-				<transition id="t0" label="Validation d'un commentaire" description="Le contenu est validé ou refusé."
-					taskid="COMMENT_VALIDATION" 
-					trigger="USER" roleid="Validator"
-					actionname="comment_ValidateCommentWorkflowaction" 
-					creationnotification-refid="n0create"
-					terminationnotification-refid="n0termination"
-					cancellationnotification-refid="n0cancellation" />				
-				
-				<transition id="t1" label="Activation du commentaire" description="Le contenu a été validé, le commentaire peut être activé"
-					taskid="COMMENT_VALIDATION" 
-					trigger="AUTO"
-					actionname="comment_ActivateCommentWorkflowaction" />
-				
-				<transition id="t2" label="Annulation de la publication d'un commentaire" description="Le contenu a été refusé, le commentaire repasse en état brouillon."
-					taskid="COMMENT_VALIDATION" 
-					trigger="AUTO"
-					actionname="comment_CancelCommentWorkflowaction" />	
+				<transition id="t-1" label="Sélection des valideurs" description="Les valideurs sont sélectionnés." taskid="COMMENT_VALIDATION" trigger="AUTO" actionname="comment_SelectValidatorsWorkflowaction" />
+				<transition id="t0" label="Validation d'un commentaire" description="Le contenu est validé ou refusé." taskid="COMMENT_VALIDATION" trigger="USER" roleid="Validator" actionname="comment_ValidateCommentWorkflowaction" creationnotification-refid="n0create" terminationnotification-refid="n0termination" cancellationnotification-refid="n0cancellation" />
+				<transition id="t1" label="Activation du commentaire" description="Le contenu a été validé, le commentaire peut être activé" taskid="COMMENT_VALIDATION" trigger="AUTO" actionname="comment_ActivateCommentWorkflowaction" />
+				<transition id="t2" label="Annulation de la publication d'un commentaire" description="Le contenu a été refusé, le commentaire repasse en état brouillon." taskid="COMMENT_VALIDATION" trigger="AUTO" actionname="comment_CancelCommentWorkflowaction" />
 			</transitions>
-			
 			<arcs>
 				<arc direction="IN" place-refid="pStart" transition-refid="t-1" arctype="SEQ" />
-				
 				<arc direction="OUT" transition-refid="t-1" place-refid="p1" arctype="SEQ" />
 				<arc direction="IN" place-refid="p1" transition-refid="t0" arctype="SEQ" />
-				
-				<arc direction="OUT" transition-refid="t0"  place-refid="p2" arctype="EX_OR_SP" precondition="ACCEPTED" />
-				<arc direction="OUT" transition-refid="t0"  place-refid="p3" arctype="EX_OR_SP" precondition="REFUSED"  />
-				
+				<arc direction="OUT" transition-refid="t0" place-refid="p2" arctype="EX_OR_SP" precondition="ACCEPTED" />
+				<arc direction="OUT" transition-refid="t0" place-refid="p3" arctype="EX_OR_SP" precondition="REFUSED" />
 				<arc direction="IN" place-refid="p2" transition-refid="t1" arctype="SEQ" />
 				<arc direction="IN" place-refid="p3" transition-refid="t2" arctype="SEQ" />
-				
-				<arc direction="OUT" transition-refid="t1"  place-refid="pEnd" arctype="SEQ" />
-				<arc direction="OUT" transition-refid="t2"  place-refid="pEnd" arctype="SEQ" />
+				<arc direction="OUT" transition-refid="t1" place-refid="pEnd" arctype="SEQ" />
+				<arc direction="OUT" transition-refid="t2" place-refid="pEnd" arctype="SEQ" />
 			</arcs>
-		</workflow>		
+		</workflow>
 	</systemfolder>
 </script>

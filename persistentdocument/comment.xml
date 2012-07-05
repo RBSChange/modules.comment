@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/schema/persistentdocument-4.0.xsd" model-version="1.0" use-publication-dates="false" indexable="true" use-rewrite-url="false" backoffice-indexable="false" icon="message">
 	<properties>
-		<property name="authorName" type="String" min-occurs="1" indexed="property" />
-		<property name="email" type="String" min-occurs="1" indexed="none">
+		<property name="authorName" type="String" indexed="property" required="true" />
+		<property name="email" type="String" indexed="none" required="true">
 			<constraint name="email" />
 		</property>
-		<property name="contents" type="LongString" min-occurs="1" indexed="description" />
-		<property name="targetId" type="Integer" min-occurs="1" />
-		<property name="targetdocumentmodel" type="String" min-occurs="1" indexed="none" />
+		<property name="contents" type="LongString" indexed="description" required="true" />
+		<property name="targetId" type="Integer" required="true" />
+		<property name="targetdocumentmodel" type="String" indexed="none" required="true" />
 		<property name="websiteId" type="Integer" />
 		<property name="rating" type="Integer" default-value="0" />
 		<property name="usefulcount" type="Integer" />
