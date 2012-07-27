@@ -10,11 +10,11 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 	 */
 	public function _execute($context, $request)
 	{
+		$ls = LocaleService::getInstance();
 		$cs = comment_CommentService::getInstance();
-		$website = website_WebsiteService::getInstance()->getCurrentWebsite();
 		$result = array();
 		$document = $this->getDocumentInstanceFromRequest($request);
-		$result['total'] = $cs->getCountByTargetId($document->getId(), $website->getId());
+		$result['total'] = $cs->getCountByTargetId($document->getId());
 		
 		$commentsInfo = array();
 		if ($result['total'] > 0)
@@ -23,11 +23,11 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 			$offset = ($offset < $result['total'] && $offset > 0) ? $offset : 0;
 			$limit = $request->getParameter('pageSize');
 			$limit = ($limit < 0) ? 0 : $limit;
-		
+			
 			$result['startIndex'] = $offset;
 			$result['pageSize'] = $limit;
-		
-			$comments = $cs->getByTargetId($document->getId(), $offset, $limit, $website->getId());
+			
+			$comments = $cs->getByTargetId($document->getId(), $offset, $limit);
 			if (count($comments) > 0)
 			{
 				$ps = change_PermissionService::getInstance();
@@ -36,7 +36,8 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 				$canValidate = $ps->hasPermission(users_UserService::getInstance()->getCurrentUser(), $permission, $document->getId());
 				
 				foreach ($comments as $comment)
-				{	
+				{
+					/* @var $comment comment_persistentdocument_comment */
 					$status = $comment->getPublicationstatus();
 					$commentInfo = array();
 					$commentInfo['commentId'] = $comment->getId();
@@ -59,13 +60,29 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 					$commentInfo['relevancy'] = $comment->getRelevancy();
 					$commentInfo['contents'] = $comment->getContentsAsHtml();
 					$commentInfo['canValidate'] = $canValidate;
+					if ($comment->getWebsiteId())
+					{
+						$website = DocumentHelper::getDocumentInstanceIfExists($comment->getWebsiteId());
+						if ($website instanceof website_persistentdocument_website)
+						{
+							$commentInfo['linkedwebsite'] = $website->getLabel();
+						}
+						else
+						{
+							$commentInfo['linkedwebsite'] = $ls->transBO('m.comment.bo.general.unknown', array('ucf', 'lab')) . ' ' . $comment->getWebsiteId();
+						}
+					}
+					else
+					{
+						$commentInfo['linkedwebsite'] = null;
+					}
 					$commentsInfo[] = $commentInfo;
 				}
 			}
 		}
 		else
 		{
-			return $this->sendJSONError(LocaleService::getInstance()->trans('m.comment.bo.general.no-comment', array('ucf')), false);
+			return $this->sendJSONError($ls->trans('m.comment.bo.general.no-comment', array('ucf')), false);
 		}
 		$result['comments'] = $commentsInfo;
 		
