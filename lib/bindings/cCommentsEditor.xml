@@ -57,7 +57,7 @@
 					var contents = result.contents;					
 					var comments = contents.comments;
 					var commentsNode = document.getAnonymousElementByAttribute(this, "anonid", 'comments');
-					var textStyle = 'style="width:'+(this.panelWidth - 300)+'px"';
+					var textStyle = 'style="width:'+(this.panelWidth - 350)+'px"';
 					for (var i = 0; i < comments.length; i++)
 					{
 						var comment = comments[i];
@@ -143,7 +143,7 @@
 				]]></body>
 			</method>
 
-			<field name="mPageSize">5</field>
+			<field name="mPageSize">10</field>
 			<field name="mStartIndex">0</field>
 			<field name="mDocumentTotal">0</field>
 			<field name="mRowCount">0</field>
@@ -179,7 +179,7 @@
 					<xul:toolbarbutton xbl:inherits="disabled=canDelete" anonid="delete" image="{IconsBase}/small/delete.png" tooltiptext="${transui:m.uixul.bo.actions.Delete,ucf,attr}" />
 				</xul:caption>
 				<xul:hbox>
-					<xul:grid width="250">
+					<xul:grid width="300">
 						<xul:columns>
 							<xul:column />
 							<xul:column flex="1" />
@@ -214,11 +214,15 @@
 							</xul:row>
 							<xul:row>
 								<xul:label value="${transui:m.comment.bo.doceditor.panel.comments.Rating,ucf,attr}" />
-								<xul:label xbl:inherits="value=rating" />
+								<xul:label xbl:inherits="xbl:text=rating" class="allow-text-selection" />
 							</xul:row>
 							<xul:row>
 								<xul:label value="${transui:m.comment.bo.doceditor.panel.comments.Relevancy,ucf,attr}" />
-								<xul:label xbl:inherits="value=relevancy" />
+								<xul:label xbl:inherits="xbl:text=relevancy" class="allow-text-selection" />
+							</xul:row>
+							<xul:row xbl:inherits="hidden=linkedwebsitehidden">
+								<xul:label value="${transui:m.comment.bo.doceditor.panel.comments.linked-website,ucf,attr}" />
+								<xul:label xbl:inherits="xbl:text=linkedwebsite" class="allow-text-selection" />
 							</xul:row>
 						</xul:rows>
 					</xul:grid>

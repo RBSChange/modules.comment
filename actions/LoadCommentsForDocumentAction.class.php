@@ -11,11 +11,11 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 	 */
 	public function _execute($context, $request)
 	{
+		$ls = LocaleService::getInstance();
 		$cs = comment_CommentService::getInstance();
-		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
 		$result = array();
 		$document = $this->getDocumentInstanceFromRequest($request);
-		$result['total'] = $cs->getCountByTargetId($document->getId(), $website->getId());
+		$result['total'] = $cs->getCountByTargetId($document->getId());
 		
 		$commentsInfo = array();
 		if ($result['total'] > 0)
@@ -28,7 +28,7 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 			$result['startIndex'] = $offset;
 			$result['pageSize'] = $limit;
 		
-			$comments = $cs->getByTargetId($document->getId(), $offset, $limit, $website->getId());
+			$comments = $cs->getByTargetId($document->getId(), $offset, $limit);
 			if (count($comments) > 0)
 			{
 				$ps = f_permission_PermissionService::getInstance();
@@ -36,9 +36,9 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 				$permission = $package . '.Validate.comment';
 				$canValidate = $ps->hasPermission(users_UserService::getInstance()->getCurrentBackEndUser(), $permission, $document->getId());
 				
-				$dateTimeFormat = f_Locale::translateUI('&modules.uixul.bo.datePicker.calendar.dataWriterTimeFormat;');
 				foreach ($comments as $comment)
 				{	
+					/* @var $comment comment_persistentdocument_comment */
 					$status = $comment->getPublicationstatus();
 					$commentInfo = array();
 					$commentInfo['commentId'] = $comment->getId();
@@ -53,7 +53,7 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 						}
 					}
 					$commentInfo['tasks'] = $taskData;
-					$commentInfo['creationdate'] = date_DateFormat::format($comment->getUICreationdate(), $dateTimeFormat);			
+					$commentInfo['creationdate'] = date_Formatter::toDefaultDatetimeBO($comment->getUICreationdate());			
 					$commentInfo['authorName'] = $comment->getAuthorName();
 					$commentInfo['email'] = $comment->getEmail();
 					$commentInfo['authorwebsiteurl'] = $comment->getAuthorwebsiteurl();
@@ -61,13 +61,29 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 					$commentInfo['relevancy'] = $comment->getRelevancy();
 					$commentInfo['contents'] = $comment->getContentsAsHtml();
 					$commentInfo['canValidate'] = $canValidate;
+					if ($comment->getWebsiteId())
+					{
+						$website = DocumentHelper::getDocumentInstanceIfExists($comment->getWebsiteId());
+						if ($website instanceof website_persistentdocument_website)
+						{
+							$commentInfo['linkedwebsite'] = $website->getLabel();
+						}
+						else
+						{
+							$commentInfo['linkedwebsite'] = $ls->transBO('m.comment.bo.general.unknown', array('ucf', 'lab')) . ' ' . $comment->getWebsiteId();
+						}
+					}
+					else
+					{
+						$commentInfo['linkedwebsite'] = null;
+					}
 					$commentsInfo[] = $commentInfo;
 				}
 			}
 		}
 		else
 		{
-			return $this->sendJSONError(f_Locale::translateUI('&modules.comment.bo.general.No-comment;'), false);
+			return $this->sendJSONError($ls->transBO('m.comment.bo.general.no-comment', array('ucf')), false);
 		}
 		$result['comments'] = $commentsInfo;
 		
@@ -87,7 +103,7 @@ class comment_LoadCommentsForDocumentAction extends f_action_BaseJSONAction
 	{
 		if (!isset($this->statusLabels[$status]))
 		{
-			$this->statusLabels[$status] = f_Locale::translate('&modules.comment.bo.doceditor.status.' . ucfirst(strtolower($status)) . ';');
+			$this->statusLabels[$status] = LocaleService::getInstance()->transBO('m.comment.bo.doceditor.status.' . strtolower($status), array('ucf'));
 		}
 		return $this->statusLabels[$status];
 	}
