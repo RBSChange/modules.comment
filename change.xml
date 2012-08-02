@@ -7,11 +7,5 @@
   <license>os</license>
   <repository>public</repository>
   <dependencies>
-    <dependency>
-      <name>change-module/rss</name>
-      <versions>
-        <version>3.6.2</version>
-      </versions>
-    </dependency>
   </dependencies>
 </change>
