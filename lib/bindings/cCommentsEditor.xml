@@ -221,7 +221,7 @@
 								<xul:label xbl:inherits="xbl:text=relevancy" class="allow-text-selection" />
 							</xul:row>
 							<xul:row xbl:inherits="hidden=linkedwebsitehidden">
-								<xul:label value="${transui:m.comment.bo.doceditor.panel.comments.linked-website,ucf,attr}" />
+								<xul:label value="${trans:m.comment.bo.doceditor.panel.comments.linked-website,ucf,attr}" />
 								<xul:label xbl:inherits="xbl:text=linkedwebsite" class="allow-text-selection" />
 							</xul:row>
 						</xul:rows>

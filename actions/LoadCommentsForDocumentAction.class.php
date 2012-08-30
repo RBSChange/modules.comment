@@ -69,7 +69,7 @@ class comment_LoadCommentsForDocumentAction extends change_JSONAction
 						}
 						else
 						{
-							$commentInfo['linkedwebsite'] = $ls->transBO('m.comment.bo.general.unknown', array('ucf', 'lab')) . ' ' . $comment->getWebsiteId();
+							$commentInfo['linkedwebsite'] = $ls->trans('m.comment.bo.general.unknown', array('ucf', 'lab')) . ' ' . $comment->getWebsiteId();
 						}
 					}
 					else
