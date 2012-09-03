@@ -34,6 +34,7 @@ class comment_BaseCommentWorkflowaction extends workflow_BaseWorkflowaction
 				return $notification->send($this->getDocument()->getEmail());
 			}
 		}
+		return false;
 	}
 	
 	/**
