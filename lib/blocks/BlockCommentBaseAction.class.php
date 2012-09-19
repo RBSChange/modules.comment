@@ -359,8 +359,8 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	
 	/**
 	 * Find the number of the page for the current comment
-	 * @param unknown_type $itemPerPage
-	 * @param unknown_type $commentId
+	 * @param integer $itemPerPage
+	 * @param integer $countBeforeCommentId
 	 */
 	protected function findPage($itemPerPage, $countBeforeCommentId)
 	{
