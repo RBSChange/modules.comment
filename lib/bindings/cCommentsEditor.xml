@@ -99,7 +99,7 @@
 							section.removeAttribute('canDelete');
 							switch (comment['status'])
 							{
-								case 'PUBLICATED' :
+								case 'PUBLISHED' :
 									section.removeAttribute('canDeactivate');
 									break;
 									

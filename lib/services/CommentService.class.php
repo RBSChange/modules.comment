@@ -258,7 +258,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	protected function getValidatorVisibilityRestriction($user)
 	{
-		return Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE'));
+		return Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLISHED', 'ACTIVE'));
 	}
 	
 	/**
@@ -300,7 +300,7 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 */
 	protected function getAuthorVisibilityRestriction($user = null)
 	{
-		return Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLICATED', 'ACTIVE'));
+		return Restrictions::in('publicationstatus', array('WORKFLOW', 'PUBLISHED', 'ACTIVE'));
 	}
 	
 	/**
