@@ -245,7 +245,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	}
 	
 	/**
-	 * @param funcard_persistentdocument_comment $comment
+	 * @param comment_persistentdocument_comment $comment
 	 */
 	protected function saveComment($comment)
 	{
