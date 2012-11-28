@@ -114,7 +114,7 @@
 						}
 						wCore.executeOnMethodExists(section, 'initializeTasks', function(sec) { sec.initializeTasks(); });
 					}
-					while (section = commentsNode.childNodes[i])
+					while ((section = commentsNode.childNodes[i]) != null)
 					{
 						section.setAttribute('collapsed', 'true');
 						i++;
@@ -275,7 +275,7 @@
 						button.setAttribute('tooltiptext', task[1]);
 						button.setAttribute('taskDialog', task[2]);
 					}
-					while (button = node.childNodes[i])
+					while ((button = node.childNodes[i]) != null)
 					{
 						button.setAttribute('collapsed', 'true');
 						i++;
