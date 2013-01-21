@@ -268,7 +268,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			throw $e;
 		}
 		
-		$user = users_UserService::getCurrentFrontendUser();
+		$user = users_UserService::getInstance()->getCurrentFrontendUser();
 		if ($user === null)
 		{
 			$comment->getDocumentService()->addPostedToSession($comment->getId());
