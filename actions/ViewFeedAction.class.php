@@ -9,7 +9,7 @@ class comment_ViewFeedAction extends change_Action
 	 * @param change_Request $request
 	 */
 	public function _execute($context, $request)
-	{		
+	{
 		$targetId = $request->getModuleParameter('comment', 'targetId');
 		if (null === $targetId)
 		{
@@ -23,13 +23,13 @@ class comment_ViewFeedAction extends change_Action
 			{
 				$target = $target->getDocumentService()->getTargetForComment($target);
 				$targetId = $target->getId();
-			}	
-						
+			}
+			
 			if ($target instanceof website_persistentdocument_website)
 			{
 				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByWebsiteId($targetId);
 			}
-			else 
+			else
 			{
 				$website = website_WebsiteService::getInstance()->getCurrentWebsite();
 				$feedWriter = comment_CommentService::getInstance()->getRSSFeedWriterByTargetId($targetId, $website->getId());
