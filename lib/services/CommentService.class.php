@@ -655,6 +655,26 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	}
 	
 	/**
+	 * @param comment_persistentdocument_comment $document
+	 * @return website_persistentdocument_page | NULL
+	 */
+	public function getDisplayPage($document)
+	{
+		$target = $document->getTarget();
+		return $target->getDocumentService()->getDisplayPage($target);
+	}
+	
+	/**
+	 * @param comment_persistentdocument_comment $document
+	 * @return integer[] | null
+	 */
+	public function getWebsiteIds($document)
+	{
+		$target = $document->getTarget();
+		return $target->getDocumentService()->getWebsiteIds($target);
+	}
+	
+	/**
 	 * @param website_persistentdocument_website $website
 	 * @param string $lang
 	 * @param string $modelName
@@ -733,7 +753,6 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	
 	// Deprecated.
 	
-
 	/**
 	 * @deprecated (will be removed in 4.0) use addVisibilityRestrictions
 	 */
