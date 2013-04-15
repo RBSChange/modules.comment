@@ -12,7 +12,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		return array('comment', $this->getModuleName());
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
@@ -22,60 +22,63 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		if ($this->isInBackoffice())
 		{
-			$request->setAttribute('blockLabel', LocaleService::getInstance()->transFO('m.' . $this->getModuleName() . '.bo.blocks.' . $this->getName(), array(
-				'ucf')));
+			$ls = LocaleService::getInstance();
+			$request->setAttribute('blockLabel',
+				$ls->transFO('m.' . $this->getModuleName() . '.bo.blocks.' . $this->getName(), array('ucf')));
 			return $this->getTemplate(website_BlockView::BACKOFFICE);
 		}
-		
+
 		$target = $this->getTarget($request);
 		if ($this->hideComments($target))
 		{
 			return website_BlockView::NONE;
 		}
-		
+
 		$this->loadSuccessView($request);
 		return $this->getCommentView(website_BlockView::SUCCESS);
 	}
-	
+
 	/**
 	 * This method loads data for success view.
-	 * @param f_mvc_Request itemsPerPage
+	 * @param f_mvc_Request $request
 	 */
 	protected function loadSuccessView($request)
 	{
 		$website = website_WebsiteModuleService::getInstance()->getCurrentWebsite();
-		
+
 		$globalRequest = f_mvc_HTTPRequest::getInstance();
-		
+
 		$itemsPerPage = $this->getNbItemPerPage($request, null);
-		
+
 		// Deal with filters.
 		$ratingFilterValue = $globalRequest->getParameter('filter', null);
 		if ($ratingFilterValue !== null)
 		{
-			$request->setAttribute('ratingFilterValue', comment_RatingService::getInstance()->normalizeRating($ratingFilterValue));
+			$request->setAttribute('ratingFilterValue',
+				comment_RatingService::getInstance()->normalizeRating($ratingFilterValue));
 		}
-		
+
 		$target = $this->getTarget($request);
 		$request->setAttribute('target', $target);
-		
+
 		// Get count of comment
-		$count = comment_CommentService::getInstance()->getPublishedCountByTargetId($target->getId(), $website->getId(), $ratingFilterValue);
+		$count = comment_CommentService::getInstance()
+			->getPublishedCountByTargetId($target->getId(), $website->getId(), $ratingFilterValue);
 		$request->setAttribute('totalCount', $count);
-		
-		$pageNb = 1;
+
 		$sortField = $globalRequest->getParameter('sort', 'document_creationdate');
 		$sortOrder = 'asc';
-		
+
 		if ($globalRequest->hasParameter('commentId'))
 		{
 			$commentId = $globalRequest->getParameter('commentId');
 			$request->setAttribute('currentCommentId', $commentId);
-			
+
 			$sortField = 'document_creationdate';
-			
-			$countBeforeCommentId = comment_CommentService::getInstance()->getPublishedCountByTargetIdBeforeCommentId($target->getId(), $commentId, $website->getId(), $ratingFilterValue);
-			
+
+			$countBeforeCommentId = comment_CommentService::getInstance()
+				->getPublishedCountByTargetIdBeforeCommentId($target->getId(), $commentId, $website->getId(), $ratingFilterValue);
+
 			$pageNb = $this->findPage($itemsPerPage, $countBeforeCommentId);
 		}
 		else
@@ -88,24 +91,26 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			{
 				$sortField = 'document_creationdate';
 			}
-			
+
 			$pageNb = $this->getPageNb($request, $itemsPerPage, $count);
 		}
 		$request->setAttribute('page', $pageNb);
-		
+
 		$offset = ($pageNb - 1) * $itemsPerPage;
 		$request->setAttribute('offset', $offset);
-		
+
 		// Get tickets
-		$comments = comment_CommentService::getInstance()->getPublishedByTargetId($target->getId(), $ratingFilterValue, $website->getId(), $offset, $itemsPerPage, $sortOrder, $sortField);
-		
+		$comments = comment_CommentService::getInstance()
+			->getPublishedByTargetId($target->getId(), $ratingFilterValue, $website->getId(), $offset, $itemsPerPage, $sortOrder,
+				$sortField);
+
 		$paginator = new paginator_Paginator($this->getModuleName(), $pageNb, $comments, $itemsPerPage, $count, array('commentId'));
 		$request->setAttribute('comments', $paginator);
-		
+
 		// Handle restriction to connected users.
 		$user = users_WebsitefrontenduserService::getInstance()->getCurrentFrontEndUser();
 		$request->setAttribute('connectToPost', (!$this->allowNotRegistered() && $user === null));
-		
+
 		// Add the RSS feed.
 		$disableRSS = $this->getDisableRSS($request, $target);
 		$request->setAttribute('disableRSS', $disableRSS);
@@ -114,16 +119,17 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			$feedTitle = LocaleService::getInstance()->transFO('m.comment.frontoffice.rss-feed-title', array('ucf'), array(
 				'target' => $target->getLabel()));
 			$context = $this->getContext();
-			$context->addRssFeed($feedTitle, LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
+			$context->addRssFeed($feedTitle,
+				LinkHelper::getActionUrl('comment', 'ViewFeed', array('targetId' => $target->getId())));
 		}
-		
+
 		// Handle comments closing.
 		$request->setAttribute('closeComments', $this->getCloseComments($request, $target));
-		
+
 		// Add link rel canonical.
 		$this->addCanonical($target, $pageNb, $request);
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_persistentdocument_PersistentDocument $target
@@ -133,7 +139,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		return false;
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_persistentdocument_PersistentDocument $target
@@ -143,7 +149,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		return false;
 	}
-	
+
 	/**
 	 * @param f_persistentdocument_PersistentDocument $target
 	 * @param integer $pageNumber
@@ -153,15 +159,16 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		$this->getContext()->addCanonicalParam('page', $pageNumber > 1 ? $pageNumber : null, $this->getModuleName());
 	}
-	
+
 	/**
+	 * @param f_mvc_Request $request
 	 * @return void
 	 */
 	public function onValidateInputFailed($request)
 	{
 		$this->loadSuccessView($request);
 	}
-	
+
 	/**
 	 * @param f_persistentdocument_PersistentDocument $target
 	 * @return Boolean
@@ -170,7 +177,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		return ($target === null || !$target->isPublished());
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param comment_persistentdocument_comment $bean
@@ -185,16 +192,16 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			$this->addError(LocaleService::getInstance()->transFO('m.comment.frontoffice.error-not-logged-in', array('ucf')));
 			return false;
 		}
-		
+
 		// Validation.
-		$validationRules = BeanUtils::getBeanValidationRules('comment_persistentdocument_comment', null, array('label', 
+		$validationRules = BeanUtils::getBeanValidationRules('comment_persistentdocument_comment', null, array('label',
 			'targetdocumentmodel'));
 		if ($this->isRatingRequired())
 		{
 			$validationRules[] = "rating{min:0;max:5}";
 		}
 		$isOk = $this->processValidationRules($validationRules, $request, $bean);
-		
+
 		// Captcha is tested only for not logged-in users.
 		if ($user === null)
 		{
@@ -207,7 +214,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		return $isOk;
 	}
-	
+
 	/**
 	 * @return String
 	 */
@@ -215,7 +222,19 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		return $this->getCommentView(website_BlockView::SUCCESS);
 	}
-	
+
+	/**
+	 * @return string[]|null
+	 */
+	public function getCommentBeanInclude()
+	{
+		if (Framework::getConfigurationValue('modules/website/useBeanPopulateStrictMode') != 'false')
+		{
+			return array('authorName', 'email', 'authorwebsiteurl', 'rating', 'contentsAsBBCode', 'targetId');
+		}
+		return null;
+	}
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
@@ -229,7 +248,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		$request->setAttribute('comment', $comment);
 		return $this->execute($request, $response);
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
@@ -239,13 +258,14 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	public function executeSave($request, $response, comment_persistentdocument_comment $comment)
 	{
 		$this->saveComment($comment);
-		
+
 		$url = LinkHelper::getDocumentUrl($comment);
 		HttpController::getInstance()->redirectToUrl($url);
 	}
-	
+
 	/**
 	 * @param comment_persistentdocument_comment $comment
+	 * @throws Exception
 	 */
 	protected function saveComment($comment)
 	{
@@ -253,13 +273,13 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		try
 		{
 			$tm->beginTransaction();
-			
+
 			$comment->setWebsiteId(website_WebsiteModuleService::getInstance()->getCurrentWebsite()->getId());
 			$comment->save();
-			
+
 			// Ask validation.
 			$comment->getDocumentService()->frontendValidation($comment);
-			
+
 			$tm->commit();
 		}
 		catch (Exception $e)
@@ -267,14 +287,14 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			$tm->rollBack($e);
 			throw $e;
 		}
-		
+
 		$user = users_UserService::getInstance()->getCurrentFrontendUser();
 		if ($user === null)
 		{
 			$comment->getDocumentService()->addPostedToSession($comment->getId());
 		}
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
@@ -294,7 +314,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		return $this->execute($request, $response);
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
@@ -314,11 +334,12 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		return $this->execute($request, $response);
 	}
-	
+
 	/**
 	 * This method may be redefined in the final block if the target
 	 * has to be found differently.
 	 * @param f_mvc_Request $request
+	 * @return f_persistentdocument_PersistentDocument|null
 	 */
 	protected function getTarget($request)
 	{
@@ -329,7 +350,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		return $target;
 	}
-	
+
 	/**
 	 * Return true to force the input of a rating inside the commentary
 	 * @return Boolean
@@ -338,9 +359,12 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	{
 		return false;
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
+	 * @param integer $itemPerPage
+	 * @param array $allComments
+	 * @return integer
 	 * @deprecated
 	 */
 	protected function getPageNumber($request, $itemPerPage, $allComments)
@@ -354,7 +378,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 				return $pageNumber;
 			}
 		}
-		
+
 		// Else look for a comment id.
 		$globalRequest = f_mvc_HTTPRequest::getInstance();
 		$commentId = intval($globalRequest->getParameter('commentId'));
@@ -368,11 +392,11 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 				}
 			}
 		}
-		
+
 		// Else return the first page.
 		return 1;
 	}
-	
+
 	/**
 	 * Return the page number that pass in the request. Check that the page is possible.
 	 * @param f_mvc_Request $request
@@ -382,7 +406,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 	 */
 	protected function getPageNb($request, $itemPerPage, $itemsCount)
 	{
-		
+
 		$pageNumber = $request->getParameter(paginator_Paginator::PAGEINDEX_PARAMETER_NAME);
 		if ($pageNumber)
 		{
@@ -392,21 +416,19 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 			}
 		}
 		return 1;
-	
 	}
-	
+
 	/**
 	 * Find the number of the page for the current comment
-	 * @param unknown_type $itemPerPage
-	 * @param unknown_type $commentId
+	 * @param integer $itemPerPage
+	 * @param integer $countBeforeCommentId
+	 * @return integer
 	 */
 	protected function findPage($itemPerPage, $countBeforeCommentId)
 	{
-		
 		return 1 + floor($countBeforeCommentId / $itemPerPage);
-	
 	}
-	
+
 	/**
 	 * @param f_mvc_Request $request
 	 * @param f_mvc_Response $response
@@ -422,7 +444,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		return 10;
 	}
-	
+
 	/**
 	 * @return boolean
 	 */
@@ -435,7 +457,7 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		}
 		return true;
 	}
-	
+
 	/**
 	 * @param f_persistentdocument_PersistentDocument $target
 	 * @return comment_persistentdocument_comment[]
@@ -449,19 +471,22 @@ abstract class comment_BlockCommentsBaseAction extends website_BlockAction
 		switch ($globalRequest->getParameter('sort', 'date'))
 		{
 			case 'relevancy' :
-				$allComments = comment_CommentService::getInstance()->getPublishedByTargetIdOrderByRelevancy($target->getId(), $ratingFilterValue, $website->getId());
+				$allComments = comment_CommentService::getInstance()
+					->getPublishedByTargetIdOrderByRelevancy($target->getId(), $ratingFilterValue, $website->getId());
 				break;
 			case 'rating' :
-				$allComments = comment_CommentService::getInstance()->getPublishedByTargetIdOrderByRating($target->getId(), $ratingFilterValue, $website->getId());
+				$allComments = comment_CommentService::getInstance()
+					->getPublishedByTargetIdOrderByRating($target->getId(), $ratingFilterValue, $website->getId());
 				break;
 			case 'date' :
 			default :
-				$allComments = comment_CommentService::getInstance()->getPublishedByTargetId($target->getId(), $ratingFilterValue, $website->getId());
+				$allComments = comment_CommentService::getInstance()
+					->getPublishedByTargetId($target->getId(), $ratingFilterValue, $website->getId());
 				break;
 		}
 		return $allComments;
 	}
-	
+
 	/**
 	 * @param $shortViewName
 	 * @throws TemplateNotFoundException if template could not be found in current module and comment module

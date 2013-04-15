@@ -321,7 +321,8 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 	 * @param Integer $targetId
 	 * @param Integer $commentId
 	 * @param Integer $websiteId
-	 * @param unknown_type $ratingValue
+	 * @param float $ratingValue
+	 * @return integer
 	 */
 	public function getPublishedCountByTargetIdBeforeCommentId($targetId, $commentId, $websiteId = null, $ratingValue = null)
 	{
@@ -332,11 +333,13 @@ class comment_CommentService extends f_persistentdocument_DocumentService
 		$row = $query->findUnique();
 		return $row['count'];
 	}
-	
+
 	/**
 	 * @param Integer $targetId
 	 * @param Integer $ratingValue
 	 * @param Integer $websiteId
+	 * @param integer|null $offset
+	 * @param integer|null $limit
 	 * @param String $sortOrder
 	 * @param String $sortField
 	 * @return comment_persistentdocument_comment[]
